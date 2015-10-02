@@ -8,16 +8,18 @@
 
 <!-- Bootstrap core CSS -->
 
-<link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
 
   <!-- Optional Bootstrap Theme -->
 
-  <link href="data:text/css;charset=utf-8," data-href="../dist/css/bootstrap-theme.min.css" rel="stylesheet" id="bs-theme-stylesheet">
+  <link href="data:text/css;charset=utf-8," data-href="../bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" id="bs-theme-stylesheet">
 
 
 <!--[if lt IE 9]><script src="../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-<script src="../../dist/assets/js/ie-emulation-modes-warning.js"></script>
+<!--
+<script src="../bootstrap/assets/js/ie-emulation-modes-warning.js"></script>
+-->
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
@@ -271,6 +273,35 @@ $ ./kobaltw --tasks
 
 Notice the new <code>"coverage"</code> task, provided by the plug-in <code>kobalt-example-plugin</code> that we just included. With the simple action of declaring the plug-in, it is now fully loaded and available right away. Of course, such plug-ins can allow or require additional configuration with their own directives. Please read the plug-in developer documentation for more details.
 
+<h2 id="multiple-projects"></h2>
+
+You can specify more than one project in a build file, simply by declaring them:
+
+<pre>
+val p1 = javaProject { ... }
+val p2 = kotlinProject { ... }
+</pre>
+
+If some of your projects need to be built in a certain order, you can specify this when you create your project. For example:
+
+<pre>
+val p2 = kotlinProject(p1) { ... }
+</pre>
+
+<p>
+This declares that the Kotlin project <code>p2</code> depends on <code>p1</code>, which means that the project <code>p1</code> will be built first.
+</p>
+
+<p>
+You can also run tasks for a specific project only as follows:
+</p>
+
+<pre>
+./kobaltw p2:assemble
+</pre>
+
+This will run the <code>assemble</code> task only for the <code>p2</code>, instead of running it for all projects.
+
 <h2 id="publishing">Publishing</h2>
 
 <p>
@@ -353,7 +384,9 @@ A plug-in typically has three components:
 
 <h3 id="base-plugin">BasePlugin</h3>
 
+<p>
 The main class of your plugin extends <code>BasePlugin</code> and implements its <code>apply()</code> method and <code>name</code> variable:
+</p>
 
 <pre>
 public class ExamplePlugin : BasePlugin() {
@@ -367,7 +400,9 @@ public class ExamplePlugin : BasePlugin() {
 
 <h3 id="plugin-tasks">Plugin tasks</h3>
 
+<p>
 Next, you can declare tasks with the <code>@Task</code> annotation:
+</p>
 
 <pre>
 @Task(name = "coverage", description = "Run coverage",
@@ -456,6 +491,7 @@ val p = kotlinProject {
         <li><a href="#maven-repos">Maven repos</a>
         <li><a href="#using-plug-ins">Using plug-ins</a>
         <li><a href="#publishing">Publishing</a>
+        <li><a href="#multiple-projects">Multiple projects</a>
         <li><a href="#writing-a-plug-in">Writing a plug-in</a>
         <ul>
           <li><a href="#building">Building</a>
@@ -473,9 +509,13 @@ val p = kotlinProject {
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="../../dist/js/bootstrap.min.js"></script>
-  <script src="../../assets/js/docs.min.js"></script>
+  <script src="../bootstrap/dist/js/bootstrap.min.js"></script>
+<!--
+  <script src="../bootstrap/dist/js/docs.min.js"></script>
+-->
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<!--
 <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+-->
 
 </body>
