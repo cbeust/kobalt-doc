@@ -74,6 +74,37 @@
 
 
       <div class="col-md-9">
+
+<p>
+Curious to see what a Kobalt build file looks like? Here is <a href="http://jcommander.org">JCommander's entire Kobalt build file</a>:
+</p>
+
+<pre>
+import com.beust.kobalt.*
+import com.beust.kobalt.plugin.java.*
+import com.beust.kobalt.plugin.packaging.*
+import com.beust.kobalt.plugin.publish.*
+
+val jcommander = javaProject {
+    name = "jcommander"
+    group = "com.beust"
+    artifactId = name
+    version = "1.52"
+
+    dependenciesTest {
+        compile("org.testng:testng:6.9.5")
+    }
+}
+
+val a = assemble(jcommander) {
+    mavenJars {
+    }
+}
+
+val j = jcenter(jcommander) {
+    publish = false
+}
+</pre>
 <h2 id="downloading">Downloading and installing Kobalt</h3>
 
 <p>
