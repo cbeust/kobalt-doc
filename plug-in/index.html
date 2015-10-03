@@ -129,7 +129,7 @@ import com.beust.kobalt.api.*
 public class Main : BasePlugin() {
     override val name = "kobalt-line-count"
 
-    override fun apply(project: Project) {
+    override fun apply(project: Project, context: KobaltContext) {
         println("*** Applying plugin ${name} with project ${project}")
     }
 }

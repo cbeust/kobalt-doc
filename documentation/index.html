@@ -491,7 +491,7 @@ The main class of your plugin extends <code>BasePlugin</code> and implements its
 public class ExamplePlugin : BasePlugin() {
     override val name = "kobalt-example-plugin"
 
-    override fun apply(project: Project) {
+    override fun apply(project: Project, context: KobaltContext) {
         println("Applying plugin ${name} with project ${project}")
     }
 }
