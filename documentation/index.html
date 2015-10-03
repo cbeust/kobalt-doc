@@ -275,16 +275,20 @@ $ ./kobaltw --tasks
 
 Notice the new <code>"coverage"</code> task, provided by the plug-in <code>kobalt-example-plugin</code> that we just included. With the simple action of declaring the plug-in, it is now fully loaded and available right away. Of course, such plug-ins can allow or require additional configuration with their own directives. Please read the plug-in developer documentation for more details.
 
-<h2 id="multiple-projects"></h2>
+<h2 id="multiple-projects">Multiple projects</h2>
 
+<p>
 You can specify more than one project in a build file, simply by declaring them:
+</p>
 
 <pre>
 val p1 = javaProject { ... }
 val p2 = kotlinProject { ... }
 </pre>
 
-If some of your projects need to be built in a certain order, you can specify this when you create your project. For example:
+<p>
+If some of your projects need to be built in a certain order, you can specify dependencies when you create your project. For example:
+</p>
 
 <pre>
 val p2 = kotlinProject(p1) { ... }
@@ -303,6 +307,68 @@ You can also run tasks for a specific project only as follows:
 </pre>
 
 This will run the <code>assemble</code> task only for the <code>p2</code>, instead of running it for all projects.
+
+<h2 id="command-line">Command line</h2>
+
+<p>
+Here are the options that you can pass to <code>./kobaltw</code>:
+</p>
+
+<table style="font-size: 14px" class="table table-striped">
+    <colgroup>
+     <col span="1" style="width: 20%;">
+     <col span="1" style="width: 10%;">
+     <col span="1" style="width: 30%;">
+     <col span="1" style="width: 30%;">
+  </colgroup>
+  <thead>
+    <tr>
+      <td>Name</td>
+      <td>Type</td>
+      <td>Description</td>
+      <td>Details</td>
+    </tr>
+  </thead>
+
+  <tr>
+    <td><code>--buildFile</code></td>
+    <td>File</td>
+    <td>Specify a build file.</td>
+    <td>Use this option if you are trying to build a project that's not in the current directory.</td>
+  </tr>
+  <tr>
+    <td><code>--checkVersions</code></td>
+    <td>Boolean</td>
+    <td>Display all the new versions of your dependencies.</td>
+    <td>This option looks at all the dependencies found in your build file and then contacts all the Maven repositories in order to find out if any of these repos contains a newer version. If any are found, they are displayed:
+      <pre>
+$ ./kobaltw --checkVersions
+New versions found:
+       com.beust:klaxon:0.14
+       org.testng:testng:6.9.5
+      </pre>
+    </td>
+  </tr>
+  <tr>
+    <td><code>--init</code></td>
+    <td>Boolean</td>
+    <td>Initialize a project for Kobalt.</td>
+    <td>This option will create a build file in the current directory (unless one already exists) and will install the Kobalt wrapper.</td>
+  </tr>
+  <tr>
+    <td><code>--log</code></td>
+    <td>Integer (0..3)</td>
+    <td>Specify the log level.</td>
+    <td>The default level is 1. Level 0 will quiet everything and 2 and 3 will display increasingly verbose output.</td>
+  </tr>
+  <tr>
+    <td><code>--tasks</code></td>
+    <td>Boolean</td>
+    <td>List the tasks available.</td>
+    <td>Note that the available tasks will vary depending on which projects are in your build file.</td>
+  </tr>
+</table>
+
 
 <h2 id="publishing">Publishing</h2>
 
