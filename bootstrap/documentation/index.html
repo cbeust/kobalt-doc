@@ -68,7 +68,363 @@
         </p>
       </div>
 
-DOCUMENTATION
+
+      <div class="col-md-9">
+<h2 id="downloading">Downloading and installing Kobalt</h3>
+
+<a href="https://bintray.com/cbeust/generic/kobalt/view">Download the zip file</a> (bottom left of the screen) then unzip it in a location we'll call <code>KOBALT_HOME</code>:
+
+<pre>
+cd $KOBALT_HOME
+unzip kobalt-xxx.zip
+</pre>
+
+Change to your project directory and call the <code>kobaltw</code> command with <code>--init</code>:
+
+<pre>
+cd ~/java/project
+$KOBALT_HOME/kobaltw --init
+</pre>
+
+This command will do two things:
+
+<ol>
+<li>Create a default <code>Build.kt</code> file in your current directory based on what was found there.
+<li>Install the Kobalt Wrapper in your current directory (script `kobaltw`) and in the <code>kobalt/</code> directory. From now on, you can just use <code>./kobaltw</code> to build and you can ignore <code>$KOBALT_HOME</code>.
+</ol>
+
+You can now attempt to build your project with Kobalt:
+
+<pre>
+./kobaltw assemble
+</pre>
+
+If your project follows a regular build structure (e.g. Maven's hierarchy), this should compile your file and create a .jar file. If not, you will have to make a few edits to your <code>Build.kt</code>.
+
+As of this writing, Kobalt supports Java and Kotlin projects.
+
+<h2 id="structure">Structure of a build file</h2>
+
+<h3 id="general-concepts">General concepts</h3>
+
+The build file is typically called <code>Built.kt</code> and it is a valid Kotlin file. Typically, it contains imports, the declaration of one or more projects and the declaration of additional configurations (e.g. packaging, publishing, etc...).  Since it's a Kotlin file, it can also contain any class or function you need:
+ 
+<pre>
+import com.beust.kobalt.*
+import com.beust.kobalt.plugin.kotlin.kotlinProject
+
+val kobalt = kotlinProject {
+    name = "kobalt"
+    group = "com.beust"
+    artifactId = name
+    version = "0.62"
+    directory = homeDir("kotlin/kobalt")
+}
+</pre>
+
+Here are a few noteworthy details about this small build file:
+
+<ul>
+<li>You have now declared a variable called <code>kobalt</code> which you can reuse (see below).
+<li>You can specify the directory of the project, which means that one build file can be used to build multiple projects.
+<li>The functions <code>kotlinProject</code> and <code>homeDir</code> are supplied by Kobalt and are sometimes referred to as "directives"
+</ul>
+
+<h3 id="directives">Directives</h3>
+
+Now that we have declared a project, we can use it to configure additional steps of our build, such as the packaging:
+
+<pre>
+import com.beust.kobalt.plugin.packaging.packaging
+
+// ...
+
+val packKobalt = packaging(kobalt) {
+    jar {
+    }
+}
+</pre>
+
+This is the simplest jar declaration you can have. You can trigger the creation of this jar file by invoking the task <code>"assemble"</code>. Note that we passed the <code>kobalt</code> variable to the <code>packaging</code> function, so we make it clear which project we are currently configuring for packaging. The <code>jar</code> directive accepts various settings, so let's be a bit more specific. And let's add a zip file too:
+
+<pre>
+val packKobalt = packaging(kobalt) {
+    jar {
+        fatJar = true
+        manifest {
+            attributes("Main-Class", "com.beust.kobalt.KobaltPackage")
+        }
+    }
+    zip {
+        include("kobaltw")
+        include(from("${kobalt.buildDirectory}/libs"),
+                to("kobalt/wrapper"),
+                "${kobalt.name}-${kobalt.version}.jar",
+                "${kobalt.name}-wrapper.jar")
+    }
+}
+</pre>
+
+Our jar file is now declared to be a "fat jar" (which means it will include all its dependencies) and we specified a <code>Main-Class</code> to the jar Manifest, which means we will be able to invoke it with <code>java -jar kobalt-0.61.jar</code>. If you don't like this name, you can override it with a <code>name = "myName.jar"</code> statement.
+
+<p>
+
+The zip directive follows a similar structure, although here we are specifying which file we want to include. For more details on the <code>packaging</code> plug-in, please see its documentation.
+
+<h3>Dependencies</h3>
+
+You can declare compile and test dependencies as follows:
+
+<pre>
+dependencies {
+    compile("com.beust:jcommander:1.48",
+            "com.beust:klaxon:0.14")
+}
+
+dependenciesTest {
+    compile("org.testng:testng:6.9.5")
+}
+</pre>
+
+<h2 id="maven-repos">Maven repos</h2>
+
+Kobalt already knows the location of the most popular Maven repos (Maven Central, JCenter, JBoss) but you can add repos with the <code>repos()</code> directive:
+
+<pre>
+val repos = repos("https://dl.bintray.com/cbeust/maven/")
+</pre>
+
+<h2 id="using-plug-ins">Using plug-ins</h2>
+
+Kobalt comes with a few preconfigured plug-ins but you will want to include external ones as well, which can be downloaded either from a Maven repository (Sonatype, JCenter, ...) or from a local file.
+
+<p>
+
+First of all, let's take a quick look at the tasks available in the default distribution (your actual output might differ somewhat):
+
+<pre>
+$ ./kobaltw --tasks
+  ===== java =====
+    compile          Compile the project
+    compileTest      Compile the tests
+    test             Run the tests
+    clean            Clean the project
+
+  ===== publish =====
+    generatePom      Generate the .pom file
+    uploadJcenter    Upload the artifacts to JCenter
+
+  ===== packaging =====
+    assemble         Package the artifacts
+</pre>
+
+Let's modify our build to include a plug-in. We do this by adding a call to the <code>plugins</code> directive on top of the build file:
+
+<pre>
+val repos = repos("https://dl.bintray.com/cbeust/maven/")
+val p = plugins("com.beust:kobalt-example-plugin:0.42")
+</pre>
+
+Now, run the <code>--tasks</code> command again:
+
+<pre>
+$ ./kobaltw --tasks
+  ===== java =====
+    compile         Compile the project
+
+  ===== publish =====
+    generatePom     Generate the .pom file
+    uploadJcenter   Upload the artifacts to JCenter
+
+  ===== kobalt-example-plugin =====
+    coverage        Run coverage
+
+  ===== packaging =====
+    assemble        Package the artifacts
+</pre>
+
+Notice the new <code>"coverage"</code> task, provided by the plug-in <code>kobalt-example-plugin</code> that we just included. With the simple action of declaring the plug-in, it is now fully loaded and available right away. Of course, such plug-ins can allow or require additional configuration with their own directives. Please read the plug-in developer documentation for more details.
+
+<h2 id="publishing">Publishing</h2>
+
+Kobalt supports JCenter natively so you can upload your project and make it available on JCenter very easily.
+
+<p>
+
+First of all, make sure you specified the group, artifactId and version of your project, as required by Maven:
+
+<pre>
+val kobalt = kotlinProject {
+    group = "com.beust"
+    artifactId = "kobalt"
+    version = "0.72"
+</pre>
+
+Next, create a file <code>local.properties</code> in the root directory of your project with the following keys:
+
+<pre>
+bintray.user=...
+bintray.apikey=...
+</pre>
+
+The values for the <code>user</code> and <code>apikey</code> keys can be found in your bintray profile, as described <a href="https://bintray.com/docs/usermanual/interacting/interacting_editingyouruserprofile.html#anchorAPIKEY">here</a>. Note that you should <b>not</b> check this <code>local.properties</code> file into your source control (so add it to <code>.gitignore</code>).
+
+<p>
+
+Make sure that your build creates a jar file (using `packaging`, as explained above).
+
+<p>
+
+Now, all you need to do is to upload your package:
+
+<pre>
+./gradlew uploadJcenter
+</pre>
+
+<h2 id="writing-a-plug-in">Writing a plug-in</h2>
+
+A good starting point to write a plug-in is the <a href="https://bitbucket.org/cbeust/kobalt-example-plugin">kobalt-example-plugin project</a>, which shows a minimalistic plug-in.
+
+<h3 id="building">Building</h3>
+
+You only need to do two things to build a Kobalt plug-in:
+
+<h4>1. Add Kobalt as a dependency:</h4>
+
+<pre>
+dependencies {
+    compile("com.beust:kobalt:0.61")
+}
+</pre>
+
+<h4>2. Declare the main class of your plug-in in the Jar file's manifest:</h4>
+
+<pre>
+val p = packaging(examplePlugin) {
+    jar {
+        manifest {
+            attributes("Kobalt-Plugin-Class", "com.beust.kobalt.example.ExamplePlugin")
+        }
+    }
+}
+</pre>
+
+<h3 id="implementing">Implementing</h3>
+
+A plug-in typically has three components:
+
+<ul>
+    <li>Extending and implementing the methods of `BasePlugin`.
+    <li>Specifying one or more tasks.
+    <li>Specifying directives (functions that will be used from the build file).
+</ul>
+
+<h3 id="base-plugin"><code>BasePlugin</code></h3>
+
+The main class of your plugin extends <code>BasePlugin</code> and implements its <code>apply()</code> method and <code>name</code> variable:
+
+<pre>
+public class ExamplePlugin : BasePlugin() {
+    override val name = "kobalt-example-plugin"
+
+    override fun apply(project: Project) {
+        println("Applying plugin ${name} with project ${project}")
+    }
+}
+</pre>
+
+<h3 id="plugin-tasks">Plugin tasks</h3>
+
+Next, you can declare tasks with the <code>@Task</code> annotation:
+
+<pre>
+@Task(name = "coverage", description = "Run coverage",
+    runAfter = arrayOf("compile"))
+public fun coverage(project: Project): TaskResult {
+    println("Running the coverage on project ${project}")
+    return TaskResult()
+}
+</pre>
+
+<ul>
+    <li>Tasks return a <code>TaskResult</code> object, which can be initialized with <code>false</code> if the task didn't succeed for some reason.
+    <li>The name of the task is the same name that can be passed to the <code>kobaltw</code> command (e.g. <code>"./kobaltw coverage"</code>)
+    <li>The description is what is displayed with <code>"./kobaltw --tasks"</code>
+    <li><code>runAfter</code> and <code>runBefore</code> let you specify the dependencies of your task. In this example plug-in, we want to calculate the coverage of the project so it makes sense to run after the <code>"compile"</code> task.
+</ul>
+
+<h3 id="plugin-directives">Directives</h3>
+
+Finally, you need to define functions that can be used from the build file (directives). You are encouraged to use the <a href="https://confluence.jetbrains.com/display/Kotlin/Type-safe+Groovy-style+builders">Kotlin DSL approach</a> to expose these functions so that the build file syntax can remain consistent. Typically, these functions will update data that your tasks can then use to do their job.
+
+<p>
+
+These can be either straight functions or extension functions. For example, here is the <code>kotlinProject</code> directive:
+
+<pre>
+@Directive
+public fun kotlinProject(init: KotlinProject.() -> Unit): KotlinProject {
+    val result = KotlinProject()
+    result.init()
+    return result
+}
+</pre>
+
+This function returns a <code>KotlinProject</code> and the user can then override variables or invoke methods from this class in their build file:
+
+<pre>
+val kobalt = kotlinProject {
+    name = "kobalt"
+    group = "com.beust"
+...
+</pre>
+
+Using an extension function to define a directive allows you to add new functions to Kobalt classes. For example, currently, a project can have <code>"dependencies"</code> and <code>"dependenciesTest"</code>. For a coverage plug-in, we would want to add a <code>"dependenciesCoverage"</code> section, which can be easily done by defining an extension function on <code>Project</code>:
+
+<pre>
+@Directive
+public fun Project.dependenciesCoverage(ini: Dependencies.() -> Unit) : Dependencies {
+    val result = Dependencies()
+    result.init()
+    return result
+}
+</pre>
+
+And we can now use:
+
+<pre>
+val p = kotlinProject {
+    dependenciesCoverage("com.example:foo:0.1")
+}
+</pre>
+
+
+      </div>
+
+
+<!-- Table of contents -->
+      <div class="col-md-3">
+      <ul class="nav">
+        <li><a href="#downloading">Downloading and installing</a>
+        <li><a href="#structure">Structure of a build file</a>
+        <ul>
+          <li><a href="#general-concepts">General concepts</a>
+          <li><a href="#directives">Directives</a>
+          <li><a href="#dependencies">Dependencies</a>
+        </ul>
+        <li><a href="#maven-repos">Maven repos</a>
+        <li><a href="#using-plug-ins">Using plug-ins</a>
+        <li><a href="#publishing">Publishing</a>
+        <li><a href="#writing-a-plug-in">Writing a plug-in</a>
+        <ul>
+          <li><a href="#building">Building</a>
+          <li><a href="#implemeting">Implementing</a>
+          <li><a href="#base-plugin"><code>BasePlugin</code></a>
+          <li><a href="#plugin-tasks">Plugin tasks</a>
+          <li><a href="#plugin-directives">Directives          
+        </ul>
+      </ul>
+      </div>
 
     </div> <!-- /container -->
 

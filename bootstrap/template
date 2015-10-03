@@ -8,7 +8,7 @@
 
 <!-- Bootstrap core CSS -->
 
-<link href="../dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
 
 
   <!-- Optional Bootstrap Theme -->
@@ -17,7 +17,7 @@
 
 
 <!--[if lt IE 9]><script src="../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-<script src="../dist/assets/js/ie-emulation-modes-warning.js"></script>
+<script src="../../dist/assets/js/ie-emulation-modes-warning.js"></script>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
@@ -47,13 +47,13 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Kobalt</a>
+            <a class="navbar-brand">Kobalt</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="documentation/">Documentation</a></li>
-              <li><a href="plug-in/">A plug-in in 10mn</a></li>
+              <li class="active"><a href="../home/index.html">Home</a></li>
+              <li><a href="../documentation/index.html">Documentation</a></li>
+              <li><a href="../plug-in/index.html">A plug-in in 10mn</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
@@ -68,15 +68,41 @@
         </p>
       </div>
 
-    </div> <!-- /container -->
+      <!-- Main content -->
+      <div class="col-md-9">
+      </div>
+
+      <!-- Table of contents -->
+      <div class="col-md-3">
+      <ul class="nav">
+        <li><a href="downloading">Downloading and installing</a>
+        <li><a href="structure">Structure of a build file</a>
+        <ul>
+          <li><a href="general-concepts">General concepts</a>
+          <li><a href="directives">Directives</a>
+          <li><a href="dependencies">Dependencies</a>
+        </ul>
+        <li><a href="maven-repos">Maven repos</a>
+        <li><a href="using-plug-ins">Using plug-ins</a>
+        <li><a href="publishing">Publishing</a>
+        <li><a href="writing-a-plug-in">Writing a plug-in</a>
+        <ul>
+          <li><a href="building">Building</a>
+          <li><a href="implemeting">Implementing</a>
+          <li><a href="base-plugin"><code>BasePlugin</code></a>
+          <li><a href="plugin-tasks">Plugin tasks</a>
+          <li><a href="plugin-directives">Directives          
+        </ul>
+      </ul>
+      </div>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="../dist/js/bootstrap.min.js"></script>
-  <script src="../assets/js/docs.min.js"></script>
+  <script src="../../dist/js/bootstrap.min.js"></script>
+  <script src="../../assets/js/docs.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="../assets/js/ie10-viewport-bug-workaround.js"></script>
+<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 
 </body>
