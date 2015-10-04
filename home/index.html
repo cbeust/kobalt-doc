@@ -76,17 +76,19 @@ Kobalt is a build system heavily inspired from Gradle and entirely written in Ko
 
 <ul>
   <li>Completely written in Kotlin: core, plug-ins and build files.
-  <li>uto completion from the IDE (possibly enhanced by a soon-to-come thin Kobalt IDE plug-in to present suggestions ordered more sensibly).
+  <li>Auto completion from the IDE (possibly enhanced by a soon-to-come thin Kobalt IDE plug-in to present suggestions ordered more sensibly).
   <li>Reusing all the good ideas from Gradle, such as the DSL and the wrapper.
   <li>Fast builds.
-  <li>Streamlining the build file, applying default over configuration as much as possible (for example, to install a plug-in, Gradle forces you to both declare it and apply it, something I've never understood).
-  <li>A turnkey solution with all the common plug-ins pre-installed. No need to go hunting through dozens of outdated results for the elusive JCenter plug-in: with Kobalt, you can create a package and upload it to JCenter within ten minutes.
+  <li>Streamlining the build file, applying "convention over configuration" as much as possible (for example, to install a plug-in, Gradle forces you to both declare it and apply it. With Kobalt, the simple act of declaring a dependency on it installs the plug-in).
+  <li>A turnkey solution with all the common plug-ins pre-installed. No need to go hunting through dozens of outdated results for the elusive JCenter plug-in: with Kobalt, you can create a package and upload it to JCenter within ten minutes. <a href="../plug-in/index.html">See for yourself!</a>.
   <li>An agnostic build tool. Kobalt can be used to build Kotlin and Java projects today but it's capable to build anything: any language (JVM or not) or platform (Android, Spring, ...).
 </ul>
 
 <h2 id="why-kobalt">Why Kobalt?</h2>
 
-As of this writing (September 2015), Kobalt is in alpha and changing a lot so I am mostly interested in getting the attention of developers who are interested in
+<p>
+As of this writing (October 2015), Kobalt is in alpha and changing a lot so I am mostly interested in getting the attention of developers who are curious about:
+</p>
 
 <ul>
   <li>helping with Kobalt's core
@@ -94,7 +96,9 @@ As of this writing (September 2015), Kobalt is in alpha and changing a lot so I 
   <li>discussing the architecture and the design of Kobalt on the mailing-list
 </ul>
 
-Kobalt is complete enough to build three of my personal projects (TestNG, JCommander and, of course, itself) but it will most likely come short of filling everyone's build needs at this time. That's the end goal but we're not there yet. You are welcome to use it on your own projects as long as you're okay with encountering issues and reporting them.
+<p>
+Kobalt is complete enough to build three of my personal projects (<a href="https://github.com/cbeust/testng/blob/master/Build.kt">TestNG</a>, <a href="https://github.com/cbeust/jcommander/blob/master/Build.kt">JCommander</a> and, of course, <a href="https://github.com/cbeust/kobalt/blob/master/Build.kt">itself</a>) but it will most likely come short of filling everyone's build needs at this time. That's the end goal but we're not there yet. You are welcome to use it on your own projects as long as you're okay with encountering issues and reporting them.
+</p>
 
 <p>
 
@@ -102,9 +106,13 @@ With this disclaimer, why did I decide to write Kobalt?
 
 <h3>1. Scratching an itch</h3>
 
+<p>
 I give a lot of credit to Gradle for having open a brand new avenue in build tools but despite all its power and flexibility and the fact that I've used Gradle for more than five years, I've never really felt comfortable or fluent with it. Even today, I regularly find myself spending a lot of time on StackOverflow whenever I need to do something a bit out of the ordinary with my Gradle builds.
+</p>
 
+<p>
 I suspect a part of it is due to Groovy which, even though it started gaining some static type features these past years, remains at its heart a dynamically typed language. This has two consequences:
+</p>
 
 <ul>
 <li>You don't receive a lot of assistance from your IDE when writing Gradle build files (auto completion broken most of the time).
@@ -113,15 +121,21 @@ I suspect a part of it is due to Groovy which, even though it started gaining so
 
 <h3>2. An experiment</h3>
 
+<p>
 I wanted to see for myself if my discomfort with Gradle was justified or if, by trying to write a build tool myself, I would end up with a very similar tool with similar strengths and weaknesses. I still haven't made up my mind about this but I will certainly by the time Kobalt reaches 1.0.
+</p>
 
 <h3>3. A proof of concept</h3>
 
+<p>
 I have been a fervent believer that there is nothing that dynamically typed languages can do today that statically typed languages can't. Groovy's meta model and features have enabled a lot of clever tricks (DSL and others) for Gradle builds and I was really curious if I could put money where my mouth is by creating a similar project with Kotlin. This experiment is still ongoing but by now, I'm pretty convinced that the answer is a resounding "yes".
+</p>
 
 <h3>4. An excuse to write Kotlin</h3>
 
+<p>
 Just a personal thing. After toying with the language for almost four years now, I wanted to take my efforts to the next level and push the language to the limit. So far, the language has held all its promises and then some.
+</p>
 
 <h2 id="path">The path to Kobalt 1.0</h2>
 
@@ -146,7 +160,9 @@ Here are some of the features I'm either working on or planning to (or hoping th
     <li>Support for build flavors and build types. I'd like to adapt what's currently available in the Gradle Android plug-in and make it available across all build types (e.g. debug/release, etc...), which might mean supporting build flavors and types in Kobalt's core itself. </li>
 </ul>
 
+<p>
 Is your curiosity piqued? Are you interested in writing some cool Kotlin code and contribute to Kobalt? Or maybe just download and run Kobalt on your own projects just to get a feel for it? Then proceed to <a href="../documentation/index.html">Kobalt's main documentation!</a>
+</p>
 
 <p>
 </p>
