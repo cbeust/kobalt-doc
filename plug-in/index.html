@@ -107,7 +107,7 @@ Next, we want the manifest of our jar file to point to our main Kobalt plug-in c
 val packProject = packaging(project) {
     jar {
         manifest {
-            attributes("Main-Class", "com.beust.kobalt.plugin.linecount.Main")
+            attributes("Kobalt-Plugin-Class", "com.beust.kobalt.plugin.linecount.Main")
         }
     }
 }
