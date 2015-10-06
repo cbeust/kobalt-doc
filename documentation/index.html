@@ -75,7 +75,7 @@
 
       <div class="col-md-9">
 
-<h2 id="downloading">Downloading and installing Kobalt</h3>
+<h2 class="section" id="downloading">Downloading and installing Kobalt</h3>
 
 <p>
 <a href="https://github.com/cbeust/kobalt/releases/latest">Download the zip file</a> then unzip it in a location we'll call <code>KOBALT_HOME</code>:
@@ -116,9 +116,9 @@ If your project follows a regular build structure (e.g. Maven's hierarchy), this
 
 As of this writing, Kobalt supports Java and Kotlin projects.
 
-<h2 id="structure">Structure of a build file</h2>
+<h2 class="section" id="structure">Structure of a build file</h2>
 
-<h3 id="general-concepts">General concepts</h3>
+<h3 class="section" indent=".." id="general-concepts">General concepts</h3>
 
 <p>
 The build file is typically called <code>Built.kt</code> and it is a valid Kotlin file. Typically, it contains imports, the declaration of one or more projects and the declaration of additional configurations (e.g. packaging, publishing, etc...).  Since it's a Kotlin file, it can also contain any class or function you need:
@@ -145,7 +145,7 @@ Here are a few noteworthy details about this small build file:
 <li>The functions <code>kotlinProject</code> and <code>homeDir</code> are supplied by Kobalt and are sometimes referred to as "directives"
 </ul>
 
-<h3 id="directives">Directives</h3>
+<h3 class="section" indent=".." id="directives">Directives</h3>
 
 <p>
 Now that we have declared a project, we can use it to configure additional steps of our build, such as the assembling it (creating jar and other files:
@@ -192,7 +192,7 @@ Our jar file is now declared to be a "fat jar" (which means it will include all 
 The zip directive follows a similar structure, although here we are specifying which file we want to include. For more details on the <code>packaging</code> plug-in, please see its documentation.
 </p>
 
-<h3>Dependencies</h3>
+<h3 class="section" indent=".." id="dependencies">Dependencies</h3>
 
 <p>
 You can declare compile and test dependencies as follows:
@@ -209,7 +209,7 @@ dependenciesTest {
 }
 </pre>
 
-<h2 id="maven-repos">Maven repos</h2>
+<h2 class="section" id="maven-repos">Maven repos</h2>
 
 <p>
 Kobalt already knows the location of the most popular Maven repos (Maven Central, JCenter, JBoss) but you can add repos with the <code>repos()</code> directive:
@@ -219,7 +219,7 @@ Kobalt already knows the location of the most popular Maven repos (Maven Central
 val repos = repos("https://dl.bintray.com/cbeust/maven/")
 </pre>
 
-<h2 id="using-plug-ins">Using plug-ins</h2>
+<h2 class="section" id="using-plug-ins">Using plug-ins</h2>
 
 <p>
 Kobalt comes with a few preconfigured plug-ins but you will want to include external ones as well, which can be downloaded either from a Maven repository (Sonatype, JCenter, ...) or from a local file.
@@ -276,7 +276,7 @@ $ ./kobaltw --tasks
 
 Notice the new <code>"coverage"</code> task, provided by the plug-in <code>kobalt-example-plugin</code> that we just included. With the simple action of declaring the plug-in, it is now fully loaded and available right away. Of course, such plug-ins can allow or require additional configuration with their own directives. Please read the plug-in developer documentation for more details.
 
-<h2 id="multiple-projects">Multiple projects</h2>
+<h2 class="section" id="multiple-projects">Multiple projects</h2>
 
 <p>
 You can specify more than one project in a build file, simply by declaring them:
@@ -309,7 +309,7 @@ You can also run tasks for a specific project only as follows:
 
 This will run the <code>assemble</code> task only for the <code>p2</code>, instead of running it for all projects.
 
-<h2 id="command-line">Command line</h2>
+<h2 class="section" id="command-line">Command line</h2>
 
 <p>
 Here are the options that you can pass to <code>./kobaltw</code>:
@@ -385,7 +385,7 @@ New versions found:
 </table>
 
 
-<h2 id="publishing">Publishing</h2>
+<h2 class="section" id="publishing">Publishing</h2>
 
 <p>
 Kobalt supports JCenter natively so you can upload your project and make it available on JCenter very easily.
@@ -427,11 +427,11 @@ Now, all you need to do is to upload your package:
 ./kobaltw uploadJcenter
 </pre>
 
-<h2 id="writing-a-plug-in">Writing a plug-in</h2>
+<h2 class="section" id="writing-a-plug-in">Writing a plug-in</h2>
 
 A good starting point to write a plug-in is the <a href="https://github.com/cbeust/kobalt-line-count">kobalt-line-count project</a>, which shows a minimalistic plug-in.
 
-<h3 id="building">Building</h3>
+<h3 class="section" indent=".." id="building">Building</h3>
 
 You only need to do two things to build a Kobalt plug-in:
 
@@ -455,7 +455,7 @@ val p = packaging(examplePlugin) {
 }
 </pre>
 
-<h3 id="implementing">Implementing</h3>
+<h3 class="section" indent=".." id="implementing">Implementing</h3>
 
 A plug-in typically has three components:
 
@@ -465,7 +465,7 @@ A plug-in typically has three components:
     <li>Specifying directives (functions that will be used from the build file).
 </ul>
 
-<h3 id="base-plugin">BasePlugin</h3>
+<h3 class="section" indent=".." id="base-plugin">BasePlugin</h3>
 
 <p>
 The main class of your plugin extends <code>BasePlugin</code> and implements its <code>apply()</code> method and <code>name</code> variable:
@@ -481,7 +481,7 @@ public class ExamplePlugin : BasePlugin() {
 }
 </pre>
 
-<h3 id="plugin-tasks">Plugin tasks</h3>
+<h3 class="section" indent=".." id="plugin-tasks">Plugin tasks</h3>
 
 <p>
 Next, you can declare tasks with the <code>@Task</code> annotation:
@@ -503,7 +503,7 @@ public fun coverage(project: Project): TaskResult {
     <li><code>runAfter</code> and <code>runBefore</code> let you specify the dependencies of your task. In this example plug-in, we want to calculate the coverage of the project so it makes sense to run after the <code>"compile"</code> task.
 </ul>
 
-<h3 id="plugin-directives">Directives</h3>
+<h3 class="section" indent=".." id="plugin-directives">Directives</h3>
 
 <p>
 Finally, you need to define functions that can be used from the build file (directives). You are encouraged to use the <a href="https://confluence.jetbrains.com/display/Kotlin/Type-safe+Groovy-style+builders">Kotlin DSL approach</a> to expose these functions so that the build file syntax can remain consistent. Typically, these functions will update data that your tasks can then use to do their job.
@@ -557,7 +557,7 @@ val p = kotlinProject {
 }
 </pre>
 
-<h2 id="sources">Sources and license</h2>
+<h2 class="section" id="sources">Sources and license</h2>
 
 <p>
 Kobalt is <a href="https://github.com/cbeust/kobalt/blob/master/LICENSE.txt">licensed under Apache 2.0</a> and is <a href="http://github.com/cbeust/kobalt">currently hosted on github.</a>
@@ -583,41 +583,19 @@ If you are interested in discussing Kobalt related topics with other fellow user
       </div>
 
 
-<!-- Table of contents -->
-      <div class="col-md-3">
-      <ul class="nav">
-        <li><a href="#downloading">Downloading and installing</a>
-        <li><a href="#structure">Structure of a build file</a>
-        <ul>
-          <li><a href="#general-concepts">General concepts</a>
-          <li><a href="#directives">Directives</a>
-          <li><a href="#dependencies">Dependencies</a>
-        </ul>
-        <li><a href="#maven-repos">Maven repos</a>
-        <li><a href="#using-plug-ins">Using plug-ins</a>
-        <li><a href="#publishing">Publishing</a>
-        <li><a href="#multiple-projects">Multiple projects</a>
-         <li><a href="#command-line">Command line arguments</a>
-        <li><a href="#writing-a-plug-in">Writing a plug-in</a>
-        <ul>
-          <li><a href="#building">Building</a>
-          <li><a href="#implemeting">Implementing</a>
-          <li><a href="#base-plugin"><code>BasePlugin</code></a>
-          <li><a href="#plugin-tasks">Plugin tasks</a>
-          <li><a href="#plugin-directives">Directives          
-        </ul>
-        <li><a href="#sources">Sources</a>
-        <li><a href="#discuss">Discuss Kobalt</a>
-      </ul>
-      </div>
-
-    </div> <!-- /container -->
+  <!-- Table of contents -->
+  <div class="col-md-3" id="table-of-contents">
+  </div>
+</div> <!-- /container -->
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="../bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../js/toc.js"></script>
+<script>generateToc();</script>
+
 <!--
   <script src="../bootstrap/dist/js/docs.min.js"></script>
 -->

@@ -69,9 +69,7 @@
       <!-- Main content -->
       <div class="col-md-9">
 
-<h2 id="overview">Overview</h2>
-
-<p>
+<h2 class="section" id="overview">Overview</h2>
 Kobalt is a build system heavily inspired from Gradle and entirely written in Kotlin. It's focused on offering an intuitive DSL and plug-in architecture, fast builds and build file auto completion from your favorite IDE.
 </p>
 
@@ -106,7 +104,7 @@ val j = jcenter(jcommander) {
 }
 </pre>
 
-<h2 id="design-goals">Design goals</h2>
+<h2 class="section" id="design-goals">Design goals</h2>
 
 <ul>
   <li>Completely written in Kotlin: core, plug-ins and build files.
@@ -119,7 +117,7 @@ val j = jcenter(jcommander) {
   <li>An agnostic build tool. Kobalt can be used to build Kotlin and Java projects today but it's capable to build anything: any language (JVM or not) or platform (Android, Spring, ...).
 </ul>
 
-<h2 id="why-kobalt">Why Kobalt?</h2>
+<h2 class="section" id="why-kobalt">Why Kobalt?</h2>
 
 <p>
 As of this writing (October 2015), Kobalt is in alpha and changing a lot so I am mostly interested in getting the attention of developers who are curious about:
@@ -139,7 +137,7 @@ Kobalt is complete enough to build three of my personal projects (<a href="https
 
 With this disclaimer, why did I decide to write Kobalt?
 
-<h3>1. Scratching an itch</h3>
+<h3 class="section" indent="..">1. Scratching an itch</h3>
 
 <p>
 I give a lot of credit to Gradle for having open a brand new avenue in build tools but despite all its power and flexibility and the fact that I've used Gradle for more than five years, I've never really felt comfortable or fluent with it. Even today, I regularly find myself spending a lot of time on StackOverflow whenever I need to do something a bit out of the ordinary with my Gradle builds.
@@ -154,19 +152,19 @@ I suspect a part of it is due to Groovy which, even though it started gaining so
 <li>Building is slow and hard to diagnose because of Gradle's mixed Java/Groovy code base.
 </ul>
 
-<h3>2. An experiment</h3>
+<h3 class="section" indent="..">2. An experiment</h3>
 
 <p>
 I wanted to see for myself if my discomfort with Gradle was justified or if, by trying to write a build tool myself, I would end up with a very similar tool with similar strengths and weaknesses. I still haven't made up my mind about this but I will certainly by the time Kobalt reaches 1.0.
 </p>
 
-<h3>3. A proof of concept</h3>
+<h3 class="section" indent="..">3. A proof of concept</h3>
 
 <p>
 I have been a fervent believer that there is nothing that dynamically typed languages can do today that statically typed languages can't. Groovy's meta model and features have enabled a lot of clever tricks (DSL and others) for Gradle builds and I was really curious if I could put money where my mouth is by creating a similar project with Kotlin. This experiment is still ongoing but by now, I'm pretty convinced that the answer is a resounding "yes".
 </p>
 
-<h3>4. An excuse to write Kotlin</h3>
+<h3 class="section" indent="..">4. An excuse to write Kotlin</h3>
 
 <p>
 Just a personal thing. After toying with the language for almost four years now, I wanted to take my efforts to the next level and push the language to the limit. So far, the language has held all its promises and then some.
@@ -202,24 +200,20 @@ Is your curiosity piqued? Are you interested in writing some cool Kotlin code an
 <p>
 </p>
 
-
       </div>
 
       <!-- Table of contents -->
-      <div class="col-md-3">
-        <ul class="nav">
-          <li><a href="#overview">Overview</a>
-          <li><a href="#design-goals">Design goals</a>
-          <li><a href="#why-kobalt">Why Kobalt?</a>
-          <li><a href="#path">The path to 1.0</a>
-        </ul>
+      <div class="col-md-3" id="table-of-contents">
       </div>
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-  <script src="../bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../js/toc.js"></script>
+<script>generateToc();</script>
+
   <!--
   <script src="../../assets/js/docs.min.js"></script>
 -->
