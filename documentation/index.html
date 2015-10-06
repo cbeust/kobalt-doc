@@ -347,15 +347,17 @@ Here are the options that you can pass to <code>./kobaltw</code>:
 
 <table style="font-size: 14px" class="table table-striped">
     <colgroup>
-     <col span="1" style="width: 20%;">
+     <col span="1" style="width: 25%;">
      <col span="1" style="width: 10%;">
-     <col span="1" style="width: 30%;">
-     <col span="1" style="width: 30%;">
+     <col span="1" style="width: 10%;">
+     <col span="1" style="width: 20%;">
+     <col span="1" style="width: 40%;">
   </colgroup>
   <thead>
     <tr>
       <td>Name</td>
       <td>Type</td>
+      <td>Default</td>
       <td>Description</td>
       <td>Details</td>
     </tr>
@@ -364,12 +366,14 @@ Here are the options that you can pass to <code>./kobaltw</code>:
   <tr>
     <td><code>--buildFile</code></td>
     <td>File</td>
+    <td>Build.kt</td>
     <td>Specify a build file.</td>
     <td>Use this option if you are trying to build a project that's not in the current directory.</td>
   </tr>
   <tr>
     <td><code>--checkVersions</code></td>
     <td>Boolean</td>
+    <td>false</td>td>
     <td>Display all the new versions of your dependencies.</td>
     <td>This option looks at all the dependencies found in your build file and then contacts all the Maven repositories in order to find out if any of these repos contains a newer version. If any are found, they are displayed:
       <pre>
@@ -381,20 +385,30 @@ New versions found:
     </td>
   </tr>
   <tr>
+    <td><code>--dryRun</code></td>
+    <td>Boolean</td>
+    <td>false</td>
+    <td>Display the tasks about to be run without actually running them.</td>
+    <td>Use this option to get an idea of what the build will run without actually building anything.</td>
+  </tr>
+  <tr>
     <td><code>--init</code></td>
     <td>Boolean</td>
+    <td>false</td>
     <td>Initialize a project for Kobalt.</td>
     <td>This option will create a build file in the current directory (unless one already exists) and will install the Kobalt wrapper.</td>
   </tr>
   <tr>
     <td><code>--log</code></td>
     <td>Integer (0..3)</td>
+    <td>1</td>
     <td>Specify the log level.</td>
     <td>The default level is 1. Level 0 will quiet everything and 2 and 3 will display increasingly verbose output.</td>
   </tr>
   <tr>
     <td><code>--tasks</code></td>
     <td>Boolean</td>
+    <td>false</td>
     <td>List the tasks available.</td>
     <td>Note that the available tasks will vary depending on which projects are in your build file.</td>
   </tr>
