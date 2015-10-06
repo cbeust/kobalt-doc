@@ -178,26 +178,26 @@ Here are a few noteworthy details about this small build file:
 <h3 id="directives">Directives</h3>
 
 <p>
-Now that we have declared a project, we can use it to configure additional steps of our build, such as the packaging:
+Now that we have declared a project, we can use it to configure additional steps of our build, such as the assembling it (creating jar and other files:
 </p>
 
 <pre>
-import com.beust.kobalt.plugin.packaging.packaging
+import com.beust.kobalt.plugin.packaging.assemble
 
 // ...
 
-val packKobalt = packaging(kobalt) {
+val packKobalt = assemble(kobalt) {
     jar {
     }
 }
 </pre>
 
 <p>
-This is the simplest jar declaration you can have. You can trigger the creation of this jar file by invoking the task <code>"assemble"</code>. Note that we passed the <code>kobalt</code> variable to the <code>packaging</code> function, so we make it clear which project we are currently configuring for packaging. The <code>jar</code> directive accepts various settings, so let's be a bit more specific. And let's add a zip file too:
+This is the simplest jar declaration you can have. You can trigger the creation of this jar file by invoking the task <code>"assemble"</code>. Note that we passed the <code>kobalt</code> variable to the <code>assemble</code> function, so we make it clear which project we are currently configuring for packaging. The <code>jar</code> directive accepts various settings, so let's be a bit more specific. And let's add a zip file too:
 </p>
 
 <pre>
-val packKobalt = packaging(kobalt) {
+val assembleKobalt = assemble(kobalt) {
     jar {
         fatJar = true
         manifest {
