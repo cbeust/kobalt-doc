@@ -70,7 +70,41 @@
       <div class="col-md-9">
 
 <h2 id="overview">Overview</h2>
+
+<p>
 Kobalt is a build system heavily inspired from Gradle and entirely written in Kotlin. It's focused on offering an intuitive DSL and plug-in architecture, fast builds and build file auto completion from your favorite IDE.
+</p>
+
+<p>
+For example, here is <a href="http://jcommander.org">JCommander's</a> entire build file:
+</p>
+
+<pre>
+import com.beust.kobalt.*
+import com.beust.kobalt.plugin.java.*
+import com.beust.kobalt.plugin.packaging.*
+import com.beust.kobalt.plugin.publish.*
+
+val jcommander = javaProject {
+    name = "jcommander"
+    group = "com.beust"
+    artifactId = name
+    version = "1.52"
+
+    dependenciesTest {
+        compile("org.testng:testng:6.9.5")
+    }
+}
+
+val a = assemble(jcommander) {
+    mavenJars {
+    }
+}
+
+val j = jcenter(jcommander) {
+    publish = false
+}
+</pre>
 
 <h2 id="design-goals">Design goals</h2>
 
@@ -79,6 +113,7 @@ Kobalt is a build system heavily inspired from Gradle and entirely written in Ko
   <li>Auto completion from the IDE (possibly enhanced by a soon-to-come thin Kobalt IDE plug-in to present suggestions ordered more sensibly).
   <li>Reusing all the good ideas from Gradle, such as the DSL and the wrapper.
   <li>Fast builds.
+  <li>Support all scopes (including <code>provided</code>).
   <li>Streamlining the build file, applying "convention over configuration" as much as possible (for example, to install a plug-in, Gradle forces you to both declare it and apply it. With Kobalt, the simple act of declaring a dependency on it installs the plug-in).
   <li>A turnkey solution with all the common plug-ins pre-installed. No need to go hunting through dozens of outdated results for the elusive JCenter plug-in: with Kobalt, you can create a package and upload it to JCenter within ten minutes. <a href="../plug-in/index.html">See for yourself!</a>.
   <li>An agnostic build tool. Kobalt can be used to build Kotlin and Java projects today but it's capable to build anything: any language (JVM or not) or platform (Android, Spring, ...).
