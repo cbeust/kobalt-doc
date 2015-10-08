@@ -1,0 +1,212 @@
+<html>
+<head>
+<title>
+
+    Kobalt, by Cedric Beust
+
+</title>
+
+<!-- Bootstrap core CSS -->
+
+<link href="../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Optional Bootstrap Theme -->
+
+  <link href="data:text/css;charset=utf-8," data-href="../bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" id="bs-theme-stylesheet">
+
+
+<!--[if lt IE 9]><script src="../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+<!--
+<script src="../bootstrap/assets/js/ie-emulation-modes-warning.js"></script>
+-->
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Favicons -->
+<!--
+<link rel="icon" href="/favicon.ico">
+-->
+
+</head>
+
+<body>
+
+
+    <div class="container">
+
+      <!-- Static navbar -->
+      <nav id="kobalt-navbar" class="navbar navbar-default">
+      </nav>
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h1>Plug-ins</h1>
+        <p>Kobalt ships with a number of plug-ins that are available to use right away.</p>
+
+      </div>
+
+      <!-- Main content -->
+      <div class="col-md-9">
+
+<h2 class="section" id="overview">Java and Kotlin</h2>
+
+<p>
+The Java and Kotlin plug-ins are extremely similar, the only difference is that you configure a Java project with the <code>javaProject</code> directive and a Kotlin project with <code>kotlinProject</code>:
+</p>
+
+<pre>
+val p = javaProject(wrapper) {
+  name = "kobalt"
+  group = "com.beust"
+  artifactId = name
+  version = "0.1"
+}
+</pre>
+
+<p>
+Both these directives allow you to consider an object of type <code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/Project.kt">Project</code></a>.
+</p>
+
+<h3 class="section" indent="..">Project</h3>
+
+<p>
+A <code>Project</code> has two mandatory attributes: <code>name</code> and <code>version</code>. If you are planning to deploy your project to a Maven repository, you also have to specify its <code>group</code> (e.g. <code>com.beust</code>) and <code>artifactId</code> (e.g. <code>kobalt</code>).
+</p>
+
+<p>
+  Additionally, a <code>Project</code> lets you specify the following parameters:
+
+  <dl class="dl-horizontal">
+    <dt>sourceDirectories</dt>
+    <dd>The location of your source files</dd>
+    <dt>sourceDirectoriesTest</dt>
+    <dd>The location of your test source files</dd>
+    <dt>dependencies</dt>
+    <dd>The dependencies for your project</dd>
+    <dt>dependenciesTest</dt>
+    <dd>The dependencies for your tests</dd>
+  </dl>
+
+<h3 class="section" indent="..">Tasks</h3>
+<p>
+Once you have at least one project configured, the plug-in lets you invoke the following tasks:
+<dl class="dl-horizontal">
+  <dt>compile</dt>
+  <dd>Compile the project</dd>
+  <dt>compileTest</dt>
+  <dd>Compile the tests</dd>
+  <dt>test</dt>
+  <dd>Run the tests</dd>
+  <dt>clean</dt>
+  <dd>Clean the project</dd>
+</dl>
+
+<h2 class="section" id="overview">Packaging</h2>
+
+<p>
+The Packaging plug-in lets you generate various archives for your project: jar, war and zip files, each of them defining a directive by the same name inside the <code>assemble</code> directive:
+</p>
+
+<pre>
+val packaging = assemble(kobalt) {
+  jar {}
+}
+</pre>
+
+<p>
+  If you don't specify a <code>name</code> for your archive, a default one will be used that contains your project name, version and the corresponding suffix, e.g. <code>kobalt-1.1.jar</code> or <code>sec-0.2.war</code>.
+</p>
+
+<h3 class="section" indent="..">zip</h3>
+
+<p>
+All these archives are zip files, so the <code>zip</code> archive is at the top of the hierarchy and <code>jar</code> and <code>war</code> inherit all its attributes, which include <code>name</code>, <code>include</code> and <code>exclude</code>.
+</p>
+
+<h3 class="section" indent="..">include and exclude</h3>
+
+<p>
+All archives let you include and exclude files.
+</p>
+
+<p>
+  <code>include</code> has two different forms:
+</p>
+
+<pre>
+val a = assemble(kobalt) {
+  zip {
+      include("kobaltw", "README")
+      include(from("doc/"),
+              to("html/"),
+              glob("**html"))
+  }
+}
+</pre>
+
+<p>
+  The first form, with just one parameter, simply copies the file from your directory into the archive, preserving its path. The second form has three parameters which allow you to move the file to a different path into your archive. Note the use of the <code>from</code>, <code>to</code> and <code>glob</code> directives, which are necessary to disambiguate the call.
+</p>
+
+<h3 class="section" indent="..">jar</h3>
+
+<p>
+  A <code>jar</code> is like a <code>zip</code> with two additional available parameters:
+</p>
+
+<dl class="dl-horizontal">
+  <dt>fatJar</dt>
+  <dd>If true, all the dependencies and their dependencies will be included in the jar file</dd>
+  <dt>manifest</dt>
+  <dd>Specify attributes to add to the manifest</dd>
+</dl>
+
+<p>
+  Here is how you generate an executable jar file:
+</p>
+
+<pre>
+val a = assemble(kobalt) {
+  jar {
+      fatJar = true
+      manifest {
+          attributes("Main-Class", "com.beust.kobalt.KobaltPackage")
+      }
+  }
+}
+</pre>
+
+
+<h2 class="section" id="overview">Publishing</h2>
+
+<p>
+</p>
+
+      </div>
+
+      <!-- Table of contents -->
+      <div class="col-md-3" id="table-of-contents">
+      </div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="../bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../js/kobalt.js"></script>
+<script>generateKobalt(2);</script>
+
+  <!--
+  <script src="../../assets/js/docs.min.js"></script>
+-->
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<!--
+<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+-->
+
+</body>

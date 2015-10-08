@@ -12,6 +12,10 @@ var content = [
     title: "Documentation"
   },
   {
+    url: "../plugins/index.html",
+    title: "Plug-ins"
+  },
+  {
     url: "../plug-in/index.html",
     title: "A plug-in in 10mn"
   }
