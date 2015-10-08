@@ -1,3 +1,57 @@
+//
+// Nav bar
+//
+
+var content = [
+  {
+    url: "../home/index.html",
+    title: "Home"
+  },
+  {
+    url: "../documentation/index.html",
+    title: "Documentation"
+  },
+  {
+    url: "../plug-in/index.html",
+    title: "A plug-in in 10mn"
+  }
+];
+
+var before = '<div class="container-fluid">'
+  + '  <div class="navbar-header">'
+  + '    <a class="navbar-brand">Kobalt</a>'
+  + '  </div>'
+  + '  <div id="navbar" class="navbar-collapse collapse">'
+  + '    <ul class="nav navbar-nav">'
+  ;
+
+var after = '</ul>'
+  + '   </div><!--/.nav-collapse -->'
+  + '  </div><!--/.container-fluid -->'
+  + '</nav>'
+  ;
+
+function generateNavBar(index) {
+  var result = before;
+  for (var i = 0; i < content.length; i++) {
+    var cls = "";
+    if (index == i) {
+      cls = 'class="active"';
+    }
+    var c = content[i];
+    result += '<li ' + cls + '><a href="' + c.url + '">' + c.title + '</a></li>';
+  }
+  result += after;
+
+
+  var navBarElement = document.getElementById("kobalt-navbar");
+  navBarElement.innerHTML = result;
+}
+
+//
+// Table of contents
+//
+
 function countersToHeading(counters) {
     var result = "";
     for (var i = 0; i < counters.length; i++) {
@@ -56,7 +110,12 @@ function generateToc() {
     if (tocTag) {
         tocTag.innerHTML = toc;
     } else {
-        alert("Couldn't find an id " + tocId);
+        console.log("Couldn't find an id " + tocId);
     }
 
+}
+
+function generateKobalt(index) {
+  generateToc();
+  generateNavBar(index);
 }
