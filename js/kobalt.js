@@ -102,7 +102,6 @@ function generateToc() {
         currentLevel = ind;
     }
     toc += "</ul>\n";
-    console.log(toc);
     
     var tocId = "table-of-contents";
     var tocTag = document.getElementById(tocId);
