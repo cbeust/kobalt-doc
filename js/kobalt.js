@@ -12,11 +12,11 @@ var content = [
     title: "Documentation"
   },
   {
-    url: "../plugins/index.html",
+    url: "../plug-ins/index.html",
     title: "Plug-ins"
   },
   {
-    url: "../plug-in/index.html",
+    url: "../write-plug-in-10mn/index.html",
     title: "A plug-in in 10mn"
   }
 ];
