@@ -102,7 +102,7 @@ As of this writing, Kobalt supports Java and Kotlin projects.
 
 <h2 class="section" id="structure">Structure of a build file</h2>
 
-<h3 class="section" indent=".." id="general-concepts">General concepts</h3>
+<h3 class="section" indent="1" id="general-concepts">General concepts</h3>
 
 <p>
 The build file is typically called <code>Built.kt</code> and it is a valid Kotlin file. Typically, it contains imports, the declaration of one or more projects and the declaration of additional configurations (e.g. packaging, publishing, etc...).  Since it's a Kotlin file, it can also contain any class or function you need:
@@ -129,7 +129,7 @@ Here are a few noteworthy details about this small build file:
 <li>The functions <code>kotlinProject</code> and <code>homeDir</code> are supplied by Kobalt and are sometimes referred to as "directives"
 </ul>
 
-<h3 class="section" indent=".." id="directives">Directives</h3>
+<h3 class="section" indent="1" id="directives">Directives</h3>
 
 <p>
 Now that we have declared a project, we can use it to configure additional steps of our build, such as the assembling it (creating jar and other files:
@@ -176,7 +176,7 @@ Our jar file is now declared to be a "fat jar" (which means it will include all 
 The zip directive follows a similar structure, although here we are specifying which file we want to include. For more details on the <code>packaging</code> plug-in, please see its documentation.
 </p>
 
-<h3 class="section" indent=".." id="dependencies">Dependencies</h3>
+<h3 class="section" indent="1" id="dependencies">Dependencies</h3>
 
 <p>
 You can declare compile and test dependencies as follows:
@@ -422,7 +422,7 @@ Now, all you need to do is to upload your package:
 
 A good starting point to write a plug-in is the <a href="https://github.com/cbeust/kobalt-line-count">kobalt-line-count project</a>, which shows a minimalistic plug-in.
 
-<h3 class="section" indent=".." id="building">Building</h3>
+<h3 class="section" indent="1" id="building">Building</h3>
 
 You only need to do two things to build a Kobalt plug-in:
 
@@ -446,7 +446,7 @@ val p = packaging(examplePlugin) {
 }
 </pre>
 
-<h3 class="section" indent=".." id="implementing">Implementing</h3>
+<h3 class="section" indent="1" id="implementing">Implementing</h3>
 
 A plug-in typically has three components:
 
@@ -456,7 +456,7 @@ A plug-in typically has three components:
     <li>Specifying directives (functions that will be used from the build file).
 </ul>
 
-<h3 class="section" indent=".." id="base-plugin">BasePlugin</h3>
+<h3 class="section" indent="1" id="base-plugin">BasePlugin</h3>
 
 <p>
 The main class of your plugin extends <code>BasePlugin</code> and implements its <code>apply()</code> method and <code>name</code> variable:
@@ -472,7 +472,7 @@ public class ExamplePlugin : BasePlugin() {
 }
 </pre>
 
-<h3 class="section" indent=".." id="plugin-tasks">Plugin tasks</h3>
+<h3 class="section" indent="1" id="plugin-tasks">Plugin tasks</h3>
 
 <p>
 Next, you can declare tasks with the <code>@Task</code> annotation:
@@ -494,7 +494,7 @@ public fun coverage(project: Project): TaskResult {
     <li><code>runAfter</code> and <code>runBefore</code> let you specify the dependencies of your task. In this example plug-in, we want to calculate the coverage of the project so it makes sense to run after the <code>"compile"</code> task.
 </ul>
 
-<h3 class="section" indent=".." id="plugin-directives">Directives</h3>
+<h3 class="section" indent="1" id="plugin-directives">Directives</h3>
 
 <p>
 Finally, you need to define functions that can be used from the build file (directives). You are encouraged to use the <a href="https://confluence.jetbrains.com/display/Kotlin/Type-safe+Groovy-style+builders">Kotlin DSL approach</a> to expose these functions so that the build file syntax can remain consistent. Typically, these functions will update data that your tasks can then use to do their job.
