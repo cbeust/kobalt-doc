@@ -104,7 +104,7 @@ function setTitle() {
 }
 
 function generateKobalt(index) {
-    setTitle();
+//    setTitle();
     generateToc();
     generateNavBar(index);
 }
