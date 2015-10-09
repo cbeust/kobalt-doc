@@ -18,6 +18,10 @@ var content = [
   {
     url: "../write-plug-in-10mn/index.html",
     title: "A plug-in in 10mn"
+  },
+  {
+    url: "../write-plug-in/index.html",
+    title: "Plug-in development"
   }
 ];
 

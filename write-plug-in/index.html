@@ -1,0 +1,122 @@
+<html>
+<head>
+<title>
+
+    Kobalt, by Cedric Beust
+
+</title>
+
+<!-- Bootstrap core CSS -->
+
+<link href="../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <!-- Optional Bootstrap Theme -->
+
+  <link href="data:text/css;charset=utf-8," data-href="../bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" id="bs-theme-stylesheet">
+
+
+<!--[if lt IE 9]><script src="../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+<!--
+<script src="../bootstrap/assets/js/ie-emulation-modes-warning.js"></script>
+-->
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Favicons -->
+<!--
+<link rel="icon" href="/favicon.ico">
+-->
+
+</head>
+
+<body>
+
+
+    <div class="container">
+
+      <!-- Static navbar -->
+      <nav id="kobalt-navbar" class="navbar navbar-default">
+      </nav>
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h1>Plug-in development</h1>
+        <p>How to set up your environment to write a Kobalt plug-in.</p>
+
+      </div>
+
+      <!-- Main content -->
+      <div class="col-md-9">
+
+<h2 class="section" id="overview">Reference project</h2>
+
+<p>
+    As a start up point, you can clone the <a href="http://github.com/cbeust/kobalt-line-count"><code>kobalt-line-count</code></a>
+    project and use it as a guide line to write your own plug-in.
+</p>
+
+<h2 class="section" id="build-file">Build file</h2>
+
+          <p>
+          You can start with a simple build file:
+          </p>
+
+          <pre>
+import com.beust.kobalt.*
+import com.beust.kobalt.plugin.packaging.*
+import com.beust.kobalt.plugin.kotlin.*
+import com.beust.kobalt.plugin.publish.*
+
+
+val project = kotlinProject {
+    name = "kobalt-line-count"
+    group = "com.beust.kobalt"
+    artifactId = name
+    version = "0.1"
+
+    dependencies {
+        compile("com.beust:kobalt:0.154")
+    }
+}
+
+val packProject = assemble(project) {
+    mavenJars {
+        manifest {
+            attributes("Kobalt-Plugin-Class", "com.beust.kobalt.plugin.linecount.Main")
+        }
+    }
+}
+
+val jc = jcenter(project) {
+    publish = true
+}
+          </pre>
+
+      </div>
+
+      <!-- Table of contents -->
+      <div class="col-md-3" id="table-of-contents">
+      </div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="../bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../js/kobalt.js"></script>
+<script>generateKobalt(4);</script>
+
+  <!--
+  <script src="../../assets/js/docs.min.js"></script>
+-->
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<!--
+<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+-->
+
+</body>
