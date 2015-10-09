@@ -45,16 +45,18 @@
 
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <h1>A Kobalt plug-in in ten minutes</h1>
-        <h2>This article demonstrates how to wrote a Kobalt plug-in from scratch and have it published on JCenter in less than ten minutes.</h2>
+          <h1>Plug-in development</h1>
+          <p>How to set up your environment to write a Kobalt plug-in.</p>
       </div>
 
       <!-- Main content -->
       <div class="col-md-9">
 
 
+<h2 class="section" id="ten-minutes">Writing and publishing a plug-in in ten minutes</h2>
 <p>
-In tnis example, we'll write a Kobalt plug-in that simply counts the number of source files and lines in your project. Starting from scratch, we'll have this plug-in published to JCenter and ready to use in ten minutes.
+In this example, we'll write a Kobalt plug-in that simply counts the number of source files and lines in your project.
+    Starting from scratch, we'll have this plug-in published to JCenter and ready to use in ten minutes.
 </p>
 
 <p>
@@ -233,8 +235,47 @@ Found 4972 lines in 65 files
 And that's it! You can now iterate on your plug-in and upload it with additional <code>./kobaltw uploadJcenter</code>. This plug-in is <a href="https://github.com/cbeust/kobalt-linecount">available on github</a>.
 </p>
 
-<!-- Bootstrap core JavaScript
-================================================== -->
+<h2 class="section" id="debugging">Debugging a Kobalt plug-in</h2>
+<p>
+    The simplest way to run your plug-in in your IDE is to create a main function in the main class of your
+    plug-in as follows:
+</p>
+<pre>
+fun main(argv: Array&lt;String&gt;) {
+    com.beust.kobalt.main(argv)
+}
+
+public class Main : BasePlugin(), KobaltLogger {
+// ...
+</pre>
+
+<p>
+  Now you can simply create a launch configuration for your main class, which will invoke Kobalt.
+</p>
+
+<p>
+    The next step is to have Kobalt invoke your plug-in, so you will have to modify your build file
+    to call it. As long as you haven't deployed your plug-in to JCenter, you might want to use the
+    <code>file()</code> directive to declare your dependency, so that Kobalt will use the jar file
+    on your file system:
+</p>
+
+<pre>
+val p = plugins(
+    file(homeDir("kotlin/kobalt-line-count/kobaltBuild/libs/kobalt-line-count-0.8.jar"))
+)
+</pre>
+
+<p>
+    You can now set a breakpoint in your plug-in and launch the configuration you created above.
+</p>
+          </div>
+          <!-- Table of contents -->
+          <div class="col-md-3" id="table-of-contents">
+          </div>
+
+          <!-- Bootstrap core JavaScript
+          ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="../bootstrap/dist/js/bootstrap.min.js"></script>
@@ -249,4 +290,5 @@ And that's it! You can now iterate on your plug-in and upload it with additional
 <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 -->
 
+    </div>
 </body>
