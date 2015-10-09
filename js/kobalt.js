@@ -2,6 +2,8 @@
 // Nav bar
 //
 
+var title = "Kobalt, by Cedric Beust"
+
 var content = [
   {
     url: "../home/index.html",
@@ -72,7 +74,6 @@ function generateToc() {
             ind = indentAttribute.textContent;
         }
         if (! ind) ind = 0;
-        var currentCounter = 0;
         if (ind > currentLevel) {
             if (ind == 0) {
                 toc += '<ul class="nav">\n';
@@ -98,7 +99,12 @@ function generateToc() {
 
 }
 
+function setTitle() {
+    document.getElementsByTagName("title")[0].innerHTML = title;
+}
+
 function generateKobalt(index) {
-  generateToc();
-  generateNavBar(index);
+    setTitle();
+    generateToc();
+    generateNavBar(index);
 }
