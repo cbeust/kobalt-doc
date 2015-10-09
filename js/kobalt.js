@@ -76,7 +76,6 @@ function generateToc() {
             ind = indentAttribute.textContent;
         }
         if (! ind) ind = 0;
-        console.log("ind: " + ind + " level:" + currentLevel);
         var currentCounter = 0;
         if (ind > currentLevel) {
             if (ind == 0) {
@@ -92,7 +91,6 @@ function generateToc() {
     }
     toc += "</ul>\n";
 
-    console.log(toc);
     var tocId = "table-of-contents";
     var tocTag = document.getElementById(tocId);
     
