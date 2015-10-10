@@ -9,7 +9,7 @@
 <!-- Bootstrap core CSS -->
 
 <link href="../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-
+<link href="../css/kobalt.css" rel="stylesheet" />
 
   <!-- Optional Bootstrap Theme -->
 
@@ -52,6 +52,19 @@
       <!-- Main content -->
       <div class="col-md-9">
 
+<h2 class="section" id="introduction">Introduction</h2>
+
+<p>
+    Kobalt plug-ins are usually made of two parts.
+
+    <ul>
+          <li>Directives. These are Kotlin functions that users of your plug-in can invoke in their build file, such as <code>kotlinProject</code> or <code>dependencies</code>. These functions typically configure some data that your plug-in will later use to perform its functions.</li>
+          <li>Tasks. These tasks are invoked from the command line and ask your plug-ins to perform certain actions.</li>
+    </ul>
+</p>
+<p>
+    We'll cover these two items shortly but first of all, let's go over a quick example that will show you the whole process of writing a plug-in from scratch and publishing it on JCenter in ten minutes.
+</p>
 
 <h2 class="section" id="ten-minutes">Writing and publishing a plug-in in ten minutes</h2>
 <p>
@@ -235,7 +248,7 @@ Found 4972 lines in 65 files
 And that's it! You can now iterate on your plug-in and upload it with additional <code>./kobaltw uploadJcenter</code>. This plug-in is <a href="https://github.com/cbeust/kobalt-linecount">available on github</a>.
 </p>
 
-<h2 class="section" id="debugging">Debugging a Kobalt plug-in</h2>
+<h2 class="section" id="debugging">Debugging</h2>
 <p>
     The simplest way to run your plug-in in your IDE is to create a main function in the main class of your
     plug-in as follows:
@@ -269,7 +282,122 @@ val p = plugins(
 <p>
     You can now set a breakpoint in your plug-in and launch the configuration you created above.
 </p>
-          </div>
+<h2 class="section" id="initialization">Initialization</h2>
+<p>
+    When your plug-in is activated, Kobalt will invoke its <code>apply()</code> function:
+</p>
+<pre>
+override fun apply(project: Project, context: KobaltContext) {
+}
+</pre>
+<p>
+    <code>project</code> is the project that your plug-in is currently being initialized for (keep in mind there can be multiple projects in a build) and the <code>context</code> gives you some information about other external data you might find useful, such as the command line that was passed to Kobalt.
+</p>
+
+<h2 class="section" id="directives">Directives</h2>
+<p>
+    Directives are functions that users of your plug-in can use in their build file in order to configure your plug-in. These can be any kind of Kotlin function but in the interest of preserving a clean syntax in the build file, it's recommended to use the type safe builder pattern, <a href="https://kotlinlang.org/docs/reference/type-safe-builders.html">as described here</a>.
+</p>
+<p>
+    Imagine that you want to offer a boolean parameter <code>publish</code> to users of your plug-in, you start by creating a class to hold that parameter:
+</p>
+<pre>
+class Info(val publish: Boolean)
+</pre>
+<p>
+    Next, you create a directive that returns such a class and which also allows to configure it via the type safe builder pattern:
+</p>
+<pre>
+@Directive
+public fun myConfig(init: Info.() -> Unit) : Info {
+    val info = Info()
+    info.init()
+    return info
+}
+</pre>
+<p>
+    The <code>@Directive</code> annotation is not enforced but you should always use it in order to help future tools (e.g. an IDEA plug-in) identify Kobalt directives so they can be treated differently from regular Kotlin functions.
+</p>
+<p>
+    Users can now specify the following in their build file:
+</p>
+<pre>
+// Build.kt
+import.com.example.plugin.myConfig
+
+myConfig {
+    publish = true
+}
+</pre>
+<p>
+    If you need access to the project being built, just declare an additional parameter of type <code>Project</code> to your directive and have the user pass that project:
+</p>
+<pre>
+@Directive
+public fun myConfig(project: Project, init: Info.() -> Unit) : Info {
+// ...
+</pre>
+<pre>
+myConfig(project) {
+    publish = true
+}
+</pre>
+<p>
+    The last piece of this puzzle is how you give this data back to your plug-in so it can act on it. In order to do this, you simply look up the name of your plug-in in the <code>Plugins</code> registry and invoke whatever function you need to run:
+</p>
+
+<pre>
+@Directive
+public fun myConfig(project: Project, init: Info.() -> Unit) : Info {
+    val info = Info()
+    info.init()
+    (Plugins.getPlugin("my-plug-in") as MyPlugin).addInfo(info)
+    return info
+}
+</pre>
+
+<h2 class="section" id="tasks">Tasks</h2>
+<p>
+    Tasks are provided by plug-ins and can be invoked from the command line, e.g. <code>./gradlew assemble</code>. There are two kinds of tasks: static and dynamic.
+</p>
+<h3 class="section" indent="1">Static tasks</h3>
+<p>
+    Static tasks are functions declared directly on your plug-in and annotated with the <code>@Task</code> annotation. Here is an example:
+</p>
+<pre>
+@Task(name = "lineCount", description = "Count the lines", runBefore = arrayOf("compile"))
+fun lineCount(project: Project): TaskResult {
+    // ...
+    return TaskResult()
+}
+</pre>
+<p>
+    A Kobalt task needs to accept a <code>Project</code> in parameter and return a <code>TaskResult</code>, which indicates whether this task completed successfully.
+</p>
+
+<div class="bs-callout bs-callout-warning">
+  <h4>Request for feedback</h4>
+  Having the <code>Project</code> passed in both the <code>apply()</code> function and in each task feels redundant, although it avoids the trouble from having to store that project in a field of the plug-in, making it essentially stateless.
+</div>
+
+<p>
+    The <code>@Task</code> annotation accepts the following attributes:
+    <dl class="dl-horizontal">
+          <dt>name</dt>
+          <dd>The name of the task, which will be used to invoke it from the command line.</dd>
+          <dt>description</dt>
+          <dd>The description of this command, which will be displayed if the user invokes the usage for the <code>gradlew</code> command.</dd>
+          <dt>runBefore</dt>
+          <dd>A list of all the tasks that this task should run prior to.</dd>
+          <dt>runAfter</dt>
+          <dd>A list of all the tasks that should run before this task does.</dd>
+    </dl>
+</p>
+<h3 class="section" indent="1">Dynamic tasks</h3>
+
+
+
+      </div>
           <!-- Table of contents -->
           <div class="col-md-3" id="table-of-contents">
           </div>
