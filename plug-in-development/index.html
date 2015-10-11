@@ -391,12 +391,12 @@ fun lineCount(project: Project): TaskResult {
           <dd>A list of all the tasks that this task should run prior to.</dd>
           <dt>runAfter</dt>
           <dd>A list of all the tasks that should run before this task does.</dd>
-          <dt>wrapAfter</dt>
+          <dt>alwaysRunAfter</dt>
           <dd>A list of all the tasks that will always be run after this task if it's invoked.</dd>
     </dl>
 </p>
 <p>
-    The difference between <code>runAfter</code> and <code>wrapAfter</code> is subtle but important. <code>runAfter</code>
+    The difference between <code>runAfter</code> and <code>alwaysRunAfter</code> is subtle but important. <code>runAfter</code>
     is just a declaration of dependency. It's basically the reverse of <code>runBefore</code> but it's useful in case
     you are not the author of the task you want to run before (if you were, you would just use the <code>runBefore</code>
     annotation on it). Since you can't say <code>"a runBefore b"</code> because you don't own task "a",
@@ -414,8 +414,8 @@ fun lineCount(project: Project): TaskResult {
     For example, you could have a <code>signJarFile</code> task that should always be invoked if someone builds a jar
     file. You don't expect users to invoke that target explicitly, but whenever they invoke the <code>assemble</code>
     target, you want your <code>signJarFile</code> target to be invoked. When you want such a task to always be invoked
-    even if the user didn't explicitly request it, you should use <code>wrapAfter</code>. You are essentially wrapping
-    an existing task with your own task. Note that there is no <code>wrapBefore</code> annotation since <code>runBefore</code>
+    even if the user didn't explicitly request it, you should use <code>alwaysRunAfter</code>.
+    Note that there is no <code>alwaysRunBefore</code> annotation since <code>runBefore</code>
     achieves the same functionality.
 </p>
 
