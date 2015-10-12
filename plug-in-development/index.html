@@ -351,11 +351,15 @@ myConfig(project) {
 public fun myConfig(project: Project, init: Info.() -> Unit) : Info {
     val info = Info()
     info.init()
-    (Plugins.getPlugin("my-plug-in") as MyPlugin).addInfo(info)
+    (Kobalt.findPlugin("my-plug-in") as MyPlugin).info = info
     return info
 }
 </pre>
-
+<p>
+    Obviously, you can choose any kind of API to communicate between the directive and its plug-in. In the code
+    above, I chose to directly overrid the entire <code>Info</code> field, but you could instead choose to call
+    a function, just set one boolean instead of the whole object, etc...
+</p>
 <h2 class="section" id="tasks">Tasks</h2>
 <p>
     Tasks are provided by plug-ins and can be invoked from the command line, e.g. <code>./gradlew assemble</code>. There are two kinds of tasks: static and dynamic.
@@ -418,11 +422,95 @@ fun lineCount(project: Project): TaskResult {
     Note that there is no <code>alwaysRunBefore</code> annotation since <code>runBefore</code>
     achieves the same functionality.
 </p>
+<p>
+    Here are a few different scenarios to illustrate how the three attributes work for the task <code>exampleTask</code>:
+</p>
+<p align="center">
+<strong>Result of the command <code>./kobaltw --dryRun compile</code></strong>
+</p>
+<table width="100%" class="table table-bordered table-condensed">
+    <thead>
+        <td align="center">Configuration for <code>exampleTask</code></td>
+        <td align="center">Result</td>
+    </thead>
+
+    <tr>
+        <td align="center">runBefore = "compile"</td>
+        <td>
+            <pre>kobalt-line-count:clean
+kobalt-line-count:exampleTask
+kobalt-line-count:compile</pre>
+        </td>
+    </tr>
+    <tr>
+        <td align="center">runAfter = "compile"</td>
+        <td>
+            <pre>kobalt-line-count:clean
+kobalt-line-count:compile</pre>
+        </td>
+    </tr>
+    <tr>
+        <td align="center">alwaysRunAfter = "compile"</td>
+        <td>
+            <pre>kobalt-line-count:clean
+kobalt-line-count:compile
+kobalt-line-count:exampleTask</pre>
+        </td>
+    </tr>
+</table>
 
 <h3 class="section" indent="1">Dynamic tasks</h3>
 
+<p>
+    Dynamic tasks are useful when you want your plug-in to generate one or several tasks that depend on
+    some other runtime information (therefore, you can't declare a method and put a <code>@Task</code>
+    annotation on it). Here is the simplest dynamic task you can create in your plug-in class:
+</p>
 
+<pre>
+override fun apply(project: Project, context: KobaltContext) {
+    println("*** Adding dynamic task")
+    addTask(project, "dynamicTask") {
+        println("Dynamic task")
+        TaskResult()
+    }
+}
+</pre>
 
+<p>
+    Like a regular task method, the closure you pass to <code>addTask()</code> has to return a <code>TaskResult</code>
+    object to indicate whether it succeeded or failed. You can
+    then see your dynamic task in the list of tasks and run it directly:
+</p>
+<pre>
+$ ./kobaltw --tasks
+  ===== kobalt-line-count =====
+    dynamicTask
+    lineCount           Count the lines
+$ ./kobaltw dynamicTask
+Dynamic task
+</pre>
+<p>
+    The <code>addTask()</code> method lets you specify any attribute you can specify on the <code>@Task</code>
+    annotation: <code>description</code>, <code>runBefore</code>, etc... For example, here is how we would
+    specify that this task should always run after <code>compile:</code>
+</p>
+<pre>
+addTask(project, "dynamicTask", alwaysRunAfter = listOf("compile")) {
+    println("Dynamic task")
+    TaskResult()
+}
+</pre>
+<p>
+    Let's test it:
+</p>
+
+<pre>
+$ ./kobaltw --dryRun compile
+kobalt-line-count:clean
+kobalt-line-count:compile
+kobalt-line-count:exampleTask
+</pre>
       </div>
           <!-- Table of contents -->
           <div class="col-md-3" id="table-of-contents">
