@@ -183,11 +183,11 @@ fun lineCount(project: Project): TaskResult {
 </pre>
 
 <p>
-We create a task called <code>"lineCount"</code> in which we look for all files ending in ".kt" in all the source directories of the project. Finally, we display a count of files and lines at the end by using <code>KobaltLogger.log()</code>, which is obtained by extending the trait <code>KobaltLogger</code>:
+We create a task called <code>"lineCount"</code> in which we look for all files ending in ".kt" in all the source directories of the project. Finally, we display a count of files and lines at the end by using <code>log()</code>, which is automatically supplied by the Kobalt API:
 </p>
 
 <pre>
-public class Main : BasePlugin(), KobaltLogger {
+public class Main : BasePlugin() {
 </pre>
 
 <p>
@@ -258,7 +258,7 @@ fun main(argv: Array&lt;String&gt;) {
     com.beust.kobalt.main(argv)
 }
 
-public class Main : BasePlugin(), KobaltLogger {
+public class Main : BasePlugin() {
 // ...
 </pre>
 
