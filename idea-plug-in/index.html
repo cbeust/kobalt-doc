@@ -69,7 +69,59 @@
         <li>Synchronization of build files.</li>
     </ul>
 </p>
+<h3 class="section" indent="1" id="auto-completion">Auto completion</h3>
 
+<p>
+    Since Kobalt's build files are valid Kotlin files, you can leverage IDEA's auto complete feature to assist you in writing build files. There are two steps to take to enable this support:
+</p>
+<ul>
+      <li>Add the root of your project as a source directory, so that IDEA will recognize and compile your <code>Build.kt</code> file.</li>
+      <li>Add the latest kobalt.jar file as a dependency of your project.</li>
+</ul>
+<p>
+    Now that your <code>Build.kt</code> file is recognized by IDEA, you can use Ctrl-space to trigger auto completion whenever you need help figuring out what functions you can invoke. However, by default, IDEA will display all the Kotlin functions available within a given scope. While all these functions are valid and will produce a valid Kotlin file, you are probably going to prever Kobalt directives over regular Kotlin functions, so the Kobalt IDEA plug-in will re-order the suggestions so that Kobalt's directives appear first. Compare the next two screen shots:
+</p>
+
+<h3 class="section" indent="1" id="synchronization">Synchronization of build files</h3>
+<p>
+    When you select the "Synchronize build file" menu item from the <code>Kobalt</code> main menu, the Kobalt IDEA plug-in will locate your <code>Build.kt</code> file and parse it. Then it will update your modules' library and dependency information to reflect all the dependencies declared in your build file.
+</p>
+<p>
+    For example, the following list of dependencies:
+</p>
+<pre>
+dependencies {
+    compile("org.apache.ant:ant:1.7.0",
+            "junit:junit:4.10",
+            "org.beanshell:bsh:2.0b4",
+            "com.google.inject:guice:4.0:no_aop",
+            "com.beust:jcommander:1.48",
+            "org.yaml:snakeyaml:1.15")
+}
+</pre>
+<p>
+    will update your project structure as follows:
+</p>
+<p>
+    The plug-in will honor other types of dependencies, such as <code>provided</code> or <code>test</code>. For example:
+</p>
+<pre>
+dependencies {
+    compile("org.apache.ant:ant:1.7.0")
+    test("org.testng:testng:6.9.8")
+    provided("com.beust:jcommander:1.48")
+}
+</pre>
+<p>
+  will produce the following libraries and dependencies:
+</p>
+
+
+
+<h2 class="section" id="source-code">Source code</h2>
+<p>
+    The source code for the Kobalt IDEA plug-in <a href="http://github.com/cbeust/kobalt-idea-plugin">can be found on github</a>. The license is Apache 2.0.
+</p>
       </div>
 
       <!-- Table of contents -->
