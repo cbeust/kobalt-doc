@@ -20,6 +20,10 @@ var content = [
   {
     url: "../plug-in-development/index.html",
     title: "Writing a Kobalt plug-in"
+  },
+  {
+    url: "../idea-plug-in/index.html",
+    title: "IDEA plug-in"
   }
 ];
 
