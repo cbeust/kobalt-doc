@@ -32,6 +32,16 @@
 <link rel="icon" href="/favicon.ico">
 -->
 
+    <style type="text/css">
+        img {
+            border: 1px solid #cccccc;
+            padding: 5px;
+            margin: 10px;
+        }
+        img.kb-wide {
+            width: 75%;
+        }
+    </style>
 </head>
 
 <body>
@@ -55,7 +65,13 @@
 
 <h2 class="section" id="installation">Installation</h2>
 <p>
-    Open the "Plugins" section of the IDEA preferences and find the "Kobalt" plug-in. Install it and restart IDEA. If the plug-in was correctly installed, you should see a new menu called "Kobalt" juste before the "Help" menu:
+    Open the "Plugins" section of the IDEA preferences and find the "Kobalt" plug-in.
+</p>
+<p align="center">
+    <img src="../pics/install-plugin.png" class="img-rounded kb-wide"/>
+</p>
+<p>
+ Install it and restart IDEA. If the plug-in was correctly installed, you should see a new menu called "Kobalt" juste before the "Help" menu:
 </p>
 <p align="center">
     <img src="../pics/kobalt-menu.png" class="img-rounded"/>
@@ -65,68 +81,81 @@
 <p>
     The Kobalt IDEA plug-in offers the following features:
     <ul>
-        <li>Smarter auto completion.</li>
         <li>Synchronization of build files.</li>
     </ul>
 </p>
-<h3 class="section" indent="1" id="auto-completion">Auto completion</h3>
-
+<h3 class="section" indent="1" id="sync-build-file">Synchronization of build files</h3>
 <p>
-    Since Kobalt's build files are valid Kotlin files, you can leverage IDEA's auto complete feature to assist you in writing build files. There are two steps to take to enable this support:
-</p>
-<ul>
-      <li>Add the root of your project as a source directory, so that IDEA will recognize and compile your <code>Build.kt</code> file.</li>
-      <li>Add the latest kobalt.jar file as a dependency of your project.</li>
-</ul>
-<p>
-    Now that your <code>Build.kt</code> file is recognized by IDEA, you can use Ctrl-space to trigger auto completion whenever you need help figuring out what functions you can invoke. However, by default, IDEA will display all the Kotlin functions available within a given scope. While all these functions are valid and will produce a valid Kotlin file, you are probably going to prever Kobalt directives over regular Kotlin functions, so the Kobalt IDEA plug-in will re-order the suggestions so that Kobalt's directives appear first. Compare the next two screen shots:
-</p>
-
-<h3 class="section" indent="1" id="synchronization">Synchronization of build files</h3>
-<p>
-    When you select the "Synchronize build file" menu item from the <code>Kobalt</code> main menu, the Kobalt IDEA plug-in will locate your <code>Build.kt</code> file and parse it. Then it will update your modules' library and dependency information to reflect all the dependencies declared in your build file.
-</p>
-<p>
-    For example, the following list of dependencies:
+    The plug-in will find your `Build.kt` file and it will automatically update your project's libraries and
+    dependencies to reflect it. For example, suppose you have the following dependencies:
 </p>
 <pre>
+compile("org.apache.ant:ant:1.7.0",
+    "com.google.inject:guice:4.0:no_aop",
+    "com.beust:jcommander:1.48")
+</pre>
+          <p>
+              Select the menu "Kobalt / Sync build file", wait for a few seconds as the status in the lower left
+              corner updates:
+          </p>
+          <p align="center">
+              <img src="../pics/status.png" class="img-rounded"/>
+          </p>
+          <p>
+              Bring up the "Project structure" window for your project and you should see the following:
+          </p>
+          <p align="center">
+              <img src="../pics/structure-1.png" class="img-rounded"/>
+          </p>
+          <p>
+              A new library has been created with the dependencies from your build file. If you switch to the
+              Module section, you should see this library added as a dependency of your modules:
+          </p>
+          <p align="center">
+              <img src="../pics/structure-2.png" class="img-rounded"/>
+          </p>
+          <p>
+              The plug-in understands other scopes as well (e.g. "provided", "runtime"). For example, let's
+              move a dependency in the "runtime" section of the build file:
+          </p>
+          <pre>
 dependencies {
+    runtime("com.google.inject:guice:4.0:no_aop")
     compile("org.apache.ant:ant:1.7.0",
-            "junit:junit:4.10",
-            "org.beanshell:bsh:2.0b4",
-            "com.google.inject:guice:4.0:no_aop",
-            "com.beust:jcommander:1.48",
-            "org.yaml:snakeyaml:1.15")
-}
-</pre>
-<p>
-    will update your project structure as follows:
-</p>
-<p>
-    The plug-in will honor other types of dependencies, such as <code>provided</code> or <code>test</code>. For example:
-</p>
-<pre>
-dependencies {
-    compile("org.apache.ant:ant:1.7.0")
-    test("org.testng:testng:6.9.8")
-    provided("com.beust:jcommander:1.48")
-}
-</pre>
-<p>
-  will produce the following libraries and dependencies:
-</p>
+        "com.beust:jcommander:1.48")
+}</pre>
+          <p>
+              The libraries are now the following:
+          </p>
+          <p align="center">
+              <img src="../pics/structure-3.png" class="img-rounded"/>
+          </p>
+          <p>
+              Notice that you now have two different libraries and that they have both been added with the
+              correct scope to your project:
+          </p>
+          <p align="center">
+              <img src="../pics/structure-4.png" class="img-rounded"/>
+          </p>
 
+          <h2 class="section">Source code and bug reports</h2>
+          <p>
+              The source code <a href="http://github.com/cbeust/kobalt-intellij-plugin">can be found on github</a>.
+              If you need to report a bug, please make sure you include the log file, which you can find under
+              the "Help" menu:
+          </p>
+          <p align="center">
+              <img src="../pics/show-log.png" class="img-rounded"/>
+          </p>
 
-
-<h2 class="section" id="source-code">Source code</h2>
-<p>
-    The source code for the Kobalt IDEA plug-in <a href="http://github.com/cbeust/kobalt-idea-plugin">can be found on github</a>. The license is Apache 2.0.
-</p>
+>>>>>>> IDEA plug-in doc.
       </div>
 
       <!-- Table of contents -->
       <div class="col-md-3" id="table-of-contents">
       </div>
+
+</div> <!-- container -->
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
