@@ -101,7 +101,7 @@ Next, we want the manifest of our jar file to point to our main Kobalt plug-in c
 </p>
 
 <pre>
-val packProject = packaging(project) {
+packaging {
     jar {
         manifest {
             attributes("Kobalt-Plugin-Class", "com.beust.kobalt.plugin.linecount.Main")
@@ -150,7 +150,7 @@ If you go to the maven section of your bintray account, you will now see that th
 </p>
 
 <pre>
-val jc = jcenter(project) {
+jcenter {
     publish = true
 }
 </pre>

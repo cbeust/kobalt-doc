@@ -105,7 +105,7 @@ As of this writing, Kobalt supports Java and Kotlin projects.
 <h3 class="section" indent="1" id="general-concepts">General concepts</h3>
 
 <p>
-The build file is typically called <code>Built.kt</code> and it is a valid Kotlin file. Typically, it contains imports, the declaration of one or more projects and the declaration of additional configurations (e.g. packaging, publishing, etc...).  Since it's a Kotlin file, it can also contain any class or function you need:
+The build file is typically called <code>Built.kt</code> and it is a valid Kotlin file. It contains imports, the declaration of one or more projects and the declaration of additional configurations (e.g. packaging, publishing, etc...).  Since it's a Kotlin file, it can also contain any class or function you need:
 </p>
  
 <pre>
@@ -124,48 +124,52 @@ val kobalt = kotlinProject {
 Here are a few noteworthy details about this small build file:
 
 <ul>
-<li>You have now declared a variable called <code>kobalt</code> which you can reuse (see below).
+<li>You have now declared a variable called <code>kobalt</code> which you can reuse further in your build file, should you ever need to.
 <li>You can specify the directory of the project, which means that one build file can be used to build multiple projects.
-<li>The functions <code>kotlinProject</code> and <code>homeDir</code> are supplied by Kobalt and are sometimes referred to as "directives"
+<li>The functions <code>kotlinProject</code> and <code>homeDir</code> are supplied by Kobalt and are referred to as "directives"
 </ul>
 
 <h3 class="section" indent="1" id="directives">Directives</h3>
 
 <p>
-Now that we have declared a project, we can use it to configure additional steps of our build, such as the assembling it (creating jar and other files:
+Now that we have declared a project, we can use it to configure additional steps of our build, such as how to assemble it (creating jar and other files):
 </p>
 
 <pre>
 import com.beust.kobalt.plugin.packaging.assemble
 
-// ...
-
-val packKobalt = assemble(kobalt) {
-    jar {
+val kobalt = kotlinProject {
+    // ...
+<b>
+    assemble {
+        jar {
     }
+</b>
 }
 </pre>
 
 <p>
-This is the simplest jar declaration you can have. You can trigger the creation of this jar file by invoking the task <code>"assemble"</code>. Note that we passed the <code>kobalt</code> variable to the <code>assemble</code> function, so we make it clear which project we are currently configuring for packaging. The <code>jar</code> directive accepts various settings, so let's be a bit more specific. And let's add a zip file too:
+This is the simplest jar declaration you can have. You can trigger the creation of this jar file by invoking the task <code>"assemble"</code> from the command line. Note the presence of the corresponding <code>import</code>: without it, your build file will not compile. Another interesting details is that the <code>assemble</code> function we just imported is an extension function on the <code>Project</code> class, which is how the import makes it legal to call <code>assemble</code> in the middle of our project. If you remove the import, that line will no longer compile.
+</p>
+<p>
+    The <code>jar</code> directive accepts various settings, so let's be a bit more specific. And let's add a zip file too:
 </p>
 
 <pre>
-val assembleKobalt = assemble(kobalt) {
-    jar {
-        fatJar = true
-        manifest {
-            attributes("Main-Class", "com.beust.kobalt.KobaltPackage")
+    assemble {
+        jar {
+            fatJar = true
+            manifest {
+                attributes("Main-Class", "com.beust.kobalt.KobaltPackage")
+            }
         }
-    }
-    zip {
-        include("kobaltw")
-        include(from("${kobalt.buildDirectory}/libs"),
-                to("kobalt/wrapper"),
-                "${kobalt.name}-${kobalt.version}.jar",
-                "${kobalt.name}-wrapper.jar")
-    }
-}
+        zip {
+            include("kobaltw")
+            include(from("$buildDirectory/libs"), to("kobalt/wrapper"),
+                    "$projectName-$version.jar")
+            include(from("modules/wrapper/$buildDirectory/libs"), to("kobalt/wrapper"),
+                    "$projectName-wrapper.jar")
+        }
 </pre>
 
 <p>
@@ -437,13 +441,12 @@ dependencies {
 <h4>2. Declare the main class of your plug-in in the Jar file's manifest:</h4>
 
 <pre>
-val p = packaging(examplePlugin) {
-    jar {
-        manifest {
-            attributes("Kobalt-Plugin-Class", "com.beust.kobalt.example.ExamplePlugin")
+    packaging {
+        jar {
+            manifest {
+                attributes("Kobalt-Plugin-Class", "com.beust.kobalt.example.ExamplePlugin")
+            }
         }
-    }
-}
 </pre>
 
 <h3 class="section" indent="1" id="implementing">Implementing</h3>
@@ -479,10 +482,9 @@ Next, you can declare tasks with the <code>@Task</code> annotation:
 </p>
 
 <pre>
-@Task(name = "coverage", description = "Run coverage",
-    runAfter = arrayOf("compile"))
+@Task(name = "coverage", description = "Run coverage", runAfter = arrayOf("compile"))
 public fun coverage(project: Project): TaskResult {
-    println("Running the coverage on project ${project}")
+    println("Running the coverage on project $project")
     return TaskResult()
 }
 </pre>
