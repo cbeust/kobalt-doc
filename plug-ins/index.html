@@ -113,8 +113,9 @@ The Packaging plug-in lets you generate various archives for your project: jar, 
 </p>
 
 <pre>
-val packaging = assemble(kobalt) {
-  jar {}
+assemble {
+    jar {
+    }
 }
 </pre>
 
@@ -139,13 +140,13 @@ All archives let you include and exclude files.
 </p>
 
 <pre>
-val a = assemble(kobalt) {
-  zip {
-      include("kobaltw", "README")
-      include(from("doc/"),
-              to("html/"),
-              glob("**html"))
-  }
+assemble {
+    zip {
+        include("kobaltw", "README")
+        include(from("doc/"),
+            to("html/"),
+            glob("**html"))
+    }
 }
 </pre>
 
@@ -171,7 +172,7 @@ val a = assemble(kobalt) {
 </p>
 
 <pre>
-val a = assemble(kobalt) {
+assemble {
   jar {
       fatJar = true
       manifest {
@@ -224,7 +225,7 @@ you are ready to do your first upload.
 </p>
 
 <pre>
-val jc = jcenter(kobalt) {
+jcenter {
   publish = true
   file("${kobalt.buildDirectory}/libs/${kobalt.name}-${kobalt.version}.zip",
        "${kobalt.name}/${kobalt.version}/${kobalt.name}-${kobalt.version}.zip")

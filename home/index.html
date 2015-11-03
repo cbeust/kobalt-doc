@@ -74,16 +74,17 @@ val jcommander = javaProject {
     dependenciesTest {
         compile("org.testng:testng:6.9.5")
     }
-}
 
-val a = assemble(jcommander) {
-    mavenJars {
+    assemble {
+        mavenJars {
+        }
+    }
+
+    jcenter {
+        publish = false
     }
 }
 
-val j = jcenter(jcommander) {
-    publish = false
-}
 </pre>
 
 <h2 class="section" id="design-goals">Design goals</h2>
