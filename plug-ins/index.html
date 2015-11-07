@@ -106,7 +106,32 @@ Once you have at least one project configured, the plug-in lets you invoke the f
   <dd>Clean the project</dd>
 </dl>
 
-<h2 class="section" id="overview">Packaging</h2>
+<h2 class="section" id="application">Application</h2>
+<p>
+    The "application" plug-in lets you run your application directly from <code>kobaltw</code>. You configure
+    it as follows:
+</p>
+<pre>
+application {
+    mainClass = "com.beust.kobalt.wrapper.Main"
+    jvmArgs("-Djava.library.path=libs", "-Ddebug=true")
+}
+</pre>
+<p>
+    And you launch you app with "<code>run</code>":
+</p>
+<pre>
+./kobaltw run
+</pre>
+<p>Here's the list of configuration parameters for the <code>application</code> directive:</p>
+<dl class="dl-horizontal">
+  <dt>mainClass</dt>
+  <dd>The class in your code that contains the <code>main</code> function.</dd>
+  <dt>jvmArgs</dt>
+  <dd>Arguments to pass to the JVM.</dd>
+</dl>
+
+<h2 class="section" id="packaging">Packaging</h2>
 
 <p>
 The Packaging plug-in lets you generate various archives for your project: jar, war and zip files, each of them defining a directive by the same name inside the <code>assemble</code> directive:
