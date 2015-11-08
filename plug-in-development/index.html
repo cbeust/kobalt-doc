@@ -58,10 +58,10 @@
     Kobalt plug-ins are usually made of several parts:
 
     <ul>
-          <li><b>plugin.xml</b>. A file that describes all the components of your plug-in, such as contributors.</li>
-          <li><b>Directives</b>. Kotlin functions that users of your plug-in can invoke in their build file, such as <code>kotlinProject</code> or <code>dependencies</code>. These functions typically configure some data that your plug-in will later use to perform its functions.</li>
-          <li><b>Tasks</b>. These tasks are invoked from the command line and ask your plug-ins to perform certain actions.</li>
-          <li><b>Properties</b>. Plug-ins can export properties and read properties from other plug-ins.</li>
+          <li><a href="#plugin-xml"><b>plugin.xml</b></a>. A file that describes all the components of your plug-in, such as contributors.</li>
+          <li><a href="#directives"><b>Directives</b></a>. Kotlin functions that users of your plug-in can invoke in their build file, such as <code>kotlinProject</code> or <code>dependencies</code>. These functions typically configure some data that your plug-in will later use to perform its functions.</li>
+          <li><a href="#tasks"><b>Tasks</b></a>. These tasks are invoked from the command line and ask your plug-ins to perform certain actions.</li>
+          <li><a href="#properties"><b>Properties</b></a>. Plug-ins can export properties and read properties from other plug-ins.</li>
     </ul>
 </p>
 
@@ -382,6 +382,32 @@ kobalt-line-count:clean
 kobalt-line-count:compile
 kobalt-line-count:exampleTask
 </pre>
+
+<h2 class="section" id="properties">Properties</h2>
+<p>
+    Properties are the mechanism that plug-ins can use to export values and also read values that other
+    plug-ins have exported. The <code>PluginProperties</code> instance can be found on the <code>KobaltContext</code>
+    object that your plug-in receives in its <code>apply()</code> method. Once you have an instance of this
+    class, you can read or write variables into it:
+</p>
+<pre>
+override fun apply(project: Project, context: KobaltContext) {
+    // Export a property for other plug-ins to use
+    context.pluginProperties.put(name, BUILD_DIR, project.buildDirectory)
+
+    // Read a property from another plug-in
+    val sourceDir = context.pluginProperties.get("somePlugin", "someProperty")
+}
+</pre>
+<p>
+    Plug-ins that define properties should annotate them with the <code>@ExportedProperty</code> annotation:
+</p>
+<pre>
+    companion object {
+        @ExportedProperty
+        const val BUILD_DIR = "buildDir"
+</pre>
+
       </div>
           <!-- Table of contents -->
           <div class="col-md-3" id="table-of-contents">
