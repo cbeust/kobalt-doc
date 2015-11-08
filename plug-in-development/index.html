@@ -103,7 +103,7 @@
     <a href=https://github.com/cbeust/kobalt/blob/master/src/main/resources/META-INF/plugin.xml">Kobalt's own <code>plugin.xml</code></a>
     and go over it line by line.
 </p>
-  <h4>plugins (<code>IPlugin</code>)</h4>
+  <h4>plugins (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPlugin.kt"><code>IPlugin</code>)</a></h4>
 <pre>
     &lt;plugins&gt;
         &lt;class-name&gt;com.beust.kobalt.plugin.android.AndroidPlugin&lt;/class-name&gt;
@@ -113,7 +113,7 @@
   Kobalt defines a few plug-ins in its core so you never need to download them.
 </p>
 
-<h4>Classpath contributors (<code>IClasspathContributor</code>)</h4>
+<h4>Classpath contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IClasspathContributor.kt"><code>IClasspathContributor</code>)</a></h4>
 <pre>
     &lt;classpath-contributors&gt;
         &lt;class-name&gt;com.beust.kobalt.plugin.android.AndroidPlugin&lt;/class-name&gt;
@@ -127,7 +127,7 @@
   as well.
 </p>
 
-<h4>Project contributors (<code>IProjectContributor</code>)</h4>
+<h4>Project contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IProjectContributor.kt"><code>IProjectContributor</code>)</a></h4>
 <pre>
     &lt;project-contributors&gt;
         &lt;class-name&gt;com.beust.kobalt.plugin.java.JavaPlugin&lt;/class-name&gt;
@@ -139,7 +139,7 @@ Some plug-ings produce projects (Java, Kotlin) while others don't (Packaging, Ap
     after a build file was parsed.
 </p>
 
-<h4>Init contributors (<code>IInitContributor</code>)</h4>
+<h4>Init contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IInitContributor.kt"><code>IInitContributor</code>)</a></h4>
 <pre>
     &lt;init-contributors&gt;
         &lt;class-name&gt;com.beust.kobalt.plugin.java.JavaBuildGenerator&lt;/class-name&gt;
@@ -157,7 +157,7 @@ Some plug-ings produce projects (Java, Kotlin) while others don't (Packaging, Ap
     with the highest number of files is then asked to generate the build file.
 </p>
 
-<h4>Repo contributors (<code>IRepoContributor</code>)</h4>
+<h4>Repo contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IRepoContributor.kt"><code>IRepoContributor</code>)</a></h4>
 <pre>
     &lt;repo-contributors&gt;
         &lt;class-name&gt;com.beust.kobalt.plugin.android.AndroidPlugin&lt;/class-name&gt;
