@@ -83,27 +83,27 @@ val project = kotlinProject {
     ...
 </pre>
 
-          <p>
-              Next, we want the manifest of our jar file to point to our main Kobalt plug-in class:
-          </p>
+<p>
+  Next, we need to create our <code>plugin.xml</code> file in the <code>src/main/resources/META-INF</code> directory.
+    Once there, it will be automatically copied in the right place in our jar file:
+</p>
 
 <pre>
-packaging {
-    jar {
-        manifest {
-            attributes("Kobalt-Plugin-Class", "com.beust.kobalt.plugin.linecount.Main")
-        }
-    }
-}
+&lt;kobalt-plugin&gt;
+    &lt;name&gt;kobalt-line-count&lt;/name&gt;
+    &lt;plugins&gt;
+        &lt;class-name&gt;com.beust.kobalt.plugin.linecount.LineCountPlugin&lt;/class-name&gt;
+    &lt;/plugins&gt;
+&lt;/kobalt-plugin&gt;
 </pre>
 
-          <p>
-              Now we're ready to code.
-          </p>
+<p>
+  Now we're ready to code.
+</p>
 
-          <p>
-              Let's start by writing the simplest plug-in we can:
-          </p>
+<p>
+  Let's start by writing the simplest plug-in we can:
+</p>
 
 <pre>
 package com.beust.kobalt.plugin.linecount
