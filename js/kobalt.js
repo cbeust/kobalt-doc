@@ -24,7 +24,12 @@ var content = [
   {
     url: "../idea-plug-in/index.html",
     title: "IDEA plug-in"
+  },
+  {
+    url: "../ten-minutes/index.html",
+    title: "Ten minutes"
   }
+
 ];
 
 var before = '<div class="container-fluid">'

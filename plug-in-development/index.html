@@ -46,7 +46,7 @@
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
           <h1>Plug-in development</h1>
-          <p>How to set up your environment to write a Kobalt plug-in.</p>
+          <p>How to write a Kobalt plug-in.</p>
       </div>
 
       <!-- Main content -->
@@ -55,244 +55,115 @@
 <h2 class="section" id="introduction">Introduction</h2>
 
 <p>
-    Kobalt plug-ins are usually made of two parts.
+    Kobalt plug-ins are usually made of several parts:
 
     <ul>
-          <li>Directives. These are Kotlin functions that users of your plug-in can invoke in their build file, such as <code>kotlinProject</code> or <code>dependencies</code>. These functions typically configure some data that your plug-in will later use to perform its functions.</li>
-          <li>Tasks. These tasks are invoked from the command line and ask your plug-ins to perform certain actions.</li>
+          <li><b>plugin.xml</b>. A file that describes all the components of your plug-in, such as contributors.</li>
+          <li><b>Directives</b>. Kotlin functions that users of your plug-in can invoke in their build file, such as <code>kotlinProject</code> or <code>dependencies</code>. These functions typically configure some data that your plug-in will later use to perform its functions.</li>
+          <li><b>Tasks</b>. These tasks are invoked from the command line and ask your plug-ins to perform certain actions.</li>
+          <li><b>Properties</b>. Plug-ins can export properties and read properties from other plug-ins.</li>
     </ul>
 </p>
-<p>
-    We'll cover these two items shortly but first of all, let's go over a quick example that will show you the whole process of writing a plug-in from scratch and publishing it on JCenter in ten minutes.
-</p>
 
-<h2 class="section" id="ten-minutes">Writing and publishing a plug-in in ten minutes</h2>
+<h2 class="section" id="plugin-xml">plugin.xml</h2>
 <p>
-In this example, we'll write a Kobalt plug-in that simply counts the number of source files and lines in your project.
-    Starting from scratch, we'll have this plug-in published to JCenter and ready to use in ten minutes.
+    The <code>plugin.xml</code> file (stored in <code>META-INF</code> in the jar file of your plug-in) is mandatory and describes all the components of your plug-in. At a minimum,
+    this file will contain the name of your plug-in and the main plug-in class:
 </p>
-
-<p>
-Let's start by creating our project:
-</p>
-
 <pre>
-$ mkdir linecount
-$ mkdir -p src/main/kotlin/com/beust/plugin/linecount
-$ touch src/main/kotlin/com/beust/plugin/linecount/Main.kt
-$ $KOBALT_HOME/kobaltw --init
+&lt;kobalt-plugin&gt;
+    &lt;name>kobalt&lt;/name&gt;
+    &lt;plugins&gt;
+        &lt;class-name>com.beust.kobalt.plugin.android.AndroidPlugin&lt;/class-name&gt;
+    &lt;/plugins&gt;
+&lt;/kobalt-plugin&gt;
 </pre>
 
 <p>
-I create an empty <code>Main.kt</code> in the example above so that calling <code>./kobaltw --init</code> will detect the project as a Kotlin one. This way, the <code>Build.kt</code> file generated is already configured for Kotlin. Since we will be publishing this project to a Maven repository, we need to make sure that its <code>group</code>, <code>artifactId</code> and <code>version</code> are correct. The only thing that the generator can't guess is the <code>group</code>, so let's go ahead and fix it:
+    This file can also contain Contributors, which are the main mechanism that Kobalt plug-ins use to interact with each other.
 </p>
 
+<h3>Contributors</h3>
+<p>
+    Plug-ins often produce files and data that other plug-ins need to use in order for a build to succeed. For example,
+    the Android plug-in needs to generate a file called <code>R.java</code> and then make this file available at
+    compile time by the Java or Kotlin (or any other language) plug-in. Since plug-ins have no idea about what other
+    plug-ins are currently enabled and running, they can't directly talk to each other so instead of calling into
+    Kobalt, Kobalt calls into them. This is done by declaring various contributors that Kobalt will invoke whenever
+    it needs the information that your plug-in produced. This is a design pattern often referred to as the
+    <a href="https://en.wikipedia.org/wiki/Hollywood_principle">"Hollywood Principle"</a>: "Don't call us, we'll call you".
+</p>
+
+<p>In order to make things more concrete, let's take a look at
+    <a href=https://github.com/cbeust/kobalt/blob/master/src/main/resources/META-INF/plugin.xml">Kobalt's own <code>plugin.xml</code></a>
+    and go over it line by line.
+</p>
+  <h4>plugins (<code>IPlugin</code>)</h4>
 <pre>
-val project = kotlinProject {
-    name = "kobalt-line-count"
-    group = "com.beust.kobalt"
-    artifactId = name
-    version = "0.1"
-    ...
+    &lt;plugins&gt;
+        &lt;class-name&gt;com.beust.kobalt.plugin.android.AndroidPlugin&lt;/class-name&gt;
+        &lt;class-name&gt;com.beust.kobalt.plugin.application.ApplicationPlugin&lt;class-name&gt;
+</pre>
+<p>
+  Kobalt defines a few plug-ins in its core so you never need to download them.
+</p>
+
+<h4>Classpath contributors (<code>IClasspathContributor</code>)</h4>
+<pre>
+    &lt;classpath-contributors&gt;
+        &lt;class-name&gt;com.beust.kobalt.plugin.android.AndroidPlugin&lt;/class-name&gt;
+        &lt;class-name&gt;com.beust.kobalt.plugin.kotlin.KotlinPlugin&lt;/class-name&gt;
 </pre>
 
 <p>
-Next, we want the manifest of our jar file to point to our main Kobalt plug-in class:
+  Classpath contributors let you specify additional jar files or directories that will be used by
+  the compile task. In the above example, the <code>KotlinPlugin</code> adds the Kotlin runtime
+  to the classpath and Android adds various Android resources (e.g. <code>aar</code> files) to it
+  as well.
 </p>
 
+<h4>Project contributors (<code>IProjectContributor</code>)</h4>
 <pre>
-packaging {
-    jar {
-        manifest {
-            attributes("Kobalt-Plugin-Class", "com.beust.kobalt.plugin.linecount.Main")
-        }
-    }
-}
-</pre>
-
-<p>
-Now we're ready to code.
-</p>
-
-<p>
-Let's start by writing the simplest plug-in we can:
-</p>
-
-<pre>
-package com.beust.kobalt.plugin.linecount
-
-import com.beust.kobalt.api.*
-
-public class Main : BasePlugin() {
-    override val name = "kobalt-line-count"
-
-    override fun apply(project: Project, context: KobaltContext) {
-        println("*** Applying plugin ${name} with project ${project}")
-    }
-}
-</pre>
-
-<p>
-Before we can upload it, we need to create the package in bintray, <a href="https://bintray.com/docs/usermanual/uploads/uploads_creatinganewpackage.html">as explained here</a>. Once this is done, we are ready to do our first upload:
-</p>
-
-<pre>
-$ ./kobaltw uploadJcenter
-...
-========== kobalt-line-count:uploadJcenter
-  kobalt-line-count: Found 2 artifacts to upload
-  All artifacts successfully uploaded
-  ############# Time to Build: 3590 ms
-</pre>
-
-<p>
-If you go to the maven section of your bintray account, you will now see that the new package has two unpublished files. Your new plug-in won't be visible by clients until you publish those files, so let's update our build file to automatically publish files from now on:
-</p>
-
-<pre>
-jcenter {
-    publish = true
-}
-</pre>
-
-<p>
-And now, let's implement our logic, which is pretty simple:
-</p>
-
-<pre>
-// Main.kt
-@Task(name = "lineCount", description = "Count the lines", runBefore = arrayOf("compile"))
-fun lineCount(project: Project): TaskResult {
-    var fileCount = 0
-    var lineCount : Long = 0
-    val matcher = FileSystems.getDefault().getPathMatcher("glob:**.kt")
-    project.sourceDirectories.forEach {
-        Files.walkFileTree(Paths.get(it), object: SimpleFileVisitor<Path>() {
-            override public fun visitFile(path: Path, attrs: BasicFileAttributes): FileVisitResult {
-                if (matcher.matches(path)) {
-                    fileCount++
-                    lineCount += Files.lines(path).count()
-                }
-                return FileVisitResult.CONTINUE
-            }
-        })
-    }
-    log(1, "Found ${lineCount} lines in ${fileCount} files")
-    return TaskResult()
-}
-</pre>
-
-<p>
-We create a task called <code>"lineCount"</code> in which we look for all files ending in ".kt" in all the source directories of the project. Finally, we display a count of files and lines at the end by using <code>log()</code>, which is automatically supplied by the Kobalt API:
-</p>
-
-<pre>
-public class Main : BasePlugin() {
-</pre>
-
-<p>
-Let's bump our version to 0.2 (since version 0.1 is already uploaded and JCenter won't allow us to overwrite it) and upload our new plug-in:
-</p>
-
-
-<pre>
-$ ./kobaltw uploadJcenter
-...
-kobalt-line-count: Compilation succeeded
-========== kobalt-line-count:assemble
-Created /Users/beust/kotlin/kobalt-line-count/kobaltBuild/libs/kobalt-line-count-0.2.jar
-========== kobalt-line-count:generatePom
- Wrote /Users/beust/kotlin/kobalt-line-count/kobaltBuild/libs/kobalt-line-count-0.2.pom
-========== kobalt-line-count:uploadJcenter
-kobalt-line-count: Found 2 artifacts to upload
-All artifacts successfully uploaded
-
-Time to Build: 5907 ms
-</pre>
-
-<p>
-Finally, let's use our plug-in from another project. Since we didn't link this project to JCenter, it's uploaded in the user's maven repository, so we will have to add this maven repository to the build file where we want to use the plug-in. Adjust this line to point to your own maven repo:
-</p>
-
-<pre>
-val repos = repos("https://dl.bintray.com/cbeust/maven/")
-val plugins = plugins("com.beust.kobalt:kobalt-line-count:0.2")
-</pre>
-
-<p>
-Now let's launch a build:
-</p>
-
-<pre>
-$ ./kobaltw assemble
-...
-========== kobalt:lineCount
-Found 4972 lines in 65 files
-========== kobalt:compile
-...
-</pre>
-
-<p>
-Note that our plugin ran before the <code>compile</code> task, as we requested in the <code>@Task</code> annotation. We can also verify that it's activated and we can invoke the task directly instead of having it run as part of the build:
-</p>
-
-<pre>
-$ ./kobaltw --tasks
-  ===== kobalt-line-count =====
-    lineCount		Count the lines
-$ ./kobaltw lineCount
-Found 4972 lines in 65 files
-</pre>
-
-<p>
-And that's it! You can now iterate on your plug-in and upload it with additional <code>./kobaltw uploadJcenter</code>. This plug-in is <a href="https://github.com/cbeust/kobalt-linecount">available on github</a>.
-</p>
-
-<h2 class="section" id="debugging">Debugging</h2>
-<p>
-    The simplest way to run your plug-in in your IDE is to create a main function in the main class of your
-    plug-in as follows:
-</p>
-<pre>
-fun main(argv: Array&lt;String&gt;) {
-    com.beust.kobalt.main(argv)
-}
-
-public class Main : BasePlugin() {
-// ...
-</pre>
-
-<p>
-  Now you can simply create a launch configuration for your main class, which will invoke Kobalt.
-</p>
-
-<p>
-    The next step is to have Kobalt invoke your plug-in, so you will have to modify your build file
-    to call it. As long as you haven't deployed your plug-in to JCenter, you might want to use the
-    <code>file()</code> directive to declare your dependency, so that Kobalt will use the jar file
-    on your file system:
-</p>
-
-<pre>
-val p = plugins(
-    file(homeDir("kotlin/kobalt-line-count/kobaltBuild/libs/kobalt-line-count-0.8.jar"))
-)
-</pre>
-
-<p>
-    You can now set a breakpoint in your plug-in and launch the configuration you created above.
-</p>
-<h2 class="section" id="initialization">Initialization</h2>
-<p>
-    When your plug-in is activated, Kobalt will invoke its <code>apply()</code> function:
-</p>
-<pre>
-override fun apply(project: Project, context: KobaltContext) {
-}
+    &lt;project-contributors&gt;
+        &lt;class-name&gt;com.beust.kobalt.plugin.java.JavaPlugin&lt;/class-name&gt;
+        &lt;class-name&gt;com.beust.kobalt.plugin.kotlin.KotlinPlugin&lt;/class-name&gt;
 </pre>
 <p>
-    <code>project</code> is the project that your plug-in is currently being initialized for (keep in mind there can be multiple projects in a build) and the <code>context</code> gives you some information about other external data you might find useful, such as the command line that was passed to Kobalt.
+Some plug-ings produce projects (Java, Kotlin) while others don't (Packaging, Application, etc...). The ones that
+    do need to register themselves as project contributors. This is how Kobalt collects all the projects defined
+    after a build file was parsed.
 </p>
+
+<h4>Init contributors (<code>IInitContributor</code>)</h4>
+<pre>
+    &lt;init-contributors&gt;
+        &lt;class-name&gt;com.beust.kobalt.plugin.java.JavaBuildGenerator&lt;/class-name&gt;
+        &lt;class-name&gt;com.beust.kobalt.plugin.kotlin.KotlinBuildGenerator&lt;/class-name&gt;
+</pre>
+<p>
+    Kobalt supports the <code>--init</code> command line parameter, which generates a default build file
+    based on the files found in the current directory. Any plug-in that wants to be part of this process need
+    to specify Init Contributors. In this case, both the Java and Kotlin plug-ins define such a contributor
+    but future plug-ins might use this contributor to generate their own build file: Android, Ceylon, Spring, etc...
+</p>
+<p>
+    You can take a look at the <code>IInitContributor</code> interface to find out more details but in a nutshell,
+    each Init Contributor is asked how many files in the current directory their plug-in handles and the contributor
+    with the highest number of files is then asked to generate the build file.
+</p>
+
+<h4>Repo contributors (<code>IRepoContributor</code>)</h4>
+<pre>
+    &lt;repo-contributors&gt;
+        &lt;class-name&gt;com.beust.kobalt.plugin.android.AndroidPlugin&lt;/class-name&gt;
+</pre>
+<p>
+    Some plug-ins might want to add their own repository to the list of repositories that Kobalt already supports.
+    This is the case of the Android plug-in which, once the <code>ANDROID_HOME</code> environment variable has been
+    defined, will automatically add the repository inside the Android distribution so that support libraries and other
+    artifacts can be found.
+</p>
+
 
 <h2 class="section" id="directives">Directives</h2>
 <p>
