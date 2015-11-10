@@ -134,9 +134,13 @@ application {
 <h2 class="section" id="packaging">Packaging</h2>
 
 <p>
-The Packaging plug-in lets you generate various archives for your project: jar, war and zip files, each of them defining a directive by the same name inside the <code>assemble</code> directive:
+The Packaging plug-in lets you generate (directive <code>assemble</code>) and install (directive <code>install</code>) various archives for your project: jar, war and zip files.
 </p>
 
+<h3 class="section" indent="1">assemble</h3>
+<p>
+    The <code>assemble</code> directive controls which artifacts get generated for your project.
+</p>
 <pre>
 assemble {
     jar {
@@ -148,13 +152,13 @@ assemble {
   If you don't specify a <code>name</code> for your archive, a default one will be used that contains your project name, version and the corresponding suffix, e.g. <code>kobalt-1.1.jar</code> or <code>sec-0.2.war</code>.
 </p>
 
-<h3 class="section" indent="1">zip</h3>
+<h3 class="section" indent="2">zip</h3>
 
 <p>
 All these archives are zip files, so the <code>zip</code> archive is at the top of the hierarchy and <code>jar</code> and <code>war</code> inherit all its attributes, which include <code>name</code>, <code>include</code> and <code>exclude</code>.
 </p>
 
-<h3 class="section" indent="1">include and exclude</h3>
+<h3 class="section" indent="2">include and exclude</h3>
 
 <p>
 All archives let you include and exclude files.
@@ -179,7 +183,7 @@ assemble {
   The first form, with just one parameter, simply copies the file from your directory into the archive, preserving its path. The second form has three parameters which allow you to move the file to a different path into your archive. Note the use of the <code>from</code>, <code>to</code> and <code>glob</code> directives, which are necessary to disambiguate the call.
 </p>
 
-<h3 class="section" indent="1">jar</h3>
+<h3 class="section" indent="2">jar</h3>
 
 <p>
   A <code>jar</code> is like a <code>zip</code> with two additional available parameters:
@@ -208,18 +212,27 @@ assemble {
 </pre>
 
 
-<h3 class="section" indent="1">war</h3>
+<h3 class="section" indent="2">war</h3>
 
 <p>
   The <code>war</code> directive generates a war file suitable to be deployed into a servlet container.
 </p>
 
-<h3 class="section" indent="1">mavenJars</h3>
+<h3 class="section" indent="2">mavenJars</h3>
 
 <p>
   The <code>mavenJars</code> directive generates several jar files (binary, source, javadoc) which are required by Maven repositories. It's basically a shortcut that saves you the trouble from having to assemble these jar files manually in your build file. It allows you to specify Manifest attributes, just like the <code>jar</code> directive.
 </p>
 
+<h2 class="section" indent="1">install</h2>
+<p>
+  The <code>install</code> section lets you specify how the artifacts get installed. If you don't specify any <code>install</code> directive, then the <code>install</code> task will do nothing on your project when invoked.
+</p>
+<pre>
+    install {
+        libDir = "libs"
+    }
+</pre>
 
 <h2 class="section" id="overview">Publishing</h2>
 
