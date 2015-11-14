@@ -131,6 +131,29 @@ application {
   <dd>Arguments to pass to the JVM.</dd>
 </dl>
 
+<h2 class="section" id="apt">apt</h2>
+  <p>
+      The <code>apt</code> plug-in adds support for <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/apt/GettingStarted.html">annotation processing</a>. It's made of two parts.
+  </p>
+  <h3 class="section" id="apt-dependency" indent="1">The <code>apt</code> dependency directive</h3>
+  <pre>
+    dependencies {
+        apt("com.google.dagger:dagger:2.0.2")
+    }
+  </pre>
+  <p>
+      Instead of using <code>compile</code>, you use <code>apt</code> in your dependencies and you point to the jar file that contains the annotation processor. This will instruct any compiler involved in the build to run this annotation processor first.
+  </p>
+  <h3 class="section" id="apt-configuration" indent="1">The <code>apt</code> configuration directive</h3>
+<pre>
+    apt {
+        outputDir = "generated/sources/apt"
+    }
+</pre>
+  <p>This directive lets you configure the output directory and a few other settings that drive the annotation processor. This directive is optional.</p>
+  <p>For a full example defining and then using an annotation processor, see the <a href="http://github.com/cbeust/java-apt-example">java-apt-example project.</a></p>
+
+
 <h2 class="section" id="packaging">Packaging</h2>
 
 <p>
