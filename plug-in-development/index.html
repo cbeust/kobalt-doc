@@ -395,25 +395,49 @@ kobalt-line-count:exampleTask
 <h2 class="section" id="properties">Properties</h2>
 <p>
     Properties are the mechanism that plug-ins can use to export values and also read values that other
-    plug-ins have exported. The <code>PluginProperties</code> instance can be found on the <code>KobaltContext</code>
+    plug-ins have exported. There are two kinds of properties that plug-ins can manipulate:
+    </p>
+          <ul>
+          <li><strong>Project properties</strong>: project-specific properties.</li>
+          <li><strong>Plug-in properties</strong>: general properties that are applicable to no project
+          in particular.</li>
+          </ul>
+          <h3 class="section" indent="1" id="project-properties">Project properties</h3>
+
+          <p>
+              <code>Project</code> instances have a property called <code>projectProperties</code> that is an
+              instance of the <code>ProjectProperties</code> class. Plugins can put and get values on this
+              object in order to store project specific properties.
+          </p>
+          <pre class="brush:java">
+fun taskAssemble(project: Project) : TaskResult {
+    project.projectProperties.put(PACKAGES, packages)
+          </pre>
+          <h3 class="section" indent="1" id="plugin-properties">Plug-in properties</h3>
+<p>
+    The <code>PluginProperties</code> instance can be found on the <code>KobaltContext</code>
     object that your plug-in receives in its <code>apply()</code> method. Once you have an instance of this
     class, you can read or write variables into it:
 </p>
 <pre>
 override fun apply(project: Project, context: KobaltContext) {
     // Export a property for other plug-ins to use
-    context.pluginProperties.put(name, BUILD_DIR, project.buildDirectory)
+    context.pluginProperties.put(PLUGIN_NAME, "somePluginProperty", "someValue")
 
     // Read a property from another plug-in
-    val sourceDir = context.pluginProperties.get("somePlugin", "someProperty")
+    val sourceDir = context.pluginProperties.get("pluginName", "somePluginProperty")
 }
 </pre>
-<p>
-    Plug-ins that define properties should annotate them with the <code>@ExportedProperty</code> annotation:
+
+          <h3 class="section" indent="1" id="documenting-properties">Documenting properties</h3>
+
+          <p>
+    Plug-ins that define properties should annotate them with the <code>@ExportedPluginProperty</code> or
+              <code>@ExportedProjectProperty</code>annotation:
 </p>
 <pre>
     companion object {
-        @ExportedProperty
+        @ExportedProjectProperty
         const val BUILD_DIR = "buildDir"
 </pre>
 
