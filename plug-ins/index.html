@@ -312,6 +312,28 @@ $ ./kobaltw uploadJcenter
   All artifacts successfully uploaded
 </pre>
 
+<h2 class="section" id="dokka">Dokka</h2>
+
+<p>
+  <a href="https://github.com/Kotlin/dokka">Dokka</a> is Kotlin's documentation tool. The Kobalt Dokka plug-in allows you to launch it and configure it as follows:
+</p>
+<pre>
+    import com.beust.kobalt.plugin.dokka.dokka
+    // ...
+
+    dokka {
+        args("-output", "markdown")
+        linkMapping {
+            dir = "src/main/kotlin"
+            url = "https://github.com/cy6erGn0m/vertx3-lang-kotlin/blob/master/src/main/kotlin"
+            suffix = "#L"
+        }
+    }
+</pre>
+<p>
+  You can then generate your documentation by running the <code>dokka</code> task.
+</p>
+
 
       </div>
 
