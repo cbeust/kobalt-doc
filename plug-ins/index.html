@@ -322,17 +322,34 @@ $ ./kobaltw uploadJcenter
     // ...
 
     dokka {
-        args("-output", "markdown")
-        linkMapping {
+        outputFormat = "markdown"
+        sourceLinks {
             dir = "src/main/kotlin"
             url = "https://github.com/cy6erGn0m/vertx3-lang-kotlin/blob/master/src/main/kotlin"
-            suffix = "#L"
+            urlSuffix = "#L"
         }
     }
 </pre>
 <p>
-  You can then generate your documentation by running the <code>dokka</code> task.
+  You can then generate your documentation by running the <code>dokka</code> task. Here is the full list of configuration parameters allowed:
 </p>
+          <dl class="dl-horizontal">
+              <dt>samplesDir</dt>
+              <dd>The list of directories containing sample code (documentation for those directories is not generated but declarations from them can be referenced using the <code>@sample</code> tag).</dd>
+              <dt>includeDirs</dt>
+              <dd>The names of directories containing the documentation for the module and individual packages.</dd>
+              <dt>outputDir</dt>
+              <dd>The output directory where the documentation is generated.</dd>
+              <dt>outputFormat</dt>
+              <dd>The output format: <code>html</code>, <code>markdown</code>, <code>jekyll</code>,
+              or <code>javadoc</code>.</dd>
+              <dt>sourceLinks</dt>
+              <dd>The source link mappings.</dd>
+              <dt>moduleName</dt>
+              <dd>The name of the module being documented (used as the root directory of the generated documentation).</dd>
+              <dt>skip</dt>
+              <dd>If true, don't generate anything.</dd>
+          </dl>
 
 
       </div>
