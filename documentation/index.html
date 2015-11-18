@@ -129,6 +129,34 @@ Here are a few noteworthy details about this small build file:
 <li>The functions <code>kotlinProject</code> and <code>homeDir</code> are supplied by Kobalt and are referred to as "directives"
 </ul>
 
+          <p>
+              In terms of syntax, there are basically three different ways to specify values in a build file:
+          </p>
+          <ul>
+              <li>Individual values for primitives (numbers, strings) are a straight equals sign:
+                  <pre>
+name = "kobalt"</pre>
+              </li>
+
+              <li>
+                  Parameters that can receive multiple values are usually captured by function calls, so you use parentheses, as usual in Kotlin:
+                  <pre>
+compile("dep1", "dep2", "dep2")</pre>
+              </li>
+
+              <li>
+                  Complex objects are passed as closures, so you use curly braces to define them:
+                  <pre>
+dependencies {
+    ...
+}</pre>
+              </li>
+          </ul>
+          <p>
+              Remember that a build file is a valid Kotlin source, so you can use function calls instead of literal values, or any other correct Kotlin code in your build file:
+          </p>
+          <pre>
+version = readVersion()</pre>
 <h3 class="section" indent="1" id="directives">Directives</h3>
 
 <p>
