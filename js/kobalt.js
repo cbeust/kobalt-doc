@@ -28,6 +28,10 @@ var content = [
   {
     url: "../ten-minutes/index.html",
     title: "Ten minutes"
+  },
+  {
+    url: "../contributing/index.html",
+    title: "Contributing"
   }
 
 ];

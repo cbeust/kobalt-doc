@@ -1,0 +1,141 @@
+<html>
+<head>
+<title>
+
+    Kobalt, by Cedric Beust
+
+</title>
+
+<!-- Bootstrap core CSS -->
+
+<link href="../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/kobalt.css" rel="stylesheet" />
+
+
+  <!-- Optional Bootstrap Theme -->
+
+  <link href="data:text/css;charset=utf-8," data-href="../bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" id="bs-theme-stylesheet">
+
+
+<!--[if lt IE 9]><script src="../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+<!--
+<script src="../bootstrap/assets/js/ie-emulation-modes-warning.js"></script>
+-->
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<!-- Favicons -->
+<!--
+<link rel="icon" href="/favicon.ico">
+-->
+
+</head>
+
+<body>
+
+
+    <div class="container">
+
+      <!-- Static navbar -->
+      <nav id="kobalt-navbar" class="navbar navbar-default">
+      </nav>
+
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h1>Contributing to Kobalt</h1>
+        <p>Interested in contributing to Kobalt? This page explains how to configure your development environment.</p>
+
+      </div>
+
+      <!-- Main content -->
+      <div class="col-md-9">
+
+<h2 class="section" id="launch_configuration">Launch configuration</h2>
+
+<p>
+    Kobalt's main class is `com.beust.kobalt.MainKt`. Here is a typical launch configuration:
+</p>
+          <p align="center">
+              <img width="99%" class="img-rounded" src="../pics/launch-configuration.png"/>
+          </p>
+
+          <p>
+              A few observations:
+              <ul>
+                <li>You can ask Kobalt to build external projects by specifying a non-empty "Working Directory".</li>
+                <li>The default log level is 1. 2 is useful for debugging and 3 will be extremely verbose.</li>
+                <li>Another command line parameter worth of notice is <code>--dev</code>, which will add the class
+                    name and thread information to each log line.</li>
+                <li>Checking the "Single instance" box is useful to avoid duplicating these launch configurations.</li>
+              </ul>
+
+          </p>
+
+          <h2 class="section" id="build-file">Auto complete in build files</h2>
+          <p>
+              It's useful to turn on auto completion for your <code>Build.kt</code> file if you are adding new
+              elements to the DSL. You can achieve this in two steps.
+          </p>
+
+          <h3 class="section" id="sync" indent="1">Sync your build file</h3>
+          <p>
+              This is achieved with the <code>Kobalt / Sync build file</code> menu item. On top of configuring your
+              IDEA project with the correct dependencies, this will also add the <code>kobalt.jar</code> file to your
+              classpath.
+          </p>
+          <p align="center" class="img-rounded">
+              <img width="50%" class="img-rounded" src="../pics/menu-sync.png"/>
+          </p>
+          <p align="center" class="img-rounded">
+              <img width="50%" class="img-rounded" src="../pics/kobalt-jar.png"/>
+          </p>
+
+
+          <h3 class="section" id="compile-build-file" indent="1">Compile your build file</h3>
+          <p>
+              Next, mark the directory that contains your build file as a "Source directory":
+          </p>
+          <p align="center" class="img-rounded">
+              <img width="50%" class="img-rounded" src="../pics/source-root.png"/>
+          </p>
+          <div class="bs-callout bs-callout-warning">
+              <h4>Alternate source directory for <code>Build.kt</code></h4>
+              The default location for <code>Build.kt</code> is in the root directory of your project but
+              you can also put it in <code>kobalt/src/Build.kt</code> and then mark that directory as
+              a source directory.
+          </div>
+
+          <p>
+              You can now use all the IDEA features on your build file:
+          </p>
+          <p align="center">
+              <img class="img-rounded" src="../pics/auto-complete.png"/>
+          </p>
+
+      </div>
+
+      <!-- Table of contents -->
+      <div class="col-md-3" id="table-of-contents">
+      </div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="../bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../js/kobalt.js"></script>
+<script>generateKobalt(6);</script>
+
+  <!--
+  <script src="../../assets/js/docs.min.js"></script>
+-->
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<!--
+<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+-->
+
+</body>
