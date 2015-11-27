@@ -85,10 +85,20 @@
 </pre>
 
 <p>
-    This file can also contain Contributors, which are the main mechanism that Kobalt plug-ins use to interact with each other.
+    This file can also other components which are called plug-in actors. All these actors collaborate with Kobalt
+    in order to increase its functionalities. There are two kinds of actors:
+</p>
+<ul>
+      <li><strong>Contributors</strong>, which return additional data.
+      <li><strong>Interceptors</strong>, which transform data that Kobalt gives them.
+</ul>
+<p>
+    All plug-in actors are interfaces and they all extend <code>IPluginActor</code>. All interceptors
+    extend <code>IInterceptor</code> and all contributors extend <code>IContributor</code>
+
 </p>
 
-<h3>Contributors</h3>
+<h3 class="section" id="contributors">Contributors</h3>
 <p>
     Plug-ins often produce files and data that other plug-ins need to use in order for a build to succeed. For example,
     the Android plug-in needs to generate a file called <code>R.java</code> and then make this file available at
@@ -103,7 +113,7 @@
     <a href=https://github.com/cbeust/kobalt/blob/master/src/main/resources/META-INF/plugin.xml">Kobalt's own <code>plugin.xml</code></a>
     and go over it line by line.
 </p>
-  <h4>plugins (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPlugin.kt"><code>IPlugin</code>)</a></h4>
+  <h4 class="section" indent="2" id="plugins">plugins (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPlugin.kt"><code>IPlugin</code>)</a></h4>
 <pre>
     &lt;plugins&gt;
         &lt;class-name&gt;com.beust.kobalt.plugin.android.AndroidPlugin&lt;/class-name&gt;
@@ -113,7 +123,7 @@
   Kobalt defines a few plug-ins in its core so you never need to download them.
 </p>
 
-<h4>Classpath contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IClasspathContributor.kt"><code>IClasspathContributor</code>)</a></h4>
+<h4 class="section" indent="2" id="classpath-contributors">Classpath contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IClasspathContributor.kt"><code>IClasspathContributor</code>)</a></h4>
 <pre>
     &lt;classpath-contributors&gt;
         &lt;class-name&gt;com.beust.kobalt.plugin.android.AndroidPlugin&lt;/class-name&gt;
@@ -127,7 +137,7 @@
   as well.
 </p>
 
-<h4>Project contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IProjectContributor.kt"><code>IProjectContributor</code>)</a></h4>
+<h4 class="section" indent="2" id="project-contributors">Project contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IProjectContributor.kt"><code>IProjectContributor</code>)</a></h4>
 <pre>
     &lt;project-contributors&gt;
         &lt;class-name&gt;com.beust.kobalt.plugin.java.JavaPlugin&lt;/class-name&gt;
@@ -139,7 +149,7 @@ Some plug-ings produce projects (Java, Kotlin) while others don't (Packaging, Ap
     after a build file was parsed.
 </p>
 
-<h4>Init contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IInitContributor.kt"><code>IInitContributor</code>)</a></h4>
+<h4 class="section" indent="2" id="init-contributors">Init contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IInitContributor.kt"><code>IInitContributor</code>)</a></h4>
 <pre>
     &lt;init-contributors&gt;
         &lt;class-name&gt;com.beust.kobalt.plugin.java.JavaBuildGenerator&lt;/class-name&gt;
@@ -157,7 +167,7 @@ Some plug-ings produce projects (Java, Kotlin) while others don't (Packaging, Ap
     with the highest number of files is then asked to generate the build file.
 </p>
 
-<h4>Repo contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IRepoContributor.kt"><code>IRepoContributor</code>)</a></h4>
+<h4 class="section" indent="2" id="repo-contributors">Repo contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IRepoContributor.kt"><code>IRepoContributor</code>)</a></h4>
 <pre>
     &lt;repo-contributors&gt;
         &lt;class-name&gt;com.beust.kobalt.plugin.android.AndroidPlugin&lt;/class-name&gt;
@@ -169,12 +179,25 @@ Some plug-ings produce projects (Java, Kotlin) while others don't (Packaging, Ap
     artifacts can be found.
 </p>
 
-<h4>Compiler flag contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/ICompilerFlagContributor.kt"><code>ICompilerFlagContributor</code>)</a></h4>
+<h4 class="section" indent="2" id="compiler-flags-contributors">Compiler flag contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/ICompilerFlagContributor.kt"><code>ICompilerFlagContributor</code>)</a></h4>
 <p>
     Plug-ins can add flags to the compiler by implementing this interface.
 </p>
 
-<h2 class="section" id="directives">Directives</h2>
+<h4 class="section" indent="2" id="run-contributors">Run contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IRunContributor.kt"><code>IRunContributor</code>)</a></h4>
+<p>
+  Plug-ins that can run a project (task "run") should implement this interface.
+</p>
+<h3 class="section" id="interceptors">Interceptors</h3>
+<p>
+    Interceptors transform data that Kobalt passes them.
+</p>
+          <h4 class="section" indent="2" id="compiler-interceptor">Compiler interceptors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/ICompilerInterceptor.kt"><code>ICompilerInterceptor</code>)</a></h4>
+          <p>
+              Plug-ins that implement this interface get a chance to alter the arguments that are passed to the various compilers (source files, classpath, arguments, etc...).
+          </p>
+
+          <h2 class="section" id="directives">Directives</h2>
 <p>
     Directives are functions that users of your plug-in can use in their build file in order to configure your plug-in. These can be any kind of Kotlin function but in the interest of preserving a clean syntax in the build file, it's recommended to use the type safe builder pattern, <a href="https://kotlinlang.org/docs/reference/type-safe-builders.html">as described here</a>.
 </p>
