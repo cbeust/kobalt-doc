@@ -9,7 +9,7 @@
 <!-- Bootstrap core CSS -->
 
 <link href="../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-
+<link href="../css/kobalt.css" rel="stylesheet" />
 
   <!-- Optional Bootstrap Theme -->
 
@@ -69,10 +69,10 @@ val p = javaProject(wrapper) {
 </pre>
 
 <p>
-Both these directives allow you to consider an object of type <code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/Project.kt">Project</code></a>.
+Both these directives create an object of type <code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/Project.kt">Project</code></a>.
 </p>
 
-<h3 class="section" indent="1">Project</h3>
+<h3 class="section" id="project" indent="1">Project</h3>
 
 <p>
 A <code>Project</code> has two mandatory attributes: <code>name</code> and <code>version</code>. If you are planning to deploy your project to a Maven repository, you also have to specify its <code>group</code> (e.g. <code>com.beust</code>) and <code>artifactId</code> (e.g. <code>kobalt</code>).
@@ -92,7 +92,7 @@ A <code>Project</code> has two mandatory attributes: <code>name</code> and <code
     <dd>The dependencies for your tests</dd>
   </dl>
 
-<h3 class="section" indent="1">Tasks</h3>
+<h3 class="section" id="tasks" indent="1">Tasks</h3>
 <p>
 Once you have at least one project configured, the plug-in lets you invoke the following tasks:
 <dl class="dl-horizontal">
@@ -106,7 +106,103 @@ Once you have at least one project configured, the plug-in lets you invoke the f
   <dd>Clean the project</dd>
 </dl>
 
-<h2 class="section" id="application">Application</h2>
+<h3 class="section" id="variants" indent="1">Variants</h3>
+<p>
+    Variants let you configure your project to generate different artifacts compiled from different sources depending on the <em>variant</em> you selected.
+</p>
+          <div class="bs-callout bs-callout-warning">
+              <h4>Note</h4>
+              Kobalt's variant system is very similar to <a href="http://developer.android.com/tools/building/configuring-gradle.html">Android's build types</a>, so you should already be familiar with these concepts if you have built Android applications. The difference is that Kobalt supports variants in its core, so that all projects (not just Android's) can take advantage of it.
+          </div>
+
+          <p>
+              A variant is made of at least one of the following two components:
+          </p>
+              <ul>
+                  <li>The product flavor.</li>
+                  <li>The build type.</li>
+              </ul>
+          <p>
+              <strong>Product flavors</strong> usually contains different source files and different logic (e.g. a "free version" and a "pro version". <strong>Build types</strong> lead to different archives (e.g. "debug" and "release", with the "release" version being obfuscated). This effect is achieved by defining identical source files in different directories and then letting Kobalt build the correct one. Each product flavor and build type has a name which translates directory into a source directory. For example:
+          </p>
+<pre>
+productFlavor("free") {
+}
+
+buildType("release") {
+}</pre>
+          <p>
+              With these variants defined, you can now add source files in the "<code>src/free/java</code>" and "<code>src/release/java</code>" directories (Kotlin is also supported):
+          </p>
+          <pre>
+src/free/java/Product.java
+src/release/java/Product.java</pre>
+          <p>
+              If you define at least one variant, new tasks get added to your build:
+          </p>
+          <pre>
+$ ./kobaltw --tasks
+
+===== java =====
+compileFreeRelease
+compileFreeDebug
+
+===== packaging =====
+assembleFreeRelease
+assembleFreeDebug</pre>
+          <p>
+              For example, if you define two flavors, "pro" and "free", and two build types, "debug" and "release", four tasks will be added that combine these: "proDebug", "proRelease", "freeDebug" and "freeRelease". If you assemble any of these, an artifact named after that combination will be created, e.g. "kobalt-0.273-free-debug.jar".
+          </p>
+
+          <h3 class="section" id="build-config" indent="1">BuildConfig</h3>
+          <p>
+              If you defined at least one variant defined, a special file called <code>BuildConfig.java</code> (or
+              <code>BuildConfig.kt</code>) will be automatically generated.
+          </p>
+          <div class="bs-callout bs-callout-warning">
+              <h4>Note</h4>
+              You need to define <code>packageName</code> in your project in order for this file to be generated or
+              Kobalt will fail.
+          </div>
+          <p>
+              This class contains at least two fields defining the current variant:
+          </p>
+<pre>
+class BuildConfig {
+    companion object {
+        val PRODUCT_FLAVOR : String = "pro"
+        val BUILD_TYPE : String = "debug"
+    }
+}</pre>
+          <p>
+              You can add your own custom fields to this file by calling the <code>buildConfig</code> directive
+              inside your
+              flavor:
+          </p>
+          <pre>
+productFlavor("free") {
+    buildConfig {
+        field("aStringField", "String", "\"The free field\"")
+        field("anIntField", "Int", "42")
+    }
+}</pre>
+          <p>
+              The generated file will then contain:
+          </p>
+<pre>
+class BuildConfig {
+    companion object {
+        val PRODUCT_FLAVOR : String = "free"
+        val BUILD_TYPE : String = "debug"
+        val aStringField : String = "The free field"
+        val anIntField : Int = 42
+    }
+}</pre>
+<p>
+    Take a look at the <a href=https://github.com/cbeust/kobalt-examples/tree/master/variants>variants example
+    project</a> to see an actual example using variants and <code>BuildConfig</code>.
+</p>
+          <h2 class="section" id="application">Application</h2>
 <p>
     The "application" plug-in lets you run your application directly from <code>kobaltw</code>. You configure
     it as follows:
@@ -311,6 +407,45 @@ $ ./kobaltw uploadJcenter
   kobalt-line-count: Found 2 artifacts to upload
   All artifacts successfully uploaded
 </pre>
+
+<h2 class="section" id="dokka">Dokka</h2>
+
+<p>
+  <a href="https://github.com/Kotlin/dokka">Dokka</a> is Kotlin's documentation tool. The Kobalt Dokka plug-in allows you to launch it and configure it as follows:
+</p>
+<pre>
+    import com.beust.kobalt.plugin.dokka.dokka
+    // ...
+
+    dokka {
+        outputFormat = "markdown"
+        sourceLinks {
+            dir = "src/main/kotlin"
+            url = "https://github.com/cy6erGn0m/vertx3-lang-kotlin/blob/master/src/main/kotlin"
+            urlSuffix = "#L"
+        }
+    }
+</pre>
+<p>
+  You can then generate your documentation by running the <code>dokka</code> task. Here is the full list of configuration parameters allowed:
+</p>
+          <dl class="dl-horizontal">
+              <dt>samplesDir</dt>
+              <dd>The list of directories containing sample code (documentation for those directories is not generated but declarations from them can be referenced using the <code>@sample</code> tag).</dd>
+              <dt>includeDirs</dt>
+              <dd>The names of directories containing the documentation for the module and individual packages.</dd>
+              <dt>outputDir</dt>
+              <dd>The output directory where the documentation is generated.</dd>
+              <dt>outputFormat</dt>
+              <dd>The output format: <code>html</code>, <code>markdown</code>, <code>jekyll</code>,
+              or <code>javadoc</code>.</dd>
+              <dt>sourceLinks</dt>
+              <dd>The source link mappings.</dd>
+              <dt>moduleName</dt>
+              <dd>The name of the module being documented (used as the root directory of the generated documentation).</dd>
+              <dt>skip</dt>
+              <dd>If true, don't generate anything.</dd>
+          </dl>
 
 
       </div>

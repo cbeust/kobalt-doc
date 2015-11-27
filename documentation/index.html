@@ -129,6 +129,34 @@ Here are a few noteworthy details about this small build file:
 <li>The functions <code>kotlinProject</code> and <code>homeDir</code> are supplied by Kobalt and are referred to as "directives"
 </ul>
 
+          <p>
+              In terms of syntax, there are basically three different ways to specify values in a build file:
+          </p>
+          <ul>
+              <li>Individual values for primitives (numbers, strings) are a straight equals sign:
+                  <pre>
+name = "kobalt"</pre>
+              </li>
+
+              <li>
+                  Parameters that can receive multiple values are usually captured by function calls, so you use parentheses, as usual in Kotlin:
+                  <pre>
+compile("dep1", "dep2", "dep2")</pre>
+              </li>
+
+              <li>
+                  Complex objects are passed as closures, so you use curly braces to define them:
+                  <pre>
+dependencies {
+    ...
+}</pre>
+              </li>
+          </ul>
+          <p>
+              Remember that a build file is a valid Kotlin source, so you can use function calls instead of literal values, or any other correct Kotlin code in your build file:
+          </p>
+          <pre>
+version = readVersion()</pre>
 <h3 class="section" indent="1" id="directives">Directives</h3>
 
 <p>
@@ -143,6 +171,7 @@ val kobalt = kotlinProject {
 <b>
     assemble {
         jar {
+        }
     }
 </b>
 }
@@ -436,132 +465,42 @@ Now, all you need to do is to upload your package:
 ./kobaltw uploadJcenter
 </pre>
 
-<h2 class="section" id="writing-a-plug-in">Writing a plug-in</h2>
-
-A good starting point to write a plug-in is the <a href="https://github.com/cbeust/kobalt-line-count">kobalt-line-count project</a>, which shows a minimalistic plug-in.
-
-<h3 class="section" indent="1" id="building">Building</h3>
-
-You only need to do two things to build a Kobalt plug-in:
-
-<h4>1. Add Kobalt as a dependency:</h4>
-
+<h2 class="section" id="profiles">Profiles</h2>
+<p>
+    Profiles allow you to run altered versions of your build file by using command
+    line parameters.
+</p>
+<p>
+    You start by defining boolean values initialized to <code>false</code> in your build file:
+</p>
+<pre>
+  val experimental = false
+  val premium = false
+</pre>
+<p>
+  Then you use this variable wherever you need it in your build file:
+</p>
+<pre>
+  val p = javaProject {
+      name = if (experimental) "project-exp" else "project"
+      version = "1.3"
+</pre>
+<p>
+  Finally, you invoke <code>./kobaltw</code> with the <code>--profiles</code> parameter followed by the profiles you want to activate, separated by a comma:
+</p>
+<pre>
+  ./kobaltw -profiles experimental,premium assemble
+</pre>
+<p>
+  Keep in mind that since your build file is a real Kotlin source file,
+  you can use these profile variables pretty much anywhere, e.g.:
+</p>
 <pre>
 dependencies {
-    compile("com.beust:kobalt:0.61")
-}
-</pre>
-
-<h4>2. Declare the main class of your plug-in in the Jar file's manifest:</h4>
-
-<pre>
-    packaging {
-        jar {
-            manifest {
-                attributes("Kobalt-Plugin-Class", "com.beust.kobalt.example.ExamplePlugin")
-            }
-        }
-</pre>
-
-<h3 class="section" indent="1" id="implementing">Implementing</h3>
-
-A plug-in typically has three components:
-
-<ul>
-    <li>Extending and implementing the methods of <code>BasePlugin</code>.
-    <li>Specifying one or more tasks.
-    <li>Specifying directives (functions that will be used from the build file).
-</ul>
-
-<h3 class="section" indent="1" id="base-plugin">BasePlugin</h3>
-
-<p>
-The main class of your plugin extends <code>BasePlugin</code> and implements its <code>apply()</code> method and <code>name</code> variable:
-</p>
-
-<pre>
-public class ExamplePlugin : BasePlugin() {
-    override val name = "kobalt-example-plugin"
-
-    override fun apply(project: Project, context: KobaltContext) {
-        println("Applying plugin ${name} with project ${project}")
-    }
-}
-</pre>
-
-<h3 class="section" indent="1" id="plugin-tasks">Plugin tasks</h3>
-
-<p>
-Next, you can declare tasks with the <code>@Task</code> annotation:
-</p>
-
-<pre>
-@Task(name = "coverage", description = "Run coverage", runAfter = arrayOf("compile"))
-public fun coverage(project: Project): TaskResult {
-    println("Running the coverage on project $project")
-    return TaskResult()
-}
-</pre>
-
-<ul>
-    <li>Tasks return a <code>TaskResult</code> object, which can be initialized with <code>false</code> if the task didn't succeed for some reason.
-    <li>The name of the task is the same name that can be passed to the <code>kobaltw</code> command (e.g. <code>"./kobaltw coverage"</code>)
-    <li>The description is what is displayed with <code>"./kobaltw --tasks"</code>
-    <li><code>runAfter</code> and <code>runBefore</code> let you specify the dependencies of your task. In this example plug-in, we want to calculate the coverage of the project so it makes sense to run after the <code>"compile"</code> task.
-</ul>
-
-<h3 class="section" indent="1" id="plugin-directives">Directives</h3>
-
-<p>
-Finally, you need to define functions that can be used from the build file (directives). You are encouraged to use the <a href="https://confluence.jetbrains.com/display/Kotlin/Type-safe+Groovy-style+builders">Kotlin DSL approach</a> to expose these functions so that the build file syntax can remain consistent. Typically, these functions will update data that your tasks can then use to do their job.
-</p>
-
-<p>
-
-These can be either straight functions or extension functions. For example, here is the <code>kotlinProject</code> directive:
-
-<pre>
-@Directive
-public fun kotlinProject(init: KotlinProject.() -> Unit): KotlinProject {
-    val result = KotlinProject()
-    result.init()
-    return result
-}
-</pre>
-
-<p>
-This function returns a <code>KotlinProject</code> and the user can then override variables or invoke methods from this class in their build file:
-</p>
-
-<pre>
-val kobalt = kotlinProject {
-    name = "kobalt"
-    group = "com.beust"
-...
-</pre>
-
-<p>
-Using an extension function to define a directive allows you to add new functions to Kobalt classes. For example, currently, a project can have <code>"dependencies"</code> and <code>"dependenciesTest"</code>. For a coverage plug-in, we would want to add a <code>"dependenciesCoverage"</code> section, which can be easily done by defining an extension function on <code>Project</code>:
-</p>
-
-
-<pre>
-@Directive
-public fun Project.dependenciesCoverage(ini: Dependencies.() -> Unit) : Dependencies {
-    val result = Dependencies()
-    result.init()
-    return result
-}
-</pre>
-
-<p>
-And we can now use:
-</p>
-
-<pre>
-val p = kotlinProject {
-    dependenciesCoverage("com.example:foo:0.1")
-}
+    if (experimental)
+        "com.squareup.okhttp:okhttp:2.4.0"
+    else
+        "com.squareup.okhttp:okhttp:2.5.0",
 </pre>
 
 <h2 class="section" id="sources">Sources and license</h2>

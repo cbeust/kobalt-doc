@@ -58,7 +58,7 @@
     Kobalt plug-ins are usually made of several parts:
 
     <ul>
-          <li><a href="#plugin-xml"><b>plugin.xml</b></a>. A file that describes all the components of your plug-in, such as contributors.</li>
+          <li><a href="#plugin-xml"><b>kobalt-plugin.xml</b></a>. A file that describes all the components of your plug-in, such as contributors.</li>
           <li><a href="#directives"><b>Directives</b></a>. Kotlin functions that users of your plug-in can invoke in their build file, such as <code>kotlinProject</code> or <code>dependencies</code>. These functions typically configure some data that your plug-in will later use to perform its functions.</li>
           <li><a href="#tasks"><b>Tasks</b></a>. These tasks are invoked from the command line and ask your plug-ins to perform certain actions.</li>
           <li><a href="#properties"><b>Properties</b></a>. Plug-ins can export properties and read properties from other plug-ins.</li>
@@ -70,9 +70,9 @@
     and keep reading.
 </p>
 
-<h2 class="section" id="plugin-xml">plugin.xml</h2>
+<h2 class="section" id="kobalt-plugin-xml">kobalt-plugin.xml</h2>
 <p>
-    The <code>plugin.xml</code> file (stored in <code>META-INF</code> in the jar file of your plug-in) is mandatory and describes all the components of your plug-in. At a minimum,
+    The <code>kobalt-plugin.xml</code> file (stored in <code>META-INF</code> in the jar file of your plug-in) is mandatory and describes all the components of your plug-in. At a minimum,
     this file will contain the name of your plug-in and the main plug-in class:
 </p>
 <pre>
@@ -110,7 +110,7 @@
 </p>
 
 <p>In order to make things more concrete, let's take a look at
-    <a href=https://github.com/cbeust/kobalt/blob/master/src/main/resources/META-INF/plugin.xml">Kobalt's own <code>plugin.xml</code></a>
+    <a href=https://github.com/cbeust/kobalt/blob/master/src/main/resources/META-INF/kobalt-plugin.xml">Kobalt's own <code>kobalt-plugin.xml</code></a>
     and go over it line by line.
 </p>
   <h4 class="section" indent="2" id="plugins">plugins (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPlugin.kt"><code>IPlugin</code>)</a></h4>
@@ -265,7 +265,7 @@ public fun myConfig(project: Project, init: Info.() -> Unit) : Info {
 </p>
 <h2 class="section" id="tasks">Tasks</h2>
 <p>
-    Tasks are provided by plug-ins and can be invoked from the command line, e.g. <code>./gradlew assemble</code>. There are two kinds of tasks: static and dynamic.
+    Tasks are provided by plug-ins and can be invoked from the command line, e.g. <code>./kobaltw assemble</code>. There are two kinds of tasks: static and dynamic.
 </p>
 <h3 class="section" indent="1">Static tasks</h3>
 <p>
