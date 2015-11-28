@@ -192,12 +192,16 @@ Some plug-ings produce projects (Java, Kotlin) while others don't (Packaging, Ap
 <p>
     Interceptors transform data that Kobalt passes them.
 </p>
-          <h4 class="section" indent="2" id="compiler-interceptor">Compiler interceptors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/ICompilerInterceptor.kt"><code>ICompilerInterceptor</code>)</a></h4>
-          <p>
-              Plug-ins that implement this interface get a chance to alter the arguments that are passed to the various compilers (source files, classpath, arguments, etc...).
-          </p>
+<h4 class="section" indent="2" id="compiler-interceptor">Compiler interceptors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/ICompilerInterceptor.kt"><code>ICompilerInterceptor</code>)</a></h4>
+<p>
+  Plug-ins that implement this interface get a chance to alter the arguments that are passed to the various compilers (source files, classpath, arguments, etc...).
+</p>
+<h4 class="section" indent="2" id="classpath-interceptor">Classpath interceptors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IClasspathInterceptor.kt"><code>IClasspathInterceptor</code>)</a></h4>
+<p>
+  Plug-ins that implement this interface get a chance to alter the dependencies of a project (<code>dependencies{}</code>, <code>dependenciesTest{}</code>, ...) before Kobalt sees them.
+</p>
 
-          <h2 class="section" id="directives">Directives</h2>
+  <h2 class="section" id="directives">Directives</h2>
 <p>
     Directives are functions that users of your plug-in can use in their build file in order to configure your plug-in. These can be any kind of Kotlin function but in the interest of preserving a clean syntax in the build file, it's recommended to use the type safe builder pattern, <a href="https://kotlinlang.org/docs/reference/type-safe-builders.html">as described here</a>.
 </p>
