@@ -184,10 +184,15 @@ Some plug-ings produce projects (Java, Kotlin) while others don't (Packaging, Ap
     Plug-ins can add flags to the compiler by implementing this interface.
 </p>
 
-<h4 class="section" indent="2" id="run-contributors">Run contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IRunContributor.kt"><code>IRunContributor</code>)</a></h4>
+<h4 class="section" indent="2" id="runner-contributors">Runner contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IRunnerContributor.kt"><code>IRunnerContributor</code>)</a></h4>
 <p>
   Plug-ins that can run a project (task "run") should implement this interface.
 </p>
+
+          <h4 class="section" indent="2" id="test-runner-contributors">Test runner contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/ITestRunnerContributor.kt"><code>ITestRunnerContributor</code>)</a></h4>
+          <p>
+              Plug-ins that can run tests (task "test") should implement this interface.
+          </p>
 <h3 class="section" id="interceptors">Interceptors</h3>
 <p>
     Interceptors transform data that Kobalt passes them.
