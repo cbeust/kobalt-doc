@@ -58,7 +58,7 @@
     Kobalt plug-ins are usually made of several parts:
 
     <ul>
-          <li><a href="#plugin-xml"><b>kobalt-plugin.xml</b></a>. A file that describes all the components of your plug-in, such as contributors.</li>
+          <li><a href="#plugin-xml"><b>kobalt-plugin.xml</b></a>. A file that describes all the components (called "plug-in actors") of your plug-in, such as contributors.</li>
           <li><a href="#directives"><b>Directives</b></a>. Kotlin functions that users of your plug-in can invoke in their build file, such as <code>kotlinProject</code> or <code>dependencies</code>. These functions typically configure some data that your plug-in will later use to perform its functions.</li>
           <li><a href="#tasks"><b>Tasks</b></a>. These tasks are invoked from the command line and ask your plug-ins to perform certain actions.</li>
           <li><a href="#properties"><b>Properties</b></a>. Plug-ins can export properties and read properties from other plug-ins.</li>
@@ -72,141 +72,213 @@
 
 <h2 class="section" id="kobalt-plugin-xml">kobalt-plugin.xml</h2>
 <p>
-    The <code>kobalt-plugin.xml</code> file (stored in <code>META-INF</code> in the jar file of your plug-in) is mandatory and describes all the components of your plug-in. At a minimum,
-    this file will contain the name of your plug-in and the main plug-in class:
+    The <code>kobalt-plugin.xml</code> file (stored in <code>META-INF</code> in the jar file of your plug-in) is mandatory and describes all the actors of your plug-in. This file contains a list of class names, each of which is expected to implement at least one of <code>IPluginActor</code>'s interfaces:
 </p>
 <pre>
 &lt;kobalt-plugin&gt;
     &lt;name>kobalt&lt;/name&gt;
-    &lt;plugins&gt;
-        &lt;class-name>com.beust.kobalt.plugin.android.AndroidPlugin&lt;/class-name&gt;
-    &lt;/plugins&gt;
+    &lt;plugin-actors&gt;
+        &lt;class-name&gt;com.beust.kobalt.plugin.android.AndroidPlugin&lt;/class-name&gt;
+        &lt;class-name&gt;com.beust.kobalt.plugin.java.JavaBuildGenerator&lt;/class-name&gt;
+    &lt;/plugin-actors&gt;
 &lt;/kobalt-plugin&gt;
 </pre>
 
 <p>
-    This file can also other components which are called plug-in actors. All these actors collaborate with Kobalt
-    in order to increase its functionalities. There are two kinds of actors:
+    <code>IPluginActors</code> can be split in several categories:
 </p>
 <ul>
-      <li><strong>Contributors</strong>, which return additional data.
-      <li><strong>Interceptors</strong>, which transform data that Kobalt gives them.
+    <li><strong>Plugins</strong>, which contain <code>@Task</code> annotations.</li>
+    <li><strong>Interceptors</strong>, which transform data that Kobalt gives them.</li>
+    <li><strong>Contributors</strong>, which produce additional data.</li>
 </ul>
 <p>
-    All plug-in actors are interfaces and they all extend <code>IPluginActor</code>. All interceptors
-    extend <code>IInterceptor</code> and all contributors extend <code>IContributor</code>
+    All plug-in actors are interfaces that extend <code>IPluginActor</code>. Plug-ins extend <code>IPlugin</code>,
+    interceptors extend <code>IInterceptor</code> and contributors extend <code>IContributor</code>. When Kobalt parses your
+    <code>kobalt-plugin.xml</code>, it instantiates all the classes found in the <code>&lt;plugin-actors&gt;</code> tag
+    and then introspects them to find out which <code>IPluginActor</code> interfaces that class implements.
 
 </p>
 
-<h3 class="section" id="contributors">Contributors</h3>
+<h3 class="section" id="philosophy">Plug-in architecture philosophy</h3>
 <p>
-    Plug-ins often produce files and data that other plug-ins need to use in order for a build to succeed. For example,
-    the Android plug-in needs to generate a file called <code>R.java</code> and then make this file available at
-    compile time by the Java or Kotlin (or any other language) plug-in. Since plug-ins have no idea about what other
-    plug-ins are currently enabled and running, they can't directly talk to each other so instead of calling into
-    Kobalt, Kobalt calls into them. This is done by declaring various contributors that Kobalt will invoke whenever
-    it needs the information that your plug-in produced. This is a design pattern often referred to as the
-    <a href="https://en.wikipedia.org/wiki/Hollywood_principle">"Hollywood Principle"</a>: "Don't call us, we'll call you".
-</p>
-
-<p>In order to make things more concrete, let's take a look at
-    <a href=https://github.com/cbeust/kobalt/blob/master/src/main/resources/META-INF/kobalt-plugin.xml">Kobalt's own <code>kobalt-plugin.xml</code></a>
-    and go over it line by line.
-</p>
-  <h4 class="section" indent="2" id="plugins">plugins (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPlugin.kt"><code>IPlugin</code>)</a></h4>
-<pre>
-    &lt;plugins&gt;
-        &lt;class-name&gt;com.beust.kobalt.plugin.android.AndroidPlugin&lt;/class-name&gt;
-        &lt;class-name&gt;com.beust.kobalt.plugin.application.ApplicationPlugin&lt;class-name&gt;
-</pre>
 <p>
-  Kobalt defines a few plug-ins in its core so you never need to download them.
-</p>
-
-<h4 class="section" indent="2" id="classpath-contributors">Classpath contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IClasspathContributor.kt"><code>IClasspathContributor</code>)</a></h4>
-<pre>
-    &lt;classpath-contributors&gt;
-        &lt;class-name&gt;com.beust.kobalt.plugin.android.AndroidPlugin&lt;/class-name&gt;
-        &lt;class-name&gt;com.beust.kobalt.plugin.kotlin.KotlinPlugin&lt;/class-name&gt;
-</pre>
-
-<p>
-  Classpath contributors let you specify additional jar files or directories that will be used by
-  the compile task. In the above example, the <code>KotlinPlugin</code> adds the Kotlin runtime
-  to the classpath and Android adds various Android resources (e.g. <code>aar</code> files) to it
-  as well.
-</p>
-
-<h4 class="section" indent="2" id="project-contributors">Project contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IProjectContributor.kt"><code>IProjectContributor</code>)</a></h4>
-<pre>
-    &lt;project-contributors&gt;
-        &lt;class-name&gt;com.beust.kobalt.plugin.java.JavaPlugin&lt;/class-name&gt;
-        &lt;class-name&gt;com.beust.kobalt.plugin.kotlin.KotlinPlugin&lt;/class-name&gt;
-</pre>
-<p>
-Some plug-ings produce projects (Java, Kotlin) while others don't (Packaging, Application, etc...). The ones that
-    do need to register themselves as project contributors. This is how Kobalt collects all the projects defined
-    after a build file was parsed.
-</p>
-
-<h4 class="section" indent="2" id="init-contributors">Init contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IInitContributor.kt"><code>IInitContributor</code>)</a></h4>
-<pre>
-    &lt;init-contributors&gt;
-        &lt;class-name&gt;com.beust.kobalt.plugin.java.JavaBuildGenerator&lt;/class-name&gt;
-        &lt;class-name&gt;com.beust.kobalt.plugin.kotlin.KotlinBuildGenerator&lt;/class-name&gt;
-</pre>
-<p>
-    Kobalt supports the <code>--init</code> command line parameter, which generates a default build file
-    based on the files found in the current directory. Any plug-in that wants to be part of this process need
-    to specify Init Contributors. In this case, both the Java and Kotlin plug-ins define such a contributor
-    but future plug-ins might use this contributor to generate their own build file: Android, Ceylon, Spring, etc...
+  Plug-ins often produce files and data that other plug-ins need to use in order for a build to succeed. For example,
+  the Android plug-in needs to generate a file called <code>R.java</code> and then make this file available at
+  compile time by the Java or Kotlin (or any other language) plug-in. Since plug-ins have no idea about what other
+  plug-ins are currently enabled and running, they can't directly talk to each other so instead of calling into
+  Kobalt, Kobalt calls into them. This is done by declaring various "actors" that Kobalt will invoke whenever
+  it needs the information that your plug-in produced. This is a design pattern often referred to as the
+  <a href="https://en.wikipedia.org/wiki/Hollywood_principle">"Hollywood Principle"</a>: "Don't call us, we'll call you".
 </p>
 <p>
-    You can take a look at the <code>IInitContributor</code> interface to find out more details but in a nutshell,
-    each Init Contributor is asked how many files in the current directory their plug-in handles and the contributor
-    with the highest number of files is then asked to generate the build file.
+  These "actors" are exactly what the <code>kobalt-plugin.xml</code> file describes. This file informs Kobalt about
+  the various ways in which your plug-in participates in the build system by specifying 1) plug-ins, 2) contributors
+  or 3) interceptors.
+
+</p>
 </p>
 
-<h4 class="section" indent="2" id="repo-contributors">Repo contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IRepoContributor.kt"><code>IRepoContributor</code>)</a></h4>
-<pre>
-    &lt;repo-contributors&gt;
-        &lt;class-name&gt;com.beust.kobalt.plugin.android.AndroidPlugin&lt;/class-name&gt;
-</pre>
-<p>
-    Some plug-ins might want to add their own repository to the list of repositories that Kobalt already supports.
-    This is the case of the Android plug-in which, once the <code>ANDROID_HOME</code> environment variable has been
-    defined, will automatically add the repository inside the Android distribution so that support libraries and other
-    artifacts can be found.
-</p>
-
-<h4 class="section" indent="2" id="compiler-flags-contributors">Compiler flag contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/ICompilerFlagContributor.kt"><code>ICompilerFlagContributor</code>)</a></h4>
-<p>
-    Plug-ins can add flags to the compiler by implementing this interface.
-</p>
-
-<h4 class="section" indent="2" id="runner-contributors">Runner contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IRunnerContributor.kt"><code>IRunnerContributor</code>)</a></h4>
-<p>
-  Plug-ins that can run a project (task "run") should implement this interface.
-</p>
-
-          <h4 class="section" indent="2" id="test-runner-contributors">Test runner contributors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/ITestRunnerContributor.kt"><code>ITestRunnerContributor</code>)</a></h4>
+          <h2 class="section" id="actor-list">List of plug-in actors</h2>
           <p>
-              Plug-ins that can run tests (task "test") should implement this interface.
+              Here is a list of actors (contributors and interceptors) that you can define in your plug-in.
           </p>
-<h3 class="section" id="interceptors">Interceptors</h3>
-<p>
-    Interceptors transform data that Kobalt passes them.
-</p>
-<h4 class="section" indent="2" id="compiler-interceptor">Compiler interceptors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/ICompilerInterceptor.kt"><code>ICompilerInterceptor</code>)</a></h4>
-<p>
-  Plug-ins that implement this interface get a chance to alter the arguments that are passed to the various compilers (source files, classpath, arguments, etc...).
-</p>
-<h4 class="section" indent="2" id="classpath-interceptor">Classpath interceptors (<a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IClasspathInterceptor.kt"><code>IClasspathInterceptor</code>)</a></h4>
-<p>
-  Plug-ins that implement this interface get a chance to alter the dependencies of a project (<code>dependencies{}</code>, <code>dependenciesTest{}</code>, ...) before Kobalt sees them.
-</p>
+          <table class="table table-bordered table-condensed">
+              <thead>
+                  <td>Interface name</td>
+                  <td>Type</td>
+                  <td>Description</td>
+              </thead>
+              <tr>
+                  <td><code>IBuildDirectoryInterceptor</code></td>
+                  <td><code>IInterceptor</code></td>
+                  <td>
+                      Plug-ins that need to generate class files in a different directory than the default one should
+                      implement this interface.
+                  </td>
+              </tr>
+              <tr>
+                  <td><code>IClasspathContributor</code></td>
+                  <td><code>IContributor</code></td>
+                  <td>  Classpath contributors let you specify additional jar files or directories that will be used by
+                      the <code>"compile"</code> task.
+                  </td>
 
-  <h2 class="section" id="directives">Directives</h2>
+              </tr>
+              <tr>
+                  <td><code>IClasspathInterceptor</code></td>
+                  <td><code>IInterceptor</code></td>
+                  <td>
+                      Plug-ins that want to modify the classpath before Kobalt uses it should implement this interface.
+                  </td>
+              </tr>
+              <tr>
+                  <td><code>ICompilerContributor</code></td>
+                  <td><code>IContributor</code></td>
+                  <td>
+                      Plug-ins that know how to turn files into bytecodes should implement this interface.
+                  </td>
+              </tr>
+              <tr>
+                  <td><code>ICompilerInterceptor</code></td>
+                  <td><code>IInterceptor</code></td>
+                  <td>
+                      Plug-ins that implement this interface get a chance to alter the dependencies of a project (<code>dependencies{}</code>, <code>dependenciesTest{}</code>, ...) before Kobalt sees them.
+                  </td>
+              </tr>
+              <tr>
+                  <td><code>IDocContributor</code></td>
+                  <td><code>IContributor</code></td>
+                  <td>
+                      Plug-ins that know how to generate documentation out of source files should implement this interface.
+                  </td>
+              </tr>
+              <tr>
+                  <td><code>IInitContributor</code></td>
+                  <td><code>IContributor</code></td>
+                  <td>Kobalt supports the <code>--init</code> command line parameter, which generates a default build file
+                      based on the files found in the current directory. Any plug-in that wants to be part of this process need
+                      to implement this interface. In this case, both the Java and Kotlin plug-ins define such a contributor
+                      but future plug-ins might use this contributor to generate their own build file: Android, Ceylon, Spring, etc...
+                  </td>
+              </tr>
+              <tr>
+                  <td><code>IProjectContributor</code></td>
+                  <td><code>IContributor</code></td>
+                  <td>Some plug-ins produce projects (Java, Kotlin) while others don't (Packaging, Application, etc...). The ones that
+                      do need to register themselves as project contributors. This is how Kobalt collects all the projects defined
+                      after a build file was parsed.</td>
+              </tr>
+              <tr>
+                  <td><code>IRepoContributor</code></td>
+                  <td><code>IContributor</code></td>
+                  <td>
+                      Some plug-ins might want to add their own repository to the list of repositories that Kobalt already supports.
+                      This is the case of the Android plug-in which, once the <code>ANDROID_HOME</code> environment variable has been
+                      defined, will automatically add the repository inside the Android distribution so that support libraries and other
+                      artifacts can be found.
+                  </td>
+              </tr>
+              <tr>
+                  <td><code>ISourceDirectoryInterceptor</code></td>
+                  <td><code>IInterceptor</code></td>
+                  <td>
+                      Plug-ins that wamt to add, remove or alter the source directories should implement this interface.
+                  </td>
+              </tr>
+              <tr>
+                  <td><code>IRunnerContributor</code></td>
+                  <td><code>IContributor</code></td>
+                  <td>
+                      Plug-ins that can operate when the <code>"run"</code> task gets invoked should implement that interface.
+                  </td>
+              </tr>
+              <tr>
+                  <td><code>ITestRunnerContributor</code></td>
+                  <td><code>IContributor</code></td>
+                  <td>
+                      Plug-ins that can operate when the <code>"test"</code> task gets invoked should implement that interface.
+                  </td>
+              </tr>
+          </table>
+
+<h2 class="section" id="example">Example</h2>
+          <p>
+              Kobalt itself uses a <code>kobalt-plugin.xml</code> to define contributors and interceptors, here is
+              an excerpt of it:
+          </p>
+          <pre>
+&lt;plugin-actors&gt;
+  &lt;class-name&gt;com.beust.kobalt.plugin.java.JavaPlugin&lt;/class-name&gt;
+  &lt;class-name&gt;com.beust.kobalt.plugin.android.AndroidPlugin&lt;/class-name&gt;
+
+  &lt;class-name&gt;com.beust.kobalt.plugin.java.JavaBuildGenerator&lt;/class-name&gt;
+  &lt;class-name&gt;com.beust.kobalt.plugin.kotlin.KotlinBuildGenerator&lt;/class-name&gt;
+&lt;/plugin-actors&gt;
+          </pre>
+          <p>
+              In order to find out what these actually do, we just need to take a look at their definition and
+              see which interfaces they implement. For example:
+          </p>
+          <pre>
+class JavaPlugin : ICompilerContributor, IDocContributor {</pre>
+
+          <p>
+              With this declaration, we know that the <code>JavaPlugin</code> contributes a compiler and a doc generator.
+          </p>
+          <pre>
+class JavaBuildGenerator: IInitContributor {</pre>
+          <p>
+              This class is declaring that it wants to take part in the <code>--init</code> selection process, which is
+              discussed in the next section.
+          </p>
+          <h2 class="section" id="selection-process">Selection process</h2>
+          <p>
+              Several plug-ins might want to contribute to a specific task where only one participant only should be allowed,
+              such as running tests or generating documentation. Even the simple task of compiling should probably only
+              ever be performed by no more than one plug-in. Therefore, when comes the time to compile a project,
+              Kobalt needs to find which plug-in is the most suitable for that task and pick it. In order to do that,
+              plug-ins that contribute to tasks that can only be performed by one candidate need to declare their
+              <em>affinity</em> to that task for a given project.
+          </p>
+          <p>
+              Contributors that need to be selected all need to implement the following interface:
+          </p>
+          <pre>
+interface IAffinity {
+/**
+ * @return an integer indicating the affinity of your actor for the given project. The actor that returns
+ * the highest affinity gets selected.
+ */
+fun affinity(project: Project, context: KobaltContext) : Int</pre>
+          <p>
+              For example, the JavaPlugin implements the <code>ICompilerContributor</code> interface and then overrides
+              the <code>affinity</code> method to make sure it gets run for Java projects but ignored for others:
+          </p>
+          <pre>
+override fun affinity(project: Project, context: KobaltContext) =
+    if (project.sourceSuffix == ".java") 1 else 0</pre>
+          <h2 class="section" id="directives">Directives</h2>
 <p>
     Directives are functions that users of your plug-in can use in their build file in order to configure your plug-in. These can be any kind of Kotlin function but in the interest of preserving a clean syntax in the build file, it's recommended to use the type safe builder pattern, <a href="https://kotlinlang.org/docs/reference/type-safe-builders.html">as described here</a>.
 </p>
