@@ -339,16 +339,14 @@ myConfig(project) {
 
 <pre>
 @Directive
-public fun myConfig(project: Project, init: Info.() -> Unit) : Info {
-    val info = Info()
-    info.init()
+public fun myConfig(init: Info.() -> Unit) = Info().apply {
+    init()
     (Kobalt.findPlugin("my-plug-in") as MyPlugin).info = info
-    return info
-}
-</pre>
+    this
+}</pre>
 <p>
     Obviously, you can choose any kind of API to communicate between the directive and its plug-in. In the code
-    above, I chose to directly overrid the entire <code>Info</code> field, but you could instead choose to call
+    above, I chose to directly override the entire <code>Info</code> field, but you could instead choose to call
     a function, just set one boolean instead of the whole object, etc...
 </p>
 <h2 class="section" id="tasks">Tasks</h2>
