@@ -278,7 +278,9 @@ fun affinity(project: Project, context: KobaltContext) : Int</pre>
           <pre>
 override fun affinity(project: Project, context: KobaltContext) =
     if (project.sourceSuffix == ".java") 1 else 0</pre>
-          <h2 class="section" id="directives">Directives</h2>
+
+
+<h2 class="section" id="directives">Directives</h2>
 <p>
     Directives are functions that users of your plug-in can use in their build file in order to configure your plug-in. These can be any kind of Kotlin function but in the interest of preserving a clean syntax in the build file, it's recommended to use the type safe builder pattern, <a href="https://kotlinlang.org/docs/reference/type-safe-builders.html">as described here</a>.
 </p>
