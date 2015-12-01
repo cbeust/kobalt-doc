@@ -258,7 +258,7 @@ class JavaBuildGenerator: IInitContributor {</pre>
           </p>
           <h2 class="section" id="selection-process">Selection process</h2>
           <p>
-              Several plug-ins might want to contribute to a specific task where only one participant only should be allowed,
+              Several plug-ins might want to contribute to a specific task where only one participant should be allowed,
               such as running tests or generating documentation. Even the simple task of compiling should probably only
               ever be performed by no more than one plug-in for a given project. Therefore, when comes the time to
               compile a project,
@@ -267,7 +267,7 @@ class JavaBuildGenerator: IInitContributor {</pre>
               <em>affinity</em> to that task for a given project.
           </p>
           <p>
-              Contributors that need to be selected all need to implement the following interface:
+              Contributors that want to participate in a selection process need to implement the following interface:
           </p>
           <pre>
 interface IProjectAffinity {
@@ -278,7 +278,7 @@ interface IProjectAffinity {
     fun affinity(project: Project, context: KobaltContext) : Int
 }</pre>
   <p>
-      For example, the JavaPlugin implements the <code>ICompilerContributor</code> interface and then overrides
+      For example, the JavaPlugin implements the <code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/ICompilerContributor.kt">ICompilerContributor</a></code> interface and then overrides
       the <code>affinity()</code> method to make sure it gets run for Java projects but ignored for others:
   </p>
 
