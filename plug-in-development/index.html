@@ -94,7 +94,7 @@
 </ul>
 <p>
     All plug-in actors are interfaces that extend <code>IPluginActor</code>. Plug-ins extend <code>IPlugin</code>,
-    interceptors extend <code><code>IInterceptor</code></code> and contributors extend <code><code>IContributor</code></code>. When Kobalt parses your
+    interceptors extend <code>IInterceptor</code> and contributors extend <code>IContributor</code>. When Kobalt parses your
     <code>kobalt-plugin.xml</code>, it instantiates all the classes found in the <code>&lt;plugin-actors&gt;</code> tag
     and then introspects them to find out which <code>IPluginActor</code> interfaces that class implements.
 
@@ -131,7 +131,7 @@
               </thead>
               <tr>
                   <td><code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IBuildDirectoryInterceptor.kt">IBuildDirectoryInterceptor</a></code></td>
-                  <td><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code><code>IInterceptor</code></code></a> </td>
+                  <td><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IInterceptor</code></a> </td>
                   <td>
                       Plug-ins that need to generate class files in a different directory than the default one should
                       implement this interface.
@@ -140,7 +140,7 @@
               <tr>
                   <td><code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IClasspathContributor.kt">IClasspathContributor
                   </a></code></td>
-                  <td><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code><code>IContributor</code></code></a> </td>
+                  <td><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
                   <td>  Classpath contributors let you specify additional jar files or directories that will be used by
                       the <code>"compile"</code> task.
                   </td>
@@ -204,7 +204,7 @@
               <tr>
                   <td><code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/ISourceDirectoriesInterceptor.kt">
                       ISourceDirectoriesInterceptor</a></code></td>
-                  <td><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code><code>IInterceptor</code></code></a> </td>
+                  <td><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IInterceptor</code></a> </td>
                   <td>
                       Plug-ins that wamt to add, remove or alter the source directories should implement this interface.
                   </td>
