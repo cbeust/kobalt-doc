@@ -94,7 +94,7 @@
 </ul>
 <p>
     All plug-in actors are interfaces that extend <code>IPluginActor</code>. Plug-ins extend <code>IPlugin</code>,
-    interceptors extend <code>IInterceptor</code> and contributors extend <code>IContributor</code>. When Kobalt parses your
+    interceptors extend <code><code>IInterceptor</code></code> and contributors extend <code><code>IContributor</code></code>. When Kobalt parses your
     <code>kobalt-plugin.xml</code>, it instantiates all the classes found in the <code>&lt;plugin-actors&gt;</code> tag
     and then introspects them to find out which <code>IPluginActor</code> interfaces that class implements.
 
@@ -130,52 +130,54 @@
                   <td>Description</td>
               </thead>
               <tr>
-                  <td><code>IBuildDirectoryInterceptor</code></td>
-                  <td><code>IInterceptor</code></td>
+                  <td><code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IBuildDirectoryInterceptor.kt">IBuildDirectoryInterceptor</a></code></td>
+                  <td><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code><code>IInterceptor</code></code></a> </td>
                   <td>
                       Plug-ins that need to generate class files in a different directory than the default one should
                       implement this interface.
                   </td>
               </tr>
               <tr>
-                  <td><code>IClasspathContributor</code></td>
-                  <td><code>IContributor</code></td>
+                  <td><code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IClasspathContributor.kt">IClasspathContributor
+                  </a></code></td>
+                  <td><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code><code>IContributor</code></code></a> </td>
                   <td>  Classpath contributors let you specify additional jar files or directories that will be used by
                       the <code>"compile"</code> task.
                   </td>
 
               </tr>
               <tr>
-                  <td><code>IClasspathInterceptor</code></td>
-                  <td><code>IInterceptor</code></td>
+                  <td><code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IClasspathInterceptor.kt">IClasspathInterceptor
+                  </a></code></td>
+                  <td><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IInterceptor</code></a> </td>
                   <td>
                       Plug-ins that want to modify the classpath before Kobalt uses it should implement this interface.
                   </td>
               </tr>
               <tr>
-                  <td><code>ICompilerContributor</code></td>
-                  <td><code>IContributor</code></td>
+                  <td><code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/ICompilerContributor.kt">ICompilerContributor</a></code></td>
+                  <td><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
                   <td>
                       Plug-ins that know how to turn files into bytecodes should implement this interface.
                   </td>
               </tr>
               <tr>
-                  <td><code>ICompilerInterceptor</code></td>
-                  <td><code>IInterceptor</code></td>
+                  <td><code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/ICompilerInterceptor.kt">ICompilerInterceptor</a></code></td>
+                  <td><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IInterceptor</code></a> </td>
                   <td>
                       Plug-ins that implement this interface get a chance to alter the dependencies of a project (<code>dependencies{}</code>, <code>dependenciesTest{}</code>, ...) before Kobalt sees them.
                   </td>
               </tr>
               <tr>
-                  <td><code>IDocContributor</code></td>
-                  <td><code>IContributor</code></td>
+                  <td><code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IDocContributor.kt">IDocContributor</a></code></td>
+                  <td><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
                   <td>
                       Plug-ins that know how to generate documentation out of source files should implement this interface.
                   </td>
               </tr>
               <tr>
-                  <td><code>IInitContributor</code></td>
-                  <td><code>IContributor</code></td>
+                  <td><code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IInitContributor.kt">IInitContributor</a></code></td>
+                  <td><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
                   <td>Kobalt supports the <code>--init</code> command line parameter, which generates a default build file
                       based on the files found in the current directory. Any plug-in that wants to be part of this process need
                       to implement this interface. In this case, both the Java and Kotlin plug-ins define such a contributor
@@ -183,15 +185,15 @@
                   </td>
               </tr>
               <tr>
-                  <td><code>IProjectContributor</code></td>
-                  <td><code>IContributor</code></td>
+                  <td><code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IProjectContributor.kt">IProjectContributor</a></code></td>
+                  <td><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
                   <td>Some plug-ins produce projects (Java, Kotlin) while others don't (Packaging, Application, etc...). The ones that
                       do need to register themselves as project contributors. This is how Kobalt collects all the projects defined
                       after a build file was parsed.</td>
               </tr>
               <tr>
-                  <td><code>IRepoContributor</code></td>
-                  <td><code>IContributor</code></td>
+                  <td><code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IRepoContributor.kt">IRepoContributor</a></code></td>
+                  <td><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
                   <td>
                       Some plug-ins might want to add their own repository to the list of repositories that Kobalt already supports.
                       This is the case of the Android plug-in which, once the <code>ANDROID_HOME</code> environment variable has been
@@ -200,22 +202,24 @@
                   </td>
               </tr>
               <tr>
-                  <td><code>ISourceDirectoryInterceptor</code></td>
-                  <td><code>IInterceptor</code></td>
+                  <td><code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/ISourceDirectoriesInterceptor.kt">
+                      ISourceDirectoriesInterceptor</a></code></td>
+                  <td><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code><code>IInterceptor</code></code></a> </td>
                   <td>
                       Plug-ins that wamt to add, remove or alter the source directories should implement this interface.
                   </td>
               </tr>
               <tr>
-                  <td><code>IRunnerContributor</code></td>
-                  <td><code>IContributor</code></td>
+                  <td><code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IRunnerContributor.kt">IRunnerContributor</a></code></td>
+                  <td><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
                   <td>
                       Plug-ins that can operate when the <code>"run"</code> task gets invoked should implement that interface.
                   </td>
               </tr>
               <tr>
-                  <td><code>ITestRunnerContributor</code></td>
-                  <td><code>IContributor</code></td>
+                  <td><code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/ITestRunnerContributor.kt">
+                      ITestRunnerContributor</a></code></td>
+                  <td><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
                   <td>
                       Plug-ins that can operate when the <code>"test"</code> task gets invoked should implement that interface.
                   </td>
@@ -256,7 +260,8 @@ class JavaBuildGenerator: IInitContributor {</pre>
           <p>
               Several plug-ins might want to contribute to a specific task where only one participant only should be allowed,
               such as running tests or generating documentation. Even the simple task of compiling should probably only
-              ever be performed by no more than one plug-in. Therefore, when comes the time to compile a project,
+              ever be performed by no more than one plug-in for a given project. Therefore, when comes the time to
+              compile a project,
               Kobalt needs to find which plug-in is the most suitable for that task and pick it. In order to do that,
               plug-ins that contribute to tasks that can only be performed by one candidate need to declare their
               <em>affinity</em> to that task for a given project.
@@ -271,11 +276,12 @@ interface IProjectAffinity {
  * the highest affinity gets selected.
  */
 fun affinity(project: Project, context: KobaltContext) : Int</pre>
-          <p>
-              For example, the JavaPlugin implements the <code>ICompilerContributor</code> interface and then overrides
-              the <code>affinity</code> method to make sure it gets run for Java projects but ignored for others:
-          </p>
-          <pre>
+  <p>
+      For example, the JavaPlugin implements the <code>ICompilerContributor</code> interface and then overrides
+      the <code>affinity()</code> method to make sure it gets run for Java projects but ignored for others:
+  </p>
+
+<pre>
 override fun affinity(project: Project, context: KobaltContext) =
     if (project.sourceSuffix == ".java") 1 else 0</pre>
 
