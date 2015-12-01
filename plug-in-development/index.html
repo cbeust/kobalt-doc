@@ -271,11 +271,12 @@ class JavaBuildGenerator: IInitContributor {</pre>
           </p>
           <pre>
 interface IProjectAffinity {
-/**
- * @return an integer indicating the affinity of your actor for the given project. The actor that returns
- * the highest affinity gets selected.
- */
-fun affinity(project: Project, context: KobaltContext) : Int</pre>
+    /**
+     * @return an integer indicating the affinity of your actor for the given project. The actor that returns
+     * the highest affinity gets selected.
+     */
+    fun affinity(project: Project, context: KobaltContext) : Int
+}</pre>
   <p>
       For example, the JavaPlugin implements the <code>ICompilerContributor</code> interface and then overrides
       the <code>affinity()</code> method to make sure it gets run for Java projects but ignored for others:
