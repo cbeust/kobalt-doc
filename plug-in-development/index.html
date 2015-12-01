@@ -302,14 +302,13 @@ class Info(val publish: Boolean)
 </p>
 <pre>
 @Directive
-public fun myConfig(init: Info.() -> Unit) : Info {
-    val info = Info()
-    info.init()
-    return info
-}
-</pre>
+public fun myConfig(init: Info.() -> Unit) = Info().apply {
+    init()
+    this
+}</pre>
 <p>
-    The <code>@Directive</code> annotation is not enforced but you should always use it in order to help future tools (e.g. an IDEA plug-in) identify Kobalt directives so they can be treated differently from regular Kotlin functions.
+    The <code>@Directive</code> annotation is not enforced but you should always use it in order to help future tools (e.g. an IDEA plug-in) identify Kobalt directives so they can be treated differently from regular Kotlin functions. The code above defines a <code>myConfig</code> function that accepts a closure as an argument. It creates an <code>Info</code>
+    object, calls the <code>init()</code> function on it (which runs all the code inside that closure) and then return that <code>Info</code> object.
 </p>
 <p>
     Users can now specify the following in their build file:
@@ -320,8 +319,7 @@ import.com.example.plugin.myConfig
 
 myConfig {
     publish = true
-}
-</pre>
+}</pre>
 <p>
     If you need access to the project being built, just declare an additional parameter of type <code>Project</code> to your directive and have the user pass that project:
 </p>
