@@ -105,7 +105,7 @@ function generateToc() {
         //} else if (ind < currentLevel) {
         //    toc += '</ul>\n';
         //}
-        toc += '<div class="toc-item"><a href="#' + section.id + '">' + content + '</a></div>\n';
+        toc += '<div class="toc-item toc-item-' + ind + '"><a href="#' + section.id + '">' + content + '</a></div>\n';
         currentLevel = ind;
     }
     toc += "</ul>\n";
