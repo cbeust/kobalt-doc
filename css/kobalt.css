@@ -1,3 +1,17 @@
+#table-of-contents {
+    border: solid 1px #cccccc;
+    border-radius: 10px;
+}
+
+.toc-item {
+    padding: 2px;
+}
+
+.toc-item a:hover {
+    background: #48D1CC;
+    display: block;
+}
+
 .bs-callout {
     padding: 20px;
     margin: 20px 0;

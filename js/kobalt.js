@@ -71,6 +71,14 @@ function generateNavBar(index) {
 // Table of contents
 //
 
+function indent(n) {
+    var result = "";
+    for (var i = 0; i < n; i++) {
+        result += "&nbsp;&nbsp;&nbsp;&nbsp;"
+    }
+    return result;
+}
+
 function generateToc() {
     var sections = document.getElementsByClassName("section");
 
@@ -87,16 +95,17 @@ function generateToc() {
             ind = indentAttribute.textContent;
         }
         if (! ind) ind = 0;
-        if (ind > currentLevel) {
-            if (ind == 0) {
-                toc += '<ul class="nav">\n';
-            } else {
-                toc += '<ul>\n';
-            }
-        } else if (ind < currentLevel) {
-            toc += '</ul>\n';
-        }
-        toc += '<li><a href="#' + section.id + '">' + section.innerHTML + '</a></li>\n';
+        var content = indent(ind) + section.innerHTML;
+        //if (ind > currentLevel) {
+        //    if (ind == 0) {
+        //        toc += '<ul class="nav">\n';
+        //    } else {
+        //        toc += '<ul>\n';
+        //    }
+        //} else if (ind < currentLevel) {
+        //    toc += '</ul>\n';
+        //}
+        toc += '<div class="toc-item"><a href="#' + section.id + '">' + content + '</a></div>\n';
         currentLevel = ind;
     }
     toc += "</ul>\n";
