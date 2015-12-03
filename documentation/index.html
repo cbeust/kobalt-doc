@@ -244,7 +244,7 @@ dependencies {
 }
 </pre>
 <h2 class="section" id="maven-repos">Maven repos</h2>
-<h3 class="section" id="maven-repos-unauthenticated">Unauthenticated repos</h3>
+<h3 class="section" indent="1" id="maven-repos-unauthenticated">Unauthenticated repos</h3>
 <p>
 Kobalt already knows the location of the most popular Maven repos (Maven Central, JCenter, JBoss) but you can add repos with the <code>repos()</code> directive:
 </p>
@@ -252,7 +252,7 @@ Kobalt already knows the location of the most popular Maven repos (Maven Central
 <pre>
 val repos = repos("https://dl.bintray.com/cbeust/maven/")
 </pre>
-<h3 class="section" id="maven-repos-authenticated">Authenticated repos</h3>
+<h3 class="section" indent="1" id="maven-repos-authenticated">Authenticated repos</h3>
 <p>
     If one of your repos requires basic authentication, you can supply its credentials
     in your <code>local.properties</code> file by specifying keys and values following the format:
