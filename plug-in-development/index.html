@@ -368,11 +368,6 @@ fun lineCount(project: Project): TaskResult {
     A Kobalt task needs to accept a <code>Project</code> in parameter and return a <code>TaskResult</code>, which indicates whether this task completed successfully.
 </p>
 
-<div class="bs-callout bs-callout-warning">
-  <h4>Request for feedback</h4>
-  Having the <code>Project</code> passed in both the <code>apply()</code> function and in each task feels redundant, although it avoids the trouble from having to store that project in a field of the plug-in, making it essentially stateless.
-</div>
-
 <p>
     The <code>@Task</code> annotation accepts the following attributes:
     <dl class="dl-horizontal">
