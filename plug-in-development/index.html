@@ -453,52 +453,42 @@ kobalt-line-count:exampleTask</pre>
 <p>
     Dynamic tasks are useful when you want your plug-in to generate one or several tasks that depend on
     some other runtime information (therefore, you can't declare a method and put a <code>@Task</code>
-    annotation on it). Here is the simplest dynamic task you can create in your plug-in class:
+    annotation on it). Plug-ins declare dynamic tasks by implementing the <code>ITaskContributor</code>
+    intrface:
 </p>
-
 <pre>
-override fun apply(project: Project, context: KobaltContext) {
-    println("*** Adding dynamic task")
-    addTask(project, "dynamicTask") {
-        println("Dynamic task")
-        TaskResult()
-    }
-}
-</pre>
-
+interface ITaskContributor {
+    fun tasksFor(context: KobaltContext) : List&lt;DynamicTask&gt;
+}</pre>
 <p>
-    Like a regular task method, the closure you pass to <code>addTask()</code> has to return a <code>TaskResult</code>
-    object to indicate whether it succeeded or failed. You can
-    then see your dynamic task in the list of tasks and run it directly:
+    For example:
+</p>
+<pre>
+override fun tasksFor(context: KobaltContext) = listOf(
+    DynamicTask(
+        name = "dynamicTask",
+        description = "Description",
+        alwaysRunAfter = listOf("compile"),
+        closure = { project: Project ->
+            println("Running dynamicTask")
+            TaskResult()
+    }))</pre>
+<p>
+    <code>DynamicTask</code> mirrors the <code>@Task</code> attributes: <code>name</code>, <code>description</code> and
+    dependencies. The only addition is the <code>closure</code> parameter, which specifics the code that will
+    run if your task gets invoked. That closure needs to follow the same constraints that a <code>@Task</code> method
+    obeys: it takes a <code>Project</code> parameter and returns a <code>TaskResult</code>.
+    </p>
+<p>
+    Once you have implemented <code>ITaskContributor</code>, you can see your dynamic task in the list of tasks and run it directly:
 </p>
 <pre>
 $ ./kobaltw --tasks
   ===== kobalt-line-count =====
-    dynamicTask
+    dynamicTask         Description
     lineCount           Count the lines
 $ ./kobaltw dynamicTask
-Dynamic task
-</pre>
-<p>
-    The <code>addTask()</code> method lets you specify any attribute you can specify on the <code>@Task</code>
-    annotation: <code>description</code>, <code>runBefore</code>, etc... For example, here is how we would
-    specify that this task should always run after <code>compile:</code>
-</p>
-<pre>
-addTask(project, "dynamicTask", alwaysRunAfter = listOf("compile")) {
-    println("Dynamic task")
-    TaskResult()
-}
-</pre>
-<p>
-    Let's test it:
-</p>
-
-<pre>
-$ ./kobaltw --dryRun compile
-kobalt-line-count:clean
-kobalt-line-count:compile
-kobalt-line-count:exampleTask
+Running dynamictask
 </pre>
 
 <h2 class="section" id="properties">Properties</h2>
