@@ -302,10 +302,7 @@ class Info(val publish: Boolean)
 </p>
 <pre>
 @Directive
-public fun myConfig(init: Info.() -> Unit) = Info().apply {
-    init()
-    this
-}</pre>
+public fun myConfig(init: Info.() -> Unit) = Info().apply { init() }</pre>
 <p>
     The <code>@Directive</code> annotation is not enforced but you should always use it in order to help future tools (e.g. an IDEA plug-in) identify Kobalt directives so they can be treated differently from regular Kotlin functions. The code above defines a <code>myConfig</code> function that accepts a closure as an argument. It creates an <code>Info</code>
     object, calls the <code>init()</code> function on it (which runs all the code inside that closure) and then return that <code>Info</code> object.
