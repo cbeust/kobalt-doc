@@ -140,9 +140,9 @@ function generateScript(src) {
 }
 
 var LINKS = [
-    "../css/kobalt.css",
     "../bootstrap/dist/css/bootstrap.min.css",
-    "../sh/styles/shCore.css"
+    "../sh/styles/shCore.css",
+    "../css/kobalt.css"
 ];
 
 var SCRIPTS = [

@@ -12,6 +12,7 @@
     <script type="text/javascript" src="../sh/scripts/shBrushJScript.js"></script>
     <script type="text/javascript" src="../sh/scripts/shBrushJava.js"></script>
     <script type="text/javascript" src="../sh/scripts/shBrushPlain.js"></script>
+    <script type="text/javascript" src="../sh/scripts/shBrushXml.js"></script>
 
     <script>
         SyntaxHighlighter.defaults['gutter'] = false;
@@ -70,7 +71,7 @@
               Let's start by creating our project:
           </p>
 
-<pre>
+<pre class="brush:plain">
 $ mkdir linecount
 $ mkdir -p src/main/kotlin/com/beust/plugin/linecount
 $ touch src/main/kotlin/com/beust/plugin/linecount/Main.kt
@@ -81,7 +82,7 @@ $ $KOBALT_HOME/kobaltw --init
               I create an empty <code>Main.kt</code> in the example above so that calling <code>./kobaltw --init</code> will detect the project as a Kotlin one. This way, the <code>Build.kt</code> file generated is already configured for Kotlin. Since we will be publishing this project to a Maven repository, we need to make sure that its <code>group</code>, <code>artifactId</code> and <code>version</code> are correct. The only thing that the generator can't guess is the <code>group</code>, so let's go ahead and fix it:
           </p>
 
-<pre>
+<pre class="brush:java">
 val project = kotlinProject {
     name = "kobalt-line-count"
     group = "com.beust.kobalt"
@@ -95,7 +96,7 @@ val project = kotlinProject {
     Once there, it will be automatically copied in the right place in our jar file:
 </p>
 
-<pre>
+<pre class="brush:xml">
 &lt;kobalt-plugin&gt;
     &lt;name&gt;kobalt-line-count&lt;/name&gt;
     &lt;plugins&gt;
@@ -112,7 +113,7 @@ val project = kotlinProject {
   Let's start by writing the simplest plug-in we can:
 </p>
 
-<pre>
+<pre class="brush:java">
 package com.beust.kobalt.plugin.linecount
 
 import com.beust.kobalt.api.*
@@ -130,7 +131,7 @@ public class Main : BasePlugin() {
               Before we can upload it, we need to create the package in bintray, <a href="https://bintray.com/docs/usermanual/uploads/uploads_creatinganewpackage.html">as explained here</a>. Once this is done, we are ready to do our first upload:
           </p>
 
-<pre>
+<pre class="brush:plain">
 $ ./kobaltw uploadJcenter
 ...
 ========== kobalt-line-count:uploadJcenter
@@ -143,7 +144,7 @@ $ ./kobaltw uploadJcenter
               If you go to the maven section of your bintray account, you will now see that the new package has two unpublished files. Your new plug-in won't be visible by clients until you publish those files, so let's update our build file to automatically publish files from now on:
           </p>
 
-<pre>
+<pre class="brush:java">
 jcenter {
     publish = true
 }
@@ -153,7 +154,7 @@ jcenter {
               And now, let's implement our logic, which is pretty simple:
           </p>
 
-<pre>
+<pre class="brush:java">
 // Main.kt
 @Task(name = "lineCount", description = "Count the lines", runBefore = arrayOf("compile"))
 fun lineCount(project: Project): TaskResult {
@@ -180,7 +181,7 @@ fun lineCount(project: Project): TaskResult {
               We create a task called <code>"lineCount"</code> in which we look for all files ending in ".kt" in all the source directories of the project. Finally, we display a count of files and lines at the end by using <code>log()</code>, which is automatically supplied by the Kobalt API:
           </p>
 
-<pre>
+<pre class="brush:java">
 public class Main : BasePlugin() {
 </pre>
 
@@ -189,7 +190,7 @@ public class Main : BasePlugin() {
           </p>
 
 
-<pre>
+<pre class="brush:plain">
 $ ./kobaltw uploadJcenter
 ...
 kobalt-line-count: Compilation succeeded
@@ -208,7 +209,7 @@ Time to Build: 5907 ms
               Finally, let's use our plug-in from another project. Since we didn't link this project to JCenter, it's uploaded in the user's maven repository, so we will have to add this maven repository to the build file where we want to use the plug-in. Adjust this line to point to your own maven repo:
           </p>
 
-<pre>
+<pre class="brush:java">
 val repos = repos("https://dl.bintray.com/cbeust/maven/")
 val plugins = plugins("com.beust.kobalt:kobalt-line-count:0.2")
 </pre>
@@ -217,7 +218,7 @@ val plugins = plugins("com.beust.kobalt:kobalt-line-count:0.2")
               Now let's launch a build:
           </p>
 
-<pre>
+<pre class="brush:plain">
 $ ./kobaltw assemble
 ...
 ========== kobalt:lineCount
@@ -230,7 +231,7 @@ Found 4972 lines in 65 files
               Note that our plugin ran before the <code>compile</code> task, as we requested in the <code>@Task</code> annotation. We can also verify that it's activated and we can invoke the task directly instead of having it run as part of the build:
           </p>
 
-<pre>
+<pre class="brush:java">
 $ ./kobaltw --tasks
   ===== kobalt-line-count =====
     lineCount		Count the lines
@@ -246,7 +247,7 @@ Found 4972 lines in 65 files
           <p>
               When your plug-in is activated, Kobalt will invoke its <code>apply()</code> function:
           </p>
-<pre>
+<pre class="brush:java">
 override fun apply(project: Project, context: KobaltContext) {
 }
 </pre>
@@ -261,7 +262,7 @@ override fun apply(project: Project, context: KobaltContext) {
               The simplest way to run your plug-in in your IDE is to create a main function in the main class of your
               plug-in as follows:
           </p>
-<pre>
+<pre class="brush:java">
 fun main(argv: Array&lt;String&gt;) {
     com.beust.kobalt.main(argv)
 }
@@ -281,7 +282,7 @@ public class Main : BasePlugin() {
               on your file system:
           </p>
 
-<pre>
+<pre class="brush:java">
 val p = plugins(
     file(homeDir("kotlin/kobalt-line-count/kobaltBuild/libs/kobalt-line-count-0.8.jar"))
 )

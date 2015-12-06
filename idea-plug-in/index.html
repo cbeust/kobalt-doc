@@ -96,7 +96,7 @@
     The plug-in will find your `Build.kt` file and it will automatically update your project's libraries and
     dependencies to reflect it. For example, suppose you have the following dependencies:
 </p>
-<pre>
+<pre class="brush:java">
 compile("org.apache.ant:ant:1.7.0",
     "com.google.inject:guice:4.0:no_aop",
     "com.beust:jcommander:1.48")
@@ -125,7 +125,7 @@ compile("org.apache.ant:ant:1.7.0",
               The plug-in understands other scopes as well (e.g. "provided", "runtime"). For example, let's
               move a dependency in the "runtime" section of the build file:
           </p>
-          <pre>
+<pre class="brush:java">
 dependencies {
     runtime("com.google.inject:guice:4.0:no_aop")
     compile("org.apache.ant:ant:1.7.0",
