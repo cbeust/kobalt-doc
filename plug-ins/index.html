@@ -6,15 +6,16 @@
 
 </title>
 
-<!-- Bootstrap core CSS -->
+    <script type="text/javascript" src="../sh/scripts/shCore.js"></script>
+    <script type="text/javascript" src="../sh/scripts/shBrushJScript.js"></script>
+    <script type="text/javascript" src="../sh/scripts/shBrushJava.js"></script>
+    <script type="text/javascript" src="../sh/scripts/shBrushPlain.js"></script>
 
-<link href="../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../css/kobalt.css" rel="stylesheet" />
-
-  <!-- Optional Bootstrap Theme -->
-
-  <link href="data:text/css;charset=utf-8," data-href="../bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" id="bs-theme-stylesheet">
-
+    <script>
+        SyntaxHighlighter.defaults['gutter'] = false;
+        SyntaxHighlighter.defaults['toolbar'] = false;
+        SyntaxHighlighter.all();
+    </script>
 
 <!--[if lt IE 9]><script src="../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 <!--
@@ -58,8 +59,7 @@
 <p>
 The Java and Kotlin plug-ins are extremely similar, the only difference is that you configure a Java project with the <code>javaProject</code> directive and a Kotlin project with <code>kotlinProject</code>:
 </p>
-
-<pre>
+<pre class="brush:java">
 val p = javaProject(wrapper) {
   name = "kobalt"
   group = "com.beust"
@@ -125,7 +125,7 @@ Once you have at least one project configured, the plug-in lets you invoke the f
           <p>
               <strong>Product flavors</strong> usually contains different source files and different logic (e.g. a "free version" and a "pro version". <strong>Build types</strong> lead to different archives (e.g. "debug" and "release", with the "release" version being obfuscated). This effect is achieved by defining identical source files in different directories and then letting Kobalt build the correct one. Each product flavor and build type has a name which translates directory into a source directory. For example:
           </p>
-<pre>
+<pre class="brush:java">
 productFlavor("free") {
 }
 
@@ -134,13 +134,13 @@ buildType("release") {
           <p>
               With these variants defined, you can now add source files in the "<code>src/free/java</code>" and "<code>src/release/java</code>" directories (Kotlin is also supported):
           </p>
-          <pre>
+<pre class="brush:plain">
 src/free/java/Product.java
 src/release/java/Product.java</pre>
           <p>
               If you define at least one variant, new tasks get added to your build:
           </p>
-          <pre>
+<pre class="brush:java">
 $ ./kobaltw --tasks
 
 ===== java =====
@@ -167,7 +167,7 @@ assembleFreeDebug</pre>
           <p>
               This class contains at least two fields defining the current variant:
           </p>
-<pre>
+<pre class="brush:java">
 class BuildConfig {
     companion object {
         val PRODUCT_FLAVOR : String = "pro"
@@ -179,7 +179,7 @@ class BuildConfig {
               inside your
               flavor:
           </p>
-          <pre>
+<pre class="brush:java">
 productFlavor("free") {
     buildConfig {
         field("aStringField", "String", "\"The free field\"")
@@ -189,7 +189,7 @@ productFlavor("free") {
           <p>
               The generated file will then contain:
           </p>
-<pre>
+<pre class="brush:java">
 class BuildConfig {
     companion object {
         val PRODUCT_FLAVOR : String = "free"
@@ -207,7 +207,7 @@ class BuildConfig {
     The "application" plug-in lets you run your application directly from <code>kobaltw</code>. You configure
     it as follows:
 </p>
-<pre>
+<pre class="brush:java">
 application {
     mainClass = "com.beust.kobalt.wrapper.Main"
     jvmArgs("-Djava.library.path=libs", "-Ddebug=true")
@@ -216,7 +216,7 @@ application {
 <p>
     And you launch you app with "<code>run</code>":
 </p>
-<pre>
+<pre class="brush:plain">
 ./kobaltw run
 </pre>
 <p>Here's the list of configuration parameters for the <code>application</code> directive:</p>
@@ -232,16 +232,16 @@ application {
       The <code>apt</code> plug-in adds support for <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/apt/GettingStarted.html">annotation processing</a>. It's made of two parts.
   </p>
   <h3 class="section" id="apt-dependency" indent="1">The <code>apt</code> dependency directive</h3>
-  <pre>
+<pre class="brush:java">
     dependencies {
         apt("com.google.dagger:dagger:2.0.2")
     }
-  </pre>
+</pre>
   <p>
       Instead of using <code>compile</code>, you use <code>apt</code> in your dependencies and you point to the jar file that contains the annotation processor. This will instruct any compiler involved in the build to run this annotation processor first.
   </p>
   <h3 class="section" id="apt-configuration" indent="1">The <code>apt</code> configuration directive</h3>
-<pre>
+<pre class="brush:java">
     apt {
         outputDir = "generated/sources/apt"
     }
@@ -260,7 +260,7 @@ The Packaging plug-in lets you generate (directive <code>assemble</code>) and in
 <p>
     The <code>assemble</code> directive controls which artifacts get generated for your project.
 </p>
-<pre>
+<pre class="brush:java">
 assemble {
     jar {
     }
@@ -287,7 +287,7 @@ All archives let you include and exclude files.
   <code>include</code> has two different forms:
 </p>
 
-<pre>
+<pre class="brush:java">
 assemble {
     zip {
         include("kobaltw", "README")
@@ -319,7 +319,7 @@ assemble {
   Here is how you generate an executable jar file:
 </p>
 
-<pre>
+<pre class="brush:java">
 assemble {
   jar {
       fatJar = true
@@ -347,7 +347,7 @@ assemble {
 <p>
   The <code>install</code> section lets you specify how the artifacts get installed. If you don't specify any <code>install</code> directive, then the <code>install</code> task will do nothing on your project when invoked.
 </p>
-<pre>
+<pre class="brush:java">
     install {
         libDir = "libs"
     }
@@ -363,7 +363,7 @@ assemble {
   Before you can upload, you need to create a file <code>local.properties</code> in the root directory of your project with the following keys:
 </p>
 
-<pre>
+<pre class="brush:plain">
 bintray.user=...
 bintray.apikey=...
 </pre>
@@ -381,7 +381,7 @@ you are ready to do your first upload.
   You define what to upload with the <code>jcenter</code> directive:
 </p>
 
-<pre>
+<pre class="brush:java">
 jcenter {
   publish = true
   file("${kobalt.buildDirectory}/libs/${kobalt.name}-${kobalt.version}.zip",
@@ -400,7 +400,7 @@ jcenter {
   <dd>The first parameter is the file you want to upload and the second one is the path where it will be uploaded to.</dd>
 </dl>
 
-<pre>
+<pre class="brush:plain">
 $ ./kobaltw uploadJcenter
 ...
 ========== kobalt-line-count:uploadJcenter
@@ -413,7 +413,7 @@ $ ./kobaltw uploadJcenter
 <p>
   <a href="https://github.com/Kotlin/dokka">Dokka</a> is Kotlin's documentation tool. The Kobalt Dokka plug-in allows you to launch it and configure it as follows:
 </p>
-<pre>
+<pre class="brush:java">
     import com.beust.kobalt.plugin.dokka.dokka
     // ...
 

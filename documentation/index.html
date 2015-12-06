@@ -6,14 +6,16 @@
 
 </title>
 
-<!-- Bootstrap core CSS -->
+    <script type="text/javascript" src="../sh/scripts/shCore.js"></script>
+    <script type="text/javascript" src="../sh/scripts/shBrushJScript.js"></script>
+    <script type="text/javascript" src="../sh/scripts/shBrushJava.js"></script>
+    <script type="text/javascript" src="../sh/scripts/shBrushPlain.js"></script>
 
-<link href="../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../css/kobalt.css" rel="stylesheet" />
-
-  <!-- Optional Bootstrap Theme -->
-
-  <link href="data:text/css;charset=utf-8," data-href="../bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" id="bs-theme-stylesheet">
+    <script>
+        SyntaxHighlighter.defaults['gutter'] = false;
+        SyntaxHighlighter.defaults['toolbar'] = false;
+        SyntaxHighlighter.all();
+    </script>
 
 
 <!--[if lt IE 9]><script src="../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -75,7 +77,7 @@
 <a href="https://github.com/cbeust/kobalt/releases/latest">Download the zip file</a> then unzip it in a location we'll call <code>KOBALT_HOME</code>:
 </p>
 
-<pre>
+<pre class="brush:plain">
 cd $KOBALT_HOME
 unzip kobalt-xxx.zip
 </pre>
@@ -84,7 +86,7 @@ unzip kobalt-xxx.zip
 Change to your project directory and call the <code>kobaltw</code> command with <code>--init</code>:
 </p>
 
-<pre>
+<pre class="brush:plain">
 cd ~/java/project
 $KOBALT_HOME/kobaltw --init
 </pre>
@@ -102,7 +104,7 @@ This command will do two things:
 You can now attempt to build your project with Kobalt:
 </p>
 
-<pre>
+<pre class="brush:plain">
 ./kobaltw assemble
 </pre>
 
@@ -118,7 +120,7 @@ As of this writing, Kobalt supports Java and Kotlin projects.
 The build file is typically called <code>Built.kt</code> and it is a valid Kotlin file. It contains imports, the declaration of one or more projects and the declaration of additional configurations (e.g. packaging, publishing, etc...).  Since it's a Kotlin file, it can also contain any class or function you need:
 </p>
  
-<pre>
+<pre class="brush:java">
 import com.beust.kobalt.*
 import com.beust.kobalt.plugin.kotlin.kotlinProject
 
@@ -144,19 +146,19 @@ Here are a few noteworthy details about this small build file:
           </p>
           <ul>
               <li>Individual values for primitives (numbers, strings) are a straight equals sign:
-                  <pre>
+<pre class="brush:java">
 name = "kobalt"</pre>
               </li>
 
               <li>
                   Parameters that can receive multiple values are usually captured by function calls, so you use parentheses, as usual in Kotlin:
-                  <pre>
+<pre class="brush:java">
 compile("dep1", "dep2", "dep2")</pre>
               </li>
 
               <li>
                   Complex objects are passed as closures, so you use curly braces to define them:
-                  <pre>
+<pre class="brush:java">
 dependencies {
     ...
 }</pre>
@@ -165,7 +167,7 @@ dependencies {
           <p>
               Remember that a build file is a valid Kotlin source, so you can use function calls instead of literal values, or any other correct Kotlin code in your build file:
           </p>
-          <pre>
+<pre class="brush:java">
 version = readVersion()</pre>
 <h3 class="section" indent="1" id="directives">Directives</h3>
 
@@ -173,17 +175,15 @@ version = readVersion()</pre>
 Now that we have declared a project, we can use it to configure additional steps of our build, such as how to assemble it (creating jar and other files):
 </p>
 
-<pre>
+<pre class="brush:java;highlight=5,6,7,8">
 import com.beust.kobalt.plugin.packaging.assemble
 
 val kobalt = kotlinProject {
     // ...
-<b>
     assemble {
         jar {
         }
     }
-</b>
 }
 </pre>
 
@@ -194,7 +194,7 @@ This is the simplest jar declaration you can have. You can trigger the creation 
     The <code>jar</code> directive accepts various settings, so let's be a bit more specific. And let's add a zip file too:
 </p>
 
-<pre>
+<pre class="brush:java">
     assemble {
         jar {
             fatJar = true
@@ -225,7 +225,7 @@ The zip directive follows a similar structure, although here we are specifying w
 You can declare compile and test dependencies as follows:
 </p>
 
-<pre>
+<pre class="brush:java">
 dependencies {
     compile("com.beust:jcommander:1.48",
             "com.beust:klaxon:0.14")
@@ -238,7 +238,7 @@ dependenciesTest {
 <p>
     You can also specify local dependencies with the <code>file</code> directive:
 </p>
-<pre>
+<pre class="brush:java">
 dependencies {
     compile(file("libs/async-http.jar"))
 }
@@ -249,7 +249,7 @@ dependencies {
 Kobalt already knows the location of the most popular Maven repos (Maven Central, JCenter, JBoss) but you can add repos with the <code>repos()</code> directive:
 </p>
 
-<pre>
+<pre class="brush:java">
 val repos = repos("https://dl.bintray.com/cbeust/maven/")
 </pre>
 <h3 class="section" indent="1" id="maven-repos-authenticated">Authenticated repos</h3>
@@ -257,7 +257,7 @@ val repos = repos("https://dl.bintray.com/cbeust/maven/")
     If one of your repos requires basic authentication, you can supply its credentials
     in your <code>local.properties</code> file by specifying keys and values following the format:
 </p>
-<pre>
+<pre class="brush:plain">
 authUrl.{host}.username=xxx
 authUrl.{host}.password=xxx
 </pre>
@@ -266,7 +266,7 @@ authUrl.{host}.password=xxx
   port number, slash and path). For example, for the repo
   <code>"https://dl.bintray.com/cbeust/maven/"</code>, the credentials would be:
 </p>
-<pre>
+<pre class="brush:plain">
 authUrl.dl.bintray.com.username=xxx
 authUrl.dl.bintray.com.password=xxx
 </pre>
@@ -284,7 +284,7 @@ Kobalt comes with a few preconfigured plug-ins but you will want to include exte
 First of all, let's take a quick look at the tasks available in the default distribution (your actual output might differ somewhat):
 </p>
 
-<pre>
+<pre class="brush:plain">
 $ ./kobaltw --tasks
   ===== java =====
     compile          Compile the project
@@ -304,7 +304,7 @@ $ ./kobaltw --tasks
 Let's modify our build to include a plug-in. We do this by adding a call to the <code>plugins</code> directive on top of the build file:
 </p>
 
-<pre>
+<pre class="brush:java">
 val repos = repos("https://dl.bintray.com/cbeust/maven/")
 val p = plugins("com.beust:kobalt-example-plugin:0.42")
 </pre>
@@ -313,7 +313,7 @@ val p = plugins("com.beust:kobalt-example-plugin:0.42")
 Now, run the <code>--tasks</code> command again:
 </p>
 
-<pre>
+<pre class="brush:plain">
 $ ./kobaltw --tasks
   ===== java =====
     compile         Compile the project
@@ -337,7 +337,7 @@ Notice the new <code>"coverage"</code> task, provided by the plug-in <code>kobal
 You can specify more than one project in a build file, simply by declaring them:
 </p>
 
-<pre>
+<pre class="brush:java">
 val p1 = javaProject { ... }
 val p2 = kotlinProject { ... }
 </pre>
@@ -346,7 +346,7 @@ val p2 = kotlinProject { ... }
 If some of your projects need to be built in a certain order, you can specify dependencies when you create your project. For example:
 </p>
 
-<pre>
+<pre class="brush:java">
 val p2 = kotlinProject(p1) { ... }
 </pre>
 
@@ -358,7 +358,7 @@ This declares that the Kotlin project <code>p2</code> depends on <code>p1</code>
 You can also run tasks for a specific project only as follows:
 </p>
 
-<pre>
+<pre class="brush:plain">
 ./kobaltw p2:assemble
 </pre>
 
@@ -401,12 +401,12 @@ Here are the options that you can pass to <code>./kobaltw</code>:
     <td>false</td>td>
     <td>Display all the new versions of your dependencies.</td>
     <td>This option looks at all the dependencies found in your build file and then contacts all the Maven repositories in order to find out if any of these repos contains a newer version. If any are found, they are displayed:
-      <pre>
+<pre class="brush:plain">
 $ ./kobaltw --checkVersions
 New versions found:
        com.beust:klaxon:0.14
        org.testng:testng:6.9.5
-      </pre>
+</pre>
     </td>
   </tr>
   <tr>
@@ -465,7 +465,7 @@ Kobalt supports JCenter natively so you can upload your project and make it avai
 First of all, make sure you specified the group, artifactId and version of your project, as required by Maven:
 </p>
 
-<pre>
+<pre class="brush:java">
 val kobalt = kotlinProject {
     group = "com.beust"
     artifactId = "kobalt"
@@ -476,7 +476,7 @@ val kobalt = kotlinProject {
 Next, create a file <code>local.properties</code> in the root directory of your project with the following keys:
 </p>
 
-<pre>
+<pre class="brush:plain">
 bintray.user=...
 bintray.apikey=...
 </pre>
@@ -492,7 +492,7 @@ Now, all you need to do is to upload your package:
 
 </p>
 
-<pre>
+<pre class="brush:plain">
 ./kobaltw uploadJcenter
 </pre>
 
@@ -504,14 +504,14 @@ Now, all you need to do is to upload your package:
 <p>
     You start by defining boolean values initialized to <code>false</code> in your build file:
 </p>
-<pre>
+<pre class="brush:java">
   val experimental = false
   val premium = false
 </pre>
 <p>
   Then you use this variable wherever you need it in your build file:
 </p>
-<pre>
+<pre class="brush:java">
   val p = javaProject {
       name = if (experimental) "project-exp" else "project"
       version = "1.3"
@@ -519,14 +519,14 @@ Now, all you need to do is to upload your package:
 <p>
   Finally, you invoke <code>./kobaltw</code> with the <code>--profiles</code> parameter followed by the profiles you want to activate, separated by a comma:
 </p>
-<pre>
+<pre class="brush:plain">
   ./kobaltw -profiles experimental,premium assemble
 </pre>
 <p>
   Keep in mind that since your build file is a real Kotlin source file,
   you can use these profile variables pretty much anywhere, e.g.:
 </p>
-<pre>
+<pre class="brush:java">
 dependencies {
     if (experimental)
         "com.squareup.okhttp:okhttp:2.4.0"

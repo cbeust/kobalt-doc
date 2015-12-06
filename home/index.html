@@ -6,15 +6,16 @@
 
 </title>
 
-<!-- Bootstrap core CSS -->
+    <script type="text/javascript" src="../sh/scripts/shCore.js"></script>
+    <script type="text/javascript" src="../sh/scripts/shBrushJScript.js"></script>
+    <script type="text/javascript" src="../sh/scripts/shBrushJava.js"></script>
+    <script type="text/javascript" src="../sh/scripts/shBrushPlain.js"></script>
 
-<link href="../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="../css/kobalt.css" rel="stylesheet" />
-
-  <!-- Optional Bootstrap Theme -->
-
-<link href="data:text/css;charset=utf-8," data-href="../bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" id="bs-theme-stylesheet">
-
+    <script>
+        SyntaxHighlighter.defaults['gutter'] = false;
+        SyntaxHighlighter.defaults['toolbar'] = false;
+        SyntaxHighlighter.all();
+    </script>
 
 <!--[if lt IE 9]><script src="../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 <!--
@@ -68,7 +69,7 @@ Kobalt is a build system heavily inspired from Gradle and entirely written in Ko
 For example, here is <a href="http://jcommander.org">JCommander's</a> entire build file:
 </p>
 
-<pre>
+<pre class="brush:java">
 import com.beust.kobalt.*
 import com.beust.kobalt.plugin.java.*
 import com.beust.kobalt.plugin.packaging.*

@@ -125,8 +125,55 @@ function setTitle() {
     document.getElementsByTagName("title")[0].innerHTML = title;
 }
 
+function generateLink(href) {
+    var link = document.createElement('link');
+    link.href = href;
+    link.rel = "stylesheet";
+    return link;
+}
+
+function generateScript(src) {
+    var script = document.createElement('script');
+    script.src = src;
+    script.type = "text/javascript";
+    return script;
+}
+
+var LINKS = [
+    "../css/kobalt.css",
+    "../bootstrap/dist/css/bootstrap.min.css",
+    "../sh/styles/shCore.css"
+];
+
+var SCRIPTS = [
+    "../sh/scripts/shCore.js",
+    "../sh/scripts/shBrushJScript.js",
+    "../sh/scripts/shBrushJava.js",
+    "../sh/scripts/shBrushPlain.js"
+];
+
+function generateHead() {
+    var head = document.getElementsByTagName("head")[0];
+    for (var i = 0; i < LINKS.length; i++) {
+        head.appendChild(generateLink(LINKS[i]));
+    }
+    //for (var i = 0; i < SCRIPTS.length; i++) {
+    //    head.appendChild(generateScript(SCRIPTS[i]));
+    //}
+    ////document.onload = function () { SyntaxHighlighter.all(); };
+    //var script = document.createElement('script');
+    //script.innerHTML =
+    //    "SyntaxHighlighter.defaults['gutter'] = false;\n" +
+    //    "SyntaxHighlighter.defaults['toolbar'] = false;\n" +
+    //    "SyntaxHighlighter.all();\n";
+    //var body = document.getElementsByTagName("body")[0];
+    //body.appendChild(script);
+
+}
+
 function generateKobalt(index) {
 //    setTitle();
+    generateHead();
     generateToc();
     generateNavBar(index);
 }
