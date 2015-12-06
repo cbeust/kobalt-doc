@@ -10,6 +10,7 @@
     <script type="text/javascript" src="../sh/scripts/shBrushJScript.js"></script>
     <script type="text/javascript" src="../sh/scripts/shBrushJava.js"></script>
     <script type="text/javascript" src="../sh/scripts/shBrushPlain.js"></script>
+    <script type="text/javascript" src="../sh/scripts/shBrushXml.js"></script>
 
     <script>
         SyntaxHighlighter.defaults['gutter'] = false;
@@ -80,7 +81,7 @@
 <p>
     The <code>kobalt-plugin.xml</code> file (stored in <code>META-INF</code> in the jar file of your plug-in) is mandatory and describes all the actors of your plug-in. This file contains a list of class names, each of which is expected to implement at least one of <code>IPluginActor</code>'s interfaces:
 </p>
-<pre>
+<pre class="brush:xml">
 &lt;kobalt-plugin&gt;
     &lt;name>kobalt&lt;/name&gt;
     &lt;plugin-actors&gt;
@@ -237,7 +238,7 @@
               Kobalt itself uses a <code>kobalt-plugin.xml</code> to define contributors and interceptors, here is
               an excerpt of it:
           </p>
-          <pre>
+<pre class="brush:xml">
 &lt;plugin-actors&gt;
   &lt;class-name&gt;com.beust.kobalt.plugin.java.JavaPlugin&lt;/class-name&gt;
   &lt;class-name&gt;com.beust.kobalt.plugin.android.AndroidPlugin&lt;/class-name&gt;
@@ -250,13 +251,13 @@
               In order to find out what these actually do, we just need to take a look at their definition and
               see which interfaces they implement. For example:
           </p>
-          <pre>
+<pre class="brush:java">
 class JavaPlugin : ICompilerContributor, IDocContributor {</pre>
 
           <p>
               With this declaration, we know that the <code>JavaPlugin</code> contributes a compiler and a doc generator.
           </p>
-          <pre>
+<pre class="brush:java">
 class JavaBuildGenerator: IInitContributor {</pre>
           <p>
               This class is declaring that it wants to take part in the <code>--init</code> selection process, which is
@@ -275,7 +276,7 @@ class JavaBuildGenerator: IInitContributor {</pre>
           <p>
               Contributors that want to participate in a selection process need to implement the following interface:
           </p>
-          <pre>
+<pre class="brush:java">
 interface IProjectAffinity {
     /**
      * @return an integer indicating the affinity of your actor for the given project. The actor that returns
@@ -288,7 +289,7 @@ interface IProjectAffinity {
       the <code>affinity()</code> method to make sure it gets run for Java projects but ignored for others:
   </p>
 
-<pre>
+<pre class="brush:java">
 override fun affinity(project: Project, context: KobaltContext) =
     if (project.sourceSuffix == ".java") 1 else 0</pre>
 
@@ -300,13 +301,13 @@ override fun affinity(project: Project, context: KobaltContext) =
 <p>
     Imagine that you want to offer a boolean parameter <code>publish</code> to users of your plug-in, you start by creating a class to hold that parameter:
 </p>
-<pre>
+<pre class="brush:java">
 class Info(val publish: Boolean)
 </pre>
 <p>
     Next, you create a directive that returns such a class and which also allows to configure it via the type safe builder pattern:
 </p>
-<pre>
+<pre class="brush:java">
 @Directive
 public fun myConfig(init: Info.() -> Unit) = Info().apply { init() }</pre>
 <p>
@@ -316,7 +317,7 @@ public fun myConfig(init: Info.() -> Unit) = Info().apply { init() }</pre>
 <p>
     Users can now specify the following in their build file:
 </p>
-<pre>
+<pre class="brush:java">
 // Build.kt
 import.com.example.plugin.myConfig
 
@@ -326,12 +327,12 @@ myConfig {
 <p>
     If you need access to the project being built, just declare an additional parameter of type <code>Project</code> to your directive and have the user pass that project:
 </p>
-<pre>
+<pre class="brush:java">
 @Directive
 public fun myConfig(project: Project, init: Info.() -> Unit) : Info {
 // ...
 </pre>
-<pre>
+<pre class="brush:java">
 myConfig(project) {
     publish = true
 }
@@ -340,7 +341,7 @@ myConfig(project) {
     The last piece of this puzzle is how you give this data back to your plug-in so it can act on it. In order to do this, you simply look up the name of your plug-in in the <code>Plugins</code> registry and invoke whatever function you need to run:
 </p>
 
-<pre>
+<pre class="brush:java">
 @Directive
 public fun myConfig(init: Info.() -> Unit) = Info().apply {
     init()
@@ -360,7 +361,7 @@ public fun myConfig(init: Info.() -> Unit) = Info().apply {
 <p>
     Static tasks are functions declared directly in your plug-in class and annotated with the <code>@Task</code> annotation. Here is an example:
 </p>
-<pre>
+<pre class="brush:java">
 @Task(name = "lineCount", description = "Count the lines", runBefore = arrayOf("compile"))
 fun lineCount(project: Project): TaskResult {
     // ...
@@ -424,7 +425,7 @@ fun lineCount(project: Project): TaskResult {
     <tr>
         <td align="center">runBefore = "compile"</td>
         <td>
-            <pre>kobalt-line-count:clean
+<pre class="brush:plain">kobalt-line-count:clean
 kobalt-line-count:exampleTask
 kobalt-line-count:compile</pre>
         </td>
@@ -432,14 +433,14 @@ kobalt-line-count:compile</pre>
     <tr>
         <td align="center">runAfter = "compile"</td>
         <td>
-            <pre>kobalt-line-count:clean
+            <pre class="brush:plain">kobalt-line-count:clean
 kobalt-line-count:compile</pre>
         </td>
     </tr>
     <tr>
         <td align="center">alwaysRunAfter = "compile"</td>
         <td>
-            <pre>kobalt-line-count:clean
+            <pre class="brush:plain">kobalt-line-count:clean
 kobalt-line-count:compile
 kobalt-line-count:exampleTask</pre>
         </td>
@@ -454,14 +455,14 @@ kobalt-line-count:exampleTask</pre>
     annotation on it). Plug-ins declare dynamic tasks by implementing the <code>ITaskContributor</code>
     intrface:
 </p>
-<pre>
+<pre class="brush:java">
 interface ITaskContributor {
     fun tasksFor(context: KobaltContext) : List&lt;DynamicTask&gt;
 }</pre>
 <p>
     For example:
 </p>
-<pre>
+<pre class="brush:java">
 override fun tasksFor(context: KobaltContext) = listOf(
     DynamicTask(
         name = "dynamicTask",
@@ -480,7 +481,7 @@ override fun tasksFor(context: KobaltContext) = listOf(
 <p>
     Once you have implemented <code>ITaskContributor</code>, you can see your dynamic task in the list of tasks and run it directly:
 </p>
-<pre>
+<pre class="brush:plain">
 $ ./kobaltw --tasks
   ===== kobalt-line-count =====
     dynamicTask         Description
@@ -516,7 +517,7 @@ fun taskAssemble(project: Project) : TaskResult {
     object that your plug-in receives in its <code>apply()</code> method. Once you have an instance of this
     class, you can read or write variables into it:
 </p>
-<pre>
+<pre class="brush:java">
 override fun apply(project: Project, context: KobaltContext) {
     // Export a property for other plug-ins to use
     context.pluginProperties.put(PLUGIN_NAME, "somePluginProperty", "someValue")
@@ -532,7 +533,7 @@ override fun apply(project: Project, context: KobaltContext) {
     Plug-ins that define properties should annotate them with the <code>@ExportedPluginProperty</code> or
               <code>@ExportedProjectProperty</code>annotation:
 </p>
-<pre>
+<pre class="brush:java">
     companion object {
         @ExportedProjectProperty
         const val BUILD_DIR = "buildDir"
