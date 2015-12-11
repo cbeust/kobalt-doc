@@ -249,20 +249,20 @@ dependencies {
 Kobalt already knows the location of the most popular Maven repos (Maven Central, JCenter, JBoss) but you can add repos with the <code>repos()</code> directive:
 </p>
 
-<pre>
+<pre class="brush:plain">
 val repos = repos("https://dl.bintray.com/cbeust/maven/")</pre>
 <p>
   By default, this directive takes URL's as strings, but you can also use local
   files with the <code>files</code> directive:
 </p>
 
-<pre>
+<pre class="brush:plain">
 val repos = repos(file("/some/local/directory"))</pre>
 <p>
   The <code>homeDir()</code> directive can also come in handy when you want
   to specify a directory starting at your home directory:
 </p>
-<pre>
+<pre class="brush:plain">
 val repos = repos(file(homeDir("some/directory/in/your/home")))</pre>
 
 <h3 class="section" indent="1" id="maven-repos-authenticated">Authenticated repos</h3>
