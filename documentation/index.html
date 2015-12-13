@@ -243,6 +243,68 @@ dependencies {
     compile(file("libs/async-http.jar"))
 }
 </pre>
+
+<h3 class="section" indent="1" id="examples">Examples</h3>
+
+<p>
+Below is a simple build file (Build.kt) that exports a fat and a skinny (normal) jar  
+</p>
+
+<pre class="brush:java">
+import com.beust.kobalt.*
+import com.beust.kobalt.plugin.packaging.assemble
+import com.beust.kobalt.plugin.kotlin.*
+
+val repos = repos("http://repository.jetbrains.com/all", "")
+
+val exampleName = "coolapp"
+
+val p = kotlinProject {
+
+    name = exampleName
+    group = "com.example"
+    artifactId = name
+    version = "0.1"
+
+    sourceDirectories {
+        path("src/main/kotlin")
+        path("src/main/resources")
+    }
+
+    sourceDirectoriesTest {
+        path("src/test/resources")
+        path("src/test/kotlin")
+    }
+
+    dependencies {
+        compile("com.fasterxml.jackson.core:jackson-core:2.6.4")
+        compile("com.fasterxml.jackson.core:jackson-databind:2.6.4")
+        compile("com.fasterxml.jackson.core:jackson-annotations:2.6.4")
+        compile("org.wasabi:wasabi:0.1-SNAPSHOT")
+        compile("javax.jms:jms:1.1")
+        compile("com.beust:jcommander:1.48")
+        compile("com.squareup.retrofit:retrofit:2.0.0-beta2")
+    }
+
+    dependenciesTest {
+//        compile("org.testng:testng:6.9.5")
+
+    }
+
+    assemble {
+        jar {
+            fatJar = true
+            manifest {
+                attributes("Main-Class", "com.example.ExampleKt")
+            }
+        }
+        jar {
+            name =  exampleName + "-" + version + "-skinny.jar"
+        }
+    }
+}
+</pre>
+
 <h2 class="section" id="maven-repos">Maven repos</h2>
 <h3 class="section" indent="1" id="maven-repos-unauthenticated">Unauthenticated repos</h3>
 <p>
