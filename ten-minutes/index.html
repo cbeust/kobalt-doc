@@ -100,9 +100,9 @@ val project = kotlinProject {
 <pre class="brush:xml">
 &lt;kobalt-plugin&gt;
     &lt;name&gt;kobalt-line-count&lt;/name&gt;
-    &lt;plugins&gt;
+    &lt;plugin-actors&gt;
         &lt;class-name&gt;com.beust.kobalt.plugin.linecount.LineCountPlugin&lt;/class-name&gt;
-    &lt;/plugins&gt;
+    &lt;/plugin-actors&gt;
 &lt;/kobalt-plugin&gt;
 </pre>
 
@@ -136,14 +136,14 @@ public class Main : BasePlugin() {
 $ ./kobaltw uploadJcenter
 ...
 ========== kobalt-line-count:uploadJcenter
-  kobalt-line-count: Found 2 artifacts to upload
-  All artifacts successfully uploaded
-  ############# Time to Build: 3590 ms
+  Found 12 artifacts to upload:
+    Uploading 12 / 12 |............|
+BUILD SUCCESSFUL (15 seconds)
 </pre>
 
-          <p>
-              If you go to the maven section of your bintray account, you will now see that the new package has two unpublished files. Your new plug-in won't be visible by clients until you publish those files, so let's update our build file to automatically publish files from now on:
-          </p>
+<p>
+  If you go to the maven section of your bintray account, you will now see that the new package has two unpublished files. Your new plug-in won't be visible by clients until you publish those files, so let's update our build file to automatically publish files from now on:
+</p>
 
 <pre class="brush:java">
 jcenter {
@@ -200,15 +200,14 @@ Created /Users/beust/kotlin/kobalt-line-count/kobaltBuild/libs/kobalt-line-count
 ========== kobalt-line-count:generatePom
  Wrote /Users/beust/kotlin/kobalt-line-count/kobaltBuild/libs/kobalt-line-count-0.2.pom
 ========== kobalt-line-count:uploadJcenter
-kobalt-line-count: Found 2 artifacts to upload
-All artifacts successfully uploaded
-
-Time to Build: 5907 ms
+  Found 12 artifacts to upload:
+    Uploading 12 / 12 |............|
+BUILD SUCCESSFUL (15 seconds)
 </pre>
 
-          <p>
-              Finally, let's use our plug-in from another project. Since we didn't link this project to JCenter, it's uploaded in the user's maven repository, so we will have to add this maven repository to the build file where we want to use the plug-in. Adjust this line to point to your own maven repo:
-          </p>
+<p>
+  Finally, let's use our plug-in from another project. Since we didn't link this project to JCenter, it's uploaded in the user's maven repository, so we will have to add this maven repository to the build file where we want to use the plug-in. Adjust this line to point to your own maven repo:
+</p>
 
 <pre class="brush:java">
 val repos = repos("https://dl.bintray.com/cbeust/maven/")
@@ -241,7 +240,8 @@ Found 4972 lines in 65 files
 </pre>
 
           <p>
-              And that's it! You can now iterate on your plug-in and upload it with additional <code>./kobaltw uploadJcenter</code>. This plug-in is <a href="https://github.com/cbeust/kobalt-linecount">available on github</a>.
+              And that's it! You can now iterate on your plug-in and upload it with additional <code>./kobaltw uploadJcenter</code>. This plug-in is <a href="https://github.com/cbeust/kobalt-linecount">available on github</a>. Note that the plug-in in the repo
+              illustrates a few other concepts not discussed here, such as adding dynamic tasks, so I encourage you take a look at its source.
           </p>
 
           <h2 class="section" id="initialization">Initialization</h2>
