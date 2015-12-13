@@ -96,7 +96,7 @@ This command will do two things:
 </p>
 
 <ol>
-<li>Create a default <code>Build.kt</code> file in your current directory based on what was found there.
+<li>Create a default <code>kobalt/src/Build.kt</code> file based on what was found there.
 <li>Install the Kobalt Wrapper in your current directory (script `kobaltw`) and in the <code>kobalt/</code> directory. From now on, you can just use <code>./kobaltw</code> to build and you can ignore <code>$KOBALT_HOME</code>.
 </ol>
 
@@ -404,9 +404,9 @@ Here are the options that you can pass to <code>./kobaltw</code>:
   <tr>
     <td><code>--buildFile</code></td>
     <td>File</td>
-    <td>Build.kt</td>
+    <td>kobalt/src/Build.kt</td>
     <td>Specify a build file.</td>
-    <td>Use this option if you are trying to build a project that's not in the current directory.</td>
+    <td>Use this option if you are trying to build a project whose <code>Build.kt</code> is not in <code>kobalt/src</code>.</td>
   </tr>
   <tr>
     <td><code>--checkVersions</code></td>

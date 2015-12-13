@@ -82,48 +82,6 @@
               </ul>
 
           </p>
-
-          <h2 class="section" id="build-file">Auto complete in build files</h2>
-          <p>
-              It's useful to turn on auto completion for your <code>Build.kt</code> file if you are adding new
-              elements to the DSL. You can achieve this in two steps.
-          </p>
-
-          <h3 class="section" id="sync" indent="1">Sync your build file</h3>
-          <p>
-              This is achieved with the <code>Kobalt / Sync build file</code> menu item. On top of configuring your
-              IDEA project with the correct dependencies, this will also add the <code>kobalt.jar</code> file to your
-              classpath.
-          </p>
-          <p align="center" class="img-rounded">
-              <img width="50%" class="img-rounded" src="../pics/menu-sync.png"/>
-          </p>
-          <p align="center" class="img-rounded">
-              <img width="50%" class="img-rounded" src="../pics/kobalt-jar.png"/>
-          </p>
-
-
-          <h3 class="section" id="compile-build-file" indent="1">Compile your build file</h3>
-          <p>
-              Next, mark the directory that contains your build file as a "Source directory":
-          </p>
-          <p align="center" class="img-rounded">
-              <img width="50%" class="img-rounded" src="../pics/source-root.png"/>
-          </p>
-          <div class="bs-callout bs-callout-warning">
-              <h4>Alternate source directory for <code>Build.kt</code></h4>
-              The default location for <code>Build.kt</code> is in the root directory of your project but
-              you can also put it in <code>kobalt/src/Build.kt</code> and then mark that directory as
-              a source directory.
-          </div>
-
-          <p>
-              You can now use all the IDEA features on your build file:
-          </p>
-          <p align="center">
-              <img class="img-rounded" src="../pics/auto-complete.png"/>
-          </p>
-
       </div>
 
       <!-- Table of contents -->
