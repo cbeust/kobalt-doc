@@ -199,7 +199,7 @@ This is the simplest jar declaration you can have. You can trigger the creation 
         jar {
             fatJar = true
             manifest {
-                attributes("Main-Class", "com.beust.kobalt.KobaltPackage")
+                attributes("Main-Class", "com.beust.FileHavingMainKt")
             }
         }
         zip {
@@ -212,7 +212,7 @@ This is the simplest jar declaration you can have. You can trigger the creation 
 </pre>
 
 <p>
-Our jar file is now declared to be a "fat jar" (which means it will include all its dependencies) and we specified a <code>Main-Class</code> to the jar Manifest, which means we will be able to invoke it with <code>java -jar kobalt-0.61.jar</code>. If you don't like this name, you can override it with a <code>name = "myName.jar"</code> statement.
+Our jar file is now declared to be a "fat jar" (which means it will include all its dependencies) and we specified a <code>Main-Class</code> to the jar Manifest, which means we will be able to invoke it with <code>java -jar kobalt-0.61.jar</code>. If you don't like this name, you can override it with a <code>name = "myName.jar"</code> statement.  <code>FileHavingMain</code> would be the name of the .kt file in package com.beust that contains the main function that will be run automatically
 </p>
 
 <p>
