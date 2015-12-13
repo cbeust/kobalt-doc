@@ -219,6 +219,30 @@ Our jar file is now declared to be a "fat jar" (which means it will include all 
 The zip directive follows a similar structure, although here we are specifying which file we want to include. For more details on the <code>packaging</code> plug-in, please see its documentation.
 </p>
 
+<h3 class="section" indent="1" id="inline-tasks">Inline tasks</h3>
+<p>
+  Since <code>Build.kt</code> is a valid Kotlin file, you can write arbitrary Kotlin code in it,
+  including defining tasks. If you ever need to perform an operation that is not supported by an
+  existing plug-in and it would be overkill to write a plug-in just for it, you can define that
+  task directly in your build file, including specifying its run dependencies so that it will
+  be executed exactly when you want it. Here is an example from <a href="https://github.com/cbeust/testng/blob/master/kobalt/src/Build.kt#L53">TestNG's own build file</a>:
+</p>
+<pre class="brush:java">
+@Task(name = "createVersion", runBefore = arrayOf("compile"), runAfter = arrayOf("clean"))
+fun taskCreateVersion(project: Project) : TaskResult {
+    val path = "org/testng/internal"
+    with(arrayListOf&lt;String&gt;()) {
+        File("src/main/resources/$path/VersionTemplateJava").forEachLine {
+            add(it.replace("@version@", VERSION))
+        }
+        File("src/generated/java/$path/Version.java").writeText(joinToString("\n"))
+    }
+    return TaskResult()
+}</pre>
+<p>
+  This tasks takes a template file and replaces all occurrences of the string <code>"@version@"</code> with the actual version of the project. Obviously, this task is very specific to TestNG's own build and it wasn't worth writing a plug-in ftor this. Note the attributes <code>runBefore</code> and <code>runAfter</code>, which specify when this task will run. You can find more information about tasks in the <a href="http://beust.com/kobalt/plug-in-development/index.html#tasks">plug-in development section</a>.
+</p>
+
 <h3 class="section" indent="1" id="dependencies">Dependencies</h3>
 
 <p>
