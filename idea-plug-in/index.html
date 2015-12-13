@@ -89,6 +89,7 @@
     The Kobalt IDEA plug-in offers the following features:
     <ul>
         <li>Synchronization of build files.</li>
+        <li>Automatic completion of <code>Build.kt</code></li>
     </ul>
 </p>
 <h3 class="section" indent="1" id="sync-build-file">Synchronization of build files</h3>
@@ -145,16 +146,41 @@ dependencies {
               <img src="../pics/structure-4.png" class="img-rounded"/>
           </p>
 
-          <h2 class="section">Source code and bug reports</h2>
+<h3 class="section" indent="1" id="autocompletion">Auto completion of Build.kt</h3>
           <p>
-              The source code <a href="http://github.com/cbeust/kobalt-intellij-plugin">can be found on github</a>.
-              If you need to report a bug, please make sure you include the log file, which you can find under
-              the "Help" menu:
+              The plug-in will automatically turn on auto-completion of your <code>Build.kt</code>
+              file if it's located in the <code>kobalt/src</code> directory. Once this is
+              enabled, you can use everything you use on Kotlin files (auto completion, jump
+              to symbols, even refactorings).
           </p>
-          <p align="center">
-              <img src="../pics/show-log.png" class="img-rounded"/>
+          <p>
+              The plug-in also understands the <code>plugins()</code> directive:
           </p>
-      </div>
+          <ul>
+              <li>Add a plug-in to your build file:
+<pre class="brush:java">
+val plugins = plugins("com.beust.kobalt:kobalt-line-count:0.17")</pre>
+              </li>
+              <li>Sync your build file, as explained in the previous section.</li>
+              <li>You can now import the new symbols and use the new configuration:
+              <pre class="brush:java">
+import com.beust.kobalt.plugin.linecount.lineCount
+val lc = lineCount {
+    suffix = "**Plugin.kt"
+}</pre>
+              </li>
+          </ul>
+
+  <h2 class="section">Source code and bug reports</h2>
+  <p>
+      The source code <a href="http://github.com/cbeust/kobalt-intellij-plugin">can be found on github</a>.
+      If you need to report a bug, please make sure you include the log file, which you can find under
+      the "Help" menu:
+  </p>
+  <p align="center">
+      <img src="../pics/show-log.png" class="img-rounded"/>
+  </p>
+</div>
 
       <!-- Table of contents -->
       <div class="col-md-3" id="table-of-contents">
