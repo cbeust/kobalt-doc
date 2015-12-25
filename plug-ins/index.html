@@ -388,6 +388,15 @@ jcenter {
        "${kobalt.name}/${kobalt.version}/${kobalt.name}-${kobalt.version}.zip")
 }
 </pre>
+<p>
+  If all you want is upload your project in Maven form, just add the following to the <code>assemble</code> section of your build file:
+</p>
+<pre class="brush:java">
+  mavenJars {}
+</pre>
+<p>
+  This directive <a href="#mavenJars">is described here</a> and is a shortcut to upload all the files that are required in a Maven repo (jar file, javadocs, source files and POM file).
+</p>
 
 <p>
   The <code>jcenter</code> directive accepts the following parameters:
