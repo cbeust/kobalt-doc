@@ -150,23 +150,23 @@ compileFreeDebug
 ===== packaging =====
 assembleFreeRelease
 assembleFreeDebug</pre>
-          <p>
-              For example, if you define two flavors, "pro" and "free", and two build types, "debug" and "release", four tasks will be added that combine these: "proDebug", "proRelease", "freeDebug" and "freeRelease". If you assemble any of these, an artifact named after that combination will be created, e.g. "kobalt-0.273-free-debug.jar".
-          </p>
+<p>
+  For example, if you define two flavors, "pro" and "free", and two build types, "debug" and "release", four tasks will be added that combine these: "proDebug", "proRelease", "freeDebug" and "freeRelease". If you assemble any of these, an artifact named after that combination will be created, e.g. "kobalt-0.273-free-debug.jar".
+</p>
 
-          <h3 class="section" id="build-config" indent="1">BuildConfig</h3>
-          <p>
-              If you defined at least one variant defined, a special file called <code>BuildConfig.java</code> (or
-              <code>BuildConfig.kt</code>) will be automatically generated.
-          </p>
-          <div class="bs-callout bs-callout-warning">
-              <h4>Note</h4>
-              You need to define <code>packageName</code> in your project in order for this file to be generated or
-              Kobalt will fail.
-          </div>
-          <p>
-              This class contains at least two fields defining the current variant:
-          </p>
+<h3 class="section" id="build-config" indent="1">BuildConfig</h3>
+<p>
+  If you defined at least one variant defined, a special file called <code>BuildConfig.java</code> (or
+  <code>BuildConfig.kt</code>) will be automatically generated.
+</p>
+<div class="bs-callout bs-callout-warning">
+  <h4>Note</h4>
+  You need to define <code>packageName</code> in your project in order for this file to be generated or
+  Kobalt will fail.
+</div>
+<p>
+  This class contains at least two fields defining the current variant:
+</p>
 <pre class="brush:java">
 class BuildConfig {
     companion object {
@@ -174,11 +174,11 @@ class BuildConfig {
         val BUILD_TYPE : String = "debug"
     }
 }</pre>
-          <p>
-              You can add your own custom fields to this file by calling the <code>buildConfig</code> directive
-              inside your
-              flavor:
-          </p>
+<p>
+  You can add your own custom fields to this file by calling the <code>buildConfig</code> directive
+  inside your
+  flavor:
+</p>
 <pre class="brush:java">
 productFlavor("free") {
     buildConfig {
@@ -186,9 +186,9 @@ productFlavor("free") {
         field("anIntField", "Int", "42")
     }
 }</pre>
-          <p>
-              The generated file will then contain:
-          </p>
+<p>
+  The generated file will then contain:
+</p>
 <pre class="brush:java">
 class BuildConfig {
     companion object {
