@@ -202,7 +202,46 @@ class BuildConfig {
     Take a look at the <a href=https://github.com/cbeust/kobalt-examples/tree/master/variants>variants example
     project</a> to see an actual example using variants and <code>BuildConfig</code>.
 </p>
-          <h2 class="section" id="application">Application</h2>
+
+<h3 class="section" id="tests" indent="1">Tests</h3>
+<p>
+  Kobalt will automatically attempt to run test classes found in the test directory with the
+  correct runner (e.g. TestNG, JUnit, Spek, etc...). Additionally, you can configure how
+  these tests are run with the <code>test{}</code> directive, which accepts the following
+  parameters:
+</p>
+<dl class="dl-horizontal">
+  <dt>args</dt>
+  <dd>The arguments passed to the runner</dd>
+  <dt>includes</dt>
+  <dd>Which classes to include. Note that the parameters to this function are path globs (see below)</dd>
+  <dt>excludes</dt>
+  <dd>Which classes to exclude. Note that the parameters to this function are path globs (see below)</dd>
+</dl>
+<p>
+  Here are a few examples of <code>test{}</code> directives:
+</p>
+<pre class="brush:java">
+test {
+    args("-log", "1", "src/test/resources/testng.xml")
+}</pre>
+          <p>
+              Specifying includes and excludes:
+          </p>
+<pre class="brush:java">
+test {
+    includes("**/D*.class")
+    excludes("**/BrokenTest.class", "**/NotYetImplementedTest.class")
+}</pre>
+<p>
+  Note that <code>includes</code> and <code>excludes</code> are path globs: they must match the
+  entire path of the class and they can use <code>**</code> and <code>*</code> to match any
+  directory or file name.
+</p>
+
+
+
+<h2 class="section" id="application">Application</h2>
 <p>
     The "application" plug-in lets you run your application directly from <code>kobaltw</code>. You configure
     it as follows:
