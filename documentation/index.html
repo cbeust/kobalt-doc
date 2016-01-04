@@ -267,6 +267,21 @@ dependencies {
     compile(file("libs/async-http.jar"))
 }
 </pre>
+
+          <p>
+              There are various kinds of dependencies:
+          </p>
+          <ul>
+              <li><strong>compile</strong>. Dependencies necessary to compile your project.</li>
+              <li><strong>runtime</strong>. These dependencies are not used at compile time but passed
+              to the JVM to run your application. </li>
+              <li><strong>provided</strong>. These dependencies are used at compile time but not used to run
+              your application.</li>
+              <li><strong>excluded</strong>. These dependencies will be excluded from the classpath. You can either
+              specify a versioned id (e.g. <code>"groupId:artifactId:version"</code>) or a versionless one
+                  (<code>"groupId:artifactId:"</code>)</li>
+          </ul>
+
 <h2 class="section" id="maven-repos">Maven repos</h2>
 <h3 class="section" indent="1" id="maven-repos-unauthenticated">Unauthenticated repos</h3>
 <p>
