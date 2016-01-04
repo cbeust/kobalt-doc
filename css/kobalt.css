@@ -32,11 +32,9 @@ table {
     margin-top: 10px;
     font-size: 130%;
     font-weight: bold;
-    padding: 2px;
 }
 
 .toc-item-1 {
-    padding: 2px;
     font-size: 120%;
 }
 
@@ -50,9 +48,9 @@ table {
     -moz-border-radius-bottomright: 5px;
     -moz-border-radius-bottomleft: 5px;
     -webkit-border-radius: 5px;
-    border-radius: 5px;
+    border-radius: 8px;
     text-decoration: none;
-    background: #48D1CC;
+    background: #dffbf8;
     display: block;
 }
 
@@ -130,7 +128,7 @@ table {
  * Dual licensed under the MIT and GPL licenses.
  */
 .syntaxhighlighter {
-    background-color: #FFFABF !important;
+    background-color: #edfaff !important;
 }
 /*.syntaxhighlighter .line.alt1 {*/
 /*background-color: white !important;*/
