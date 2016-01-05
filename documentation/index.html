@@ -57,9 +57,7 @@
 
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <h1>Kobalt</h1>
-        <p>A universal build system for the exigent developer.</p>
-        <img src="../pics/auto-completion.png" class="img-rounded"/>
+        <h1>Documentation</h1>
 
 <!--
         <p>
@@ -70,47 +68,6 @@
 
 
       <div class="col-md-9">
-
-<h2 class="section" id="downloading">Downloading and installing Kobalt</h2>
-
-<p>
-<a href="https://github.com/cbeust/kobalt/releases/latest">Download the zip file</a> then unzip it in a location we'll call <code>KOBALT_HOME</code>:
-</p>
-
-<pre class="brush:plain">
-cd $KOBALT_HOME
-unzip kobalt-xxx.zip
-</pre>
-
-<p>
-Change to your project directory and call the <code>kobaltw</code> command with <code>--init</code>:
-</p>
-
-<pre class="brush:plain">
-cd ~/java/project
-$KOBALT_HOME/kobaltw --init
-</pre>
-
-<p>
-This command will do two things:
-</p>
-
-<ol>
-<li>Create a default <code>kobalt/src/Build.kt</code> file based on what was found there.
-<li>Install the Kobalt Wrapper in your current directory (script `kobaltw`) and in the <code>kobalt/</code> directory. From now on, you can just use <code>./kobaltw</code> to build and you can ignore <code>$KOBALT_HOME</code>.
-</ol>
-
-<p>
-You can now attempt to build your project with Kobalt:
-</p>
-
-<pre class="brush:plain">
-./kobaltw assemble
-</pre>
-
-If your project follows a regular build structure (e.g. <a href="https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html">Maven's hierarchy</a>), this should compile your file and create a .jar file. If not, you will have to make a few edits to your <code>Build.kt</code>.
-
-As of this writing, Kobalt supports Java and Kotlin projects.
 
 <h2 class="section" id="structure">Structure of a build file</h2>
 
@@ -628,7 +585,7 @@ If you are interested in discussing Kobalt related topics with other fellow user
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="../bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="../js/kobalt.js"></script>
-<script>generateKobalt(1);</script>
+<script>generateKobalt();</script>
 
 <!--
   <script src="../bootstrap/dist/js/docs.min.js"></script>
