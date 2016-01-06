@@ -2,6 +2,10 @@
  * Kobalt CSS
  */
 
+.features {
+    font-size: 1.5em;
+}
+
 code {
     background-color: #ffffff;
 }

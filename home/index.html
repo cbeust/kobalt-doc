@@ -55,14 +55,20 @@
 
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <h1>What is Kobalt?</h1>
+        <h1>Kobalt: friendly, fast build system</h1>
       </div>
 
       <!-- Main content -->
       <div class="col-md-9">
+        <img src="../pics/auto-completion.png" class="img-rounded"/>
 
-<h2 class="section" id="overview">Overview</h2>
-Kobalt is a build system system featuring build files written in Kotlin. It's focused on offering an intuitive DSL and plug-in architecture, fast builds and build file auto completion from your favorite IDE.
+<h2 class="section" id="overview">Features</h2>
+<ul class="features">
+  <li>Clean, easy-to-use syntax for build files</li>
+  <li>Build file auto-completion from your favorite IDE</li>
+  <li>Intuitive plug-in architecture</li>
+  <li>Fast builds</li>
+</ul>
 </p>
 
 <p>
@@ -110,7 +116,7 @@ val jcommander = javaProject {
   <li>An agnostic build tool. Kobalt can be used to build Kotlin and Java projects today but it's capable to build anything: any language (JVM or not) or platform (Android, Spring, ...).
 </ul>
 
-<h2 id="path">The path to Kobalt 1.0</h2>
+<h2 class="section" id="path">Status</h2>
 
 <p>
 Kobalt is currently in Beta but I'm already using it to build most of my projects. Here are links to a few build files you can inspect to get a feel for what Kobalt enables:
@@ -122,10 +128,6 @@ Kobalt is currently in Beta but I'm already using it to build most of my project
   <li><a href="https://github.com/cbeust/klaxon/blob/master/kobalt/src/Build.kt">Klaxon</a></li>
   <li>... and of course, <a href="https://github.com/cbeust/kobalt/blob/master/kobalt/src/Build.kt">Kobalt itself</a> (this build file demonstrates multi projects and project dependencies).</li>
 </ul>
-
-<p>
-    Where to next? Are you interested in writing some cool Kotlin code and contribute to Kobalt? Or maybe just download and run Kobalt on your own projects just to get a feel for it? Then proceed to <a href="../documentation/index.html">Kobalt's main documentation!</a>
-</p>
 
 <p>
 </p>
@@ -142,7 +144,7 @@ Kobalt is currently in Beta but I'm already using it to build most of my project
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="../bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="../js/kobalt.js"></script>
-<script>generateKobalt(0);</script>
+<script>generateKobalt();</script>
 
   <!--
   <script src="../../assets/js/docs.min.js"></script>

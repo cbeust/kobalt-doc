@@ -10,6 +10,14 @@ var content = [
     title: "Home"
   },
   {
+    url: "../getting-started/index.html",
+    title: "Getting Started"
+  },
+  {
+    url: "../idea-plug-in/index.html",
+    title: "IDEA plug-in"
+  },
+  {
     url: "../documentation/index.html",
     title: "Documentation"
   },
@@ -22,16 +30,8 @@ var content = [
     title: "Writing a Kobalt plug-in"
   },
   {
-    url: "../idea-plug-in/index.html",
-    title: "IDEA plug-in"
-  },
-  {
-    url: "../ten-minutes/index.html",
-    title: "Ten minutes"
-  },
-  {
     url: "../contributing/index.html",
-    title: "Contributing"
+    title: "Contribute"
   }
 
 ];
@@ -50,14 +50,15 @@ var after = '</ul>'
   + '</nav>'
   ;
 
-function generateNavBar(index) {
+function generateNavBar() {
   var result = before;
   for (var i = 0; i < content.length; i++) {
     var cls = "";
-    if (index == i) {
+    var c = content[i];
+    var cleanUrl = c.url.replace("../", "")
+    if (window.location.href.indexOf(cleanUrl) > -1) {
       cls = 'class="active"';
     }
-    var c = content[i];
     result += '<li ' + cls + '><a href="' + c.url + '">' + c.title + '</a></li>';
   }
   result += after;

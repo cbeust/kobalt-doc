@@ -57,9 +57,7 @@
 
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
-        <h1>Kobalt</h1>
-        <p>A universal build system for the exigent developer.</p>
-        <img src="../pics/auto-completion.png" class="img-rounded"/>
+        <h1>Documentation</h1>
 
 <!--
         <p>
@@ -70,47 +68,6 @@
 
 
       <div class="col-md-9">
-
-<h2 class="section" id="downloading">Downloading and installing Kobalt</h2>
-
-<p>
-<a href="https://github.com/cbeust/kobalt/releases/latest">Download the zip file</a> then unzip it in a location we'll call <code>KOBALT_HOME</code>:
-</p>
-
-<pre class="brush:plain">
-cd $KOBALT_HOME
-unzip kobalt-xxx.zip
-</pre>
-
-<p>
-Change to your project directory and call the <code>kobaltw</code> command with <code>--init</code>:
-</p>
-
-<pre class="brush:plain">
-cd ~/java/project
-$KOBALT_HOME/kobaltw --init
-</pre>
-
-<p>
-This command will do two things:
-</p>
-
-<ol>
-<li>Create a default <code>kobalt/src/Build.kt</code> file based on what was found there.
-<li>Install the Kobalt Wrapper in your current directory (script `kobaltw`) and in the <code>kobalt/</code> directory. From now on, you can just use <code>./kobaltw</code> to build and you can ignore <code>$KOBALT_HOME</code>.
-</ol>
-
-<p>
-You can now attempt to build your project with Kobalt:
-</p>
-
-<pre class="brush:plain">
-./kobaltw assemble
-</pre>
-
-If your project follows a regular build structure (e.g. <a href="https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html">Maven's hierarchy</a>), this should compile your file and create a .jar file. If not, you will have to make a few edits to your <code>Build.kt</code>.
-
-As of this writing, Kobalt supports Java and Kotlin projects.
 
 <h2 class="section" id="structure">Structure of a build file</h2>
 
@@ -591,29 +548,6 @@ dependencies {
         "com.squareup.okhttp:okhttp:2.5.0",
 </pre>
 
-<h2 class="section" id="sources">Sources and license</h2>
-
-<p>
-Kobalt is <a href="https://github.com/cbeust/kobalt/blob/master/LICENSE.txt">licensed under Apache 2.0</a> and is <a href="http://github.com/cbeust/kobalt">currently hosted on github.</a>
-</p>
-
-<h2 class="section" id="discuss">Discuss Kobalt</h2>
-
-<p>
-If you are interested in discussing Kobalt related topics with other fellow users or developers, you have several options:
-</p>
-
-<ul>
-  <li>Live discussions are happening on Kotlin's Slack Channel, managed by JetBrains. You can get an automated invitation <a href="http://kotlinslackin.herokuapp.com/">here</a> and then, just join the <code>#kobalt</code> channel.
-  </li>
-  <li><a href="https://groups.google.com/forum/#!forum/kobalt-users">Join <code>kobalt-users</code>, the mailing-list for Kobalt users.</a></li>
-  <li><a href="https://groups.google.com/forum/#!forum/kobalt-dev">Join <code>kobalt-dev</code>, the mailing-list for Kobalt developers</a>. This mailing-list is for people interested in writing code for Kobalt, either the core, or writing plug-ins, or just to follow various technical discussions about Kobalt's internals.</li>
-</ul>
-
-<p>
-</p>
-
-
       </div>
 
 
@@ -628,7 +562,7 @@ If you are interested in discussing Kobalt related topics with other fellow user
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="../bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="../js/kobalt.js"></script>
-<script>generateKobalt(1);</script>
+<script>generateKobalt();</script>
 
 <!--
   <script src="../bootstrap/dist/js/docs.min.js"></script>
