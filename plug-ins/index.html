@@ -395,9 +395,10 @@ assemble {
 <h2 class="section" id="publishing">Publishing</h2>
 
 <p>
-  The Publishing plug-in lets you upload files to JCenter. These files can be either generic ones (e.g. a zip file, a README, etc...) or a Maven-compatible form of your project.
+  The Publishing plug-in lets you upload files to JCenter and Github. These files can be either generic ones (e.g. a zip file, a README, etc...) or a Maven-compatible form of your project.
 </p>
 
+<h3 class="section" indent="1" id="jcenter">JCenter</h3>
 <p>
   Before you can upload, you need to create a file <code>local.properties</code> in the root directory of your project with the following keys:
 </p>
@@ -444,9 +445,11 @@ jcenter {
   The <code>jcenter</code> directive accepts the following parameters:
 </p>
 <dl class="dl-horizontal">
-  <dt>publish</dt>
+  <dt>publish (<code>false</code>)</dt>
   <dd>If true, the uploaded file will be published in your personal space (e.g. <code>https://dl.bintray.com/cbeust/maven</code>). Once the file is uploaded there, it can be automatically synchronized to JCenter by linking your project to JCenter on the bintray web site. By default, files are <strong>not</strong> published.
   </dd>
+    <dt>sign (<code>false</code>)</dt>
+    <dd>If true, sign the files with GPG. This is only required if you plan to later synchronize these files from JCenter to Maven Central. Keep this to <code>false</code>if you are only interested in uploading to JCenter.</dd>
   <dt>file</dt>
   <dd>The first parameter is the file you want to upload and the second one is the path where it will be uploaded to.</dd>
 </dl>
