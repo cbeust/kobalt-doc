@@ -152,9 +152,9 @@ public class Main : BasePlugin() {
           </p>
 
 <pre class="brush:plain">
-$ ./kobaltw uploadJcenter
+$ ./kobaltw uploadBintray
 ...
-========== kobalt-line-count:uploadJcenter
+========== kobalt-line-count:uploadBintray
   Found 12 artifacts to upload:
     Uploading 12 / 12 |............|
 BUILD SUCCESSFUL (15 seconds)
@@ -165,7 +165,7 @@ BUILD SUCCESSFUL (15 seconds)
 </p>
 
 <pre class="brush:java">
-jcenter {
+bintray {
     publish = true
 }
 </pre>
@@ -206,19 +206,19 @@ public class Main : BasePlugin() {
 </pre>
 
           <p>
-              Let's bump our version to 0.2 (since version 0.1 is already uploaded and JCenter won't allow us to overwrite it) and upload our new plug-in:
+              Let's bump our version to 0.2 (since version 0.1 is already uploaded and Bintray won't allow us to overwrite it) and upload our new plug-in:
           </p>
 
 
 <pre class="brush:plain">
-$ ./kobaltw uploadJcenter
+$ ./kobaltw uploadBintray
 ...
 kobalt-line-count: Compilation succeeded
 ========== kobalt-line-count:assemble
 Created /Users/beust/kotlin/kobalt-line-count/kobaltBuild/libs/kobalt-line-count-0.2.jar
 ========== kobalt-line-count:generatePom
  Wrote /Users/beust/kotlin/kobalt-line-count/kobaltBuild/libs/kobalt-line-count-0.2.pom
-========== kobalt-line-count:uploadJcenter
+========== kobalt-line-count:uploadBintray
   Found 12 artifacts to upload:
     Uploading 12 / 12 |............|
 BUILD SUCCESSFUL (15 seconds)
@@ -259,7 +259,7 @@ Found 4972 lines in 65 files
 </pre>
 
           <p>
-              And that's it! You can now iterate on your plug-in and upload it with additional <code>./kobaltw uploadJcenter</code>. This plug-in is <a href="https://github.com/cbeust/kobalt-linecount">available on github</a>. Note that the plug-in in the repo
+              And that's it! You can now iterate on your plug-in and upload it with additional <code>./kobaltw uploadBintray</code>. This plug-in is <a href="https://github.com/cbeust/kobalt-linecount">available on github</a>. Note that the plug-in in the repo
               illustrates a few other concepts not discussed here, such as adding dynamic tasks, so I encourage you take a look at its source.
           </p>
 
@@ -295,12 +295,12 @@ public class Main : BasePlugin() {
               Now you can simply create a launch configuration for your main class, which will invoke Kobalt.
           </p>
 
-          <p>
-              The next step is to have Kobalt invoke your plug-in, so you will have to modify your build file
-              to call it. As long as you haven't deployed your plug-in to JCenter, you might want to use the
-              <code>file()</code> directive to declare your dependency, so that Kobalt will use the jar file
-              on your file system:
-          </p>
+<p>
+  The next step is to have Kobalt invoke your plug-in, so you will have to modify your build file
+  to call it. As long as you haven't deployed your plug-in to Bintray, you might want to use the
+  <code>file()</code> directive to declare your dependency, so that Kobalt will use the jar file
+  on your file system:
+</p>
 
 <pre class="brush:java">
 val p = plugins(

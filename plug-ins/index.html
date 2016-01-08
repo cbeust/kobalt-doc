@@ -388,10 +388,10 @@ assemble {
 <h2 class="section" id="publishing">Publishing</h2>
 
 <p>
-  The Publishing plug-in lets you upload files to JCenter and Github. These files can be either generic ones (e.g. a zip file, a README, etc...) or a Maven-compatible form of your project.
+  The Publishing plug-in lets you upload files to Bintray and Github. These files can be either generic ones (e.g. a zip file, a README, etc...) or a Maven-compatible form of your project.
 </p>
 
-<h3 class="section" indent="1" id="jcenter">JCenter</h3>
+<h3 class="section" indent="1" id="bintray">Bintray / JCenter</h3>
 <p>
   Before you can upload, you need to create a file <code>local.properties</code> in the root directory of your project with the following keys:
 </p>
@@ -414,11 +414,11 @@ you are ready to do your first upload.
 </p>
 
 <p>
-  You define what to upload with the <code>jcenter</code> directive:
+  You define what to upload with the <code>bintray</code> directive:
 </p>
 
 <pre class="brush:java">
-jcenter {
+bintray {
   publish = true
   file("${kobalt.buildDirectory}/libs/${kobalt.name}-${kobalt.version}.zip",
        "${kobalt.name}/${kobalt.version}/${kobalt.name}-${kobalt.version}.zip")
@@ -431,15 +431,15 @@ jcenter {
   mavenJars {}
 </pre>
 <p>
-  This directive <a href="#mavenJars">is described here</a> and is a shortcut to upload all the files that are required in a Maven repo (jar file, javadocs, source files and POM file). You can take a look at <a href="https://github.com/cbeust/jcommander/blob/master/kobalt/src/Build.kt">this build file</a> for a full example of how to package and publish a project to JCenter.
+  This directive <a href="#mavenJars">is described here</a> and is a shortcut to upload all the files that are required in a Maven repo (jar file, javadocs, source files and POM file). You can take a look at <a href="https://github.com/cbeust/jcommander/blob/master/kobalt/src/Build.kt">this build file</a> for a full example of how to package and publish a project to Bintray / JCenter.
 </p>
 
 <p>
-  The <code>jcenter</code> directive accepts the following parameters:
+  The <code>bintray</code> directive accepts the following parameters:
 </p>
 <dl class="dl-horizontal">
   <dt>publish (<code>false</code>)</dt>
-  <dd>If true, the uploaded file will be published in your personal space (e.g. <code>https://dl.bintray.com/cbeust/maven</code>). Once the file is uploaded there, it can be automatically synchronized to JCenter by linking your project to JCenter on the bintray web site. By default, files are <strong>not</strong> published.
+  <dd>If true, the uploaded file will be published in your personal space (e.g. <code>https://dl.bintray.com/cbeust/maven</code>). Once the file is uploaded there, it can be automatically synchronized to JCenter by linking your project to JCenter on the Bintray web site. By default, files are <strong>not</strong> published.
   </dd>
     <dt>sign (<code>false</code>)</dt>
     <dd>If true, sign the files with GPG. This is only required if you plan to later synchronize these files from JCenter to Maven Central. Keep this to <code>false</code>if you are only interested in uploading to JCenter.</dd>
@@ -448,9 +448,9 @@ jcenter {
 </dl>
 
 <pre class="brush:plain">
-$ ./kobaltw uploadJcenter
+$ ./kobaltw uploadBintray
 ...
-========== kobalt-line-count:uploadJcenter
+========== kobalt-line-count:uploadBintray
   kobalt-line-count: Found 2 artifacts to upload
   All artifacts successfully uploaded
 </pre>
