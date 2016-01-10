@@ -2,8 +2,8 @@
  * Kobalt CSS
  */
 
-.features {
-    font-size: 1.5em;
+#features {
+    display: none
 }
 
 code {
