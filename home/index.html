@@ -61,10 +61,40 @@
       <!-- Main content -->
       <div class="col-md-9">
 
-<h2 class="section" id="features">Features</h2>
-
+<p>
+<em style="font-size: 1.5em">
+    Kobalt is a build system inspired by Gradle and Maven. It reuses the best concepts from these two
+    successful and popular build systems while adding a few modern features of its own. Kobalt is written
+    entirely in Kotlin and its build files are valid Kotlin files as well. Thanks to IDEA's top notch
+    support for Kotlin, writing Kobalt build files automatically benefits from auto completion and all
+    the other features that you are used to when writing code with your IDE of choice.
+</em>
+</p>
+<p>
+    <em style="font-size: 1.5em">
+      Here are some of Kobalt's most prominent features.
+  </em>
+</p>
 <h2 class="section" id="buildFile" indent="1">Build file auto-completion in your IDE</h2>
-    <img src="../pics/auto-completion.png" class="img-rounded"/>
+<p>
+  Since Kobalt's build files are actual Kotlin files, not only can you leverage auto-completion
+  to write your build files but the full power of your IDEA is at your fingertips to write
+  these files in any way you see fit: using expressions, conditionals, classes, extension functions,
+  constants... The sky is the limit!
+</p>
+<p>
+  Kobalt uses Kotlin's type safe builder pattern to offer a DSL that's extremely similar to Gradle
+  and minimalistic while allowing you to switch to full Kotlin code whenever necessary.
+</p>
+<p>
+  Here is an example of the auto-completion dialog:
+</p>
+<p align="center">
+<img src="../pics/auto-completion.png" class="img-rounded"/>
+</p>
+<p>
+  And see the following section to get a feel for Kobalt's build file syntax.
+</p>
 
 <h2 class="section" id="syntax" indent="1">Clean, minimal syntax for build files</h2>
 <p>
