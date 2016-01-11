@@ -66,7 +66,7 @@
 <h2 class="section" id="buildFile" indent="1">Build file auto-completion in your IDE</h2>
     <img src="../pics/auto-completion.png" class="img-rounded"/>
 
-<h2 class="section" id="syntax" indent="1">Clean syntax for build files</h2>
+<h2 class="section" id="syntax" indent="1">Clean, minimal syntax for build files</h2>
 <p>
 For example, here is <a href="http://jcommander.org">JCommander's</a> entire build file:
 </p>
@@ -101,11 +101,21 @@ val jcommander = javaProject {
 <p>
   This build file also includes a directive to upload your artifacts to Bintray automatically.
 </p>
-  <h2 class="section" id="syntax" indent="1">Support for incremental tasks (faster builds)</h2>
-  <h2 class="section" id="syntax" indent="1">Intuitive plug-in architecture</li></h2>
+  <h2 class="section" id="incremental" indent="1">Incremental tasks</h2>
+<p>
+  Most of Kobalt's core tasks are incremental, which means that if you run them without having changed anything, they will be skipped. The support for incremental tasks is also trivial to add for plug-in developers, which guarantees that your builds with Kobalt will always be as fast as they can be.
+</p>
+  <h2 class="section" id="plug-in" indent="1">Intuitive plug-in architecture</li></h2>
+          <p>
+              Kobalt's plug-in architecture is heavily inspired from other successful plug-in architectures such
+              as Eclipse and IDEA. Thanks to Kotlin's static type safety, writing plug-ins for Kobalt is both
+              flexible and intuitive, with a minimum of boiler plate. See the
+              <a href="../plug-in-development/index.html">Kobalt plug-in development documentation</a> for more details.
+          </p>
 </ul>
 </p>
 
+          <!--
 <h2 class="section" id="design-goals">Design goals</h2>
 
 <ul>
@@ -118,6 +128,7 @@ val jcommander = javaProject {
   <li>A turnkey solution with all the common plug-ins pre-installed. With Kobalt, you can create a package and upload it to JCenter within ten minutes. <a href="../ten-minutes/index.html">See for yourself!</a>
   <li>An agnostic build tool. Kobalt can be used to build Kotlin and Java projects today but it's capable to build anything: any language (JVM or not) or platform (Android, Spring, ...).
 </ul>
+-->
 
 <h2 class="section" id="path">Status</h2>
 
