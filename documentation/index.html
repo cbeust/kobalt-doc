@@ -63,7 +63,7 @@
 <h3 class="section" indent="1" id="general-concepts">General concepts</h3>
 
 <p>
-The build file is typically called <code>Built.kt</code> and it is a valid Kotlin file. It contains imports, the declaration of one or more projects and the declaration of additional configurations (e.g. packaging, publishing, etc...).  Since it's a Kotlin file, it can also contain any class or function you need:
+The build file is located in <code>kobalt/src/Built.kt</code> and it is a valid Kotlin file. It contains imports, the declaration of one or more projects and the declaration of additional configurations (e.g. packaging, publishing, etc...).  Since it's a Kotlin file, it can also contain any class or function you need:
 </p>
  
 <pre class="brush:java">
@@ -83,7 +83,7 @@ Here are a few noteworthy details about this small build file:
 
 <ul>
 <li>You have now declared a variable called <code>kobalt</code> which you can reuse further in your build file, should you ever need to.
-<li>You can specify the directory of the project, which means that one build file can be used to build multiple projects.
+<li>You can specify the directory of the project if it's not in the root, which means that one build file can be used to build multiple projects.
 <li>The functions <code>kotlinProject</code> and <code>homeDir</code> are supplied by Kobalt and are referred to as "directives"
 </ul>
 
@@ -154,6 +154,9 @@ This is the simplest jar declaration you can have. You can trigger the creation 
                     "$projectName-$version.jar")
             include(from("modules/wrapper/$buildDirectory/libs"), to("kobalt/wrapper"),
                     "$projectName-wrapper.jar")
+        }
+        war {
+            include(from("html"), to("web/static"), glob("*html"))
         }
 </pre>
 
@@ -230,7 +233,40 @@ dependencies {
                   (<code>"groupId:artifactId:"</code>).</dd>
           </dl>
 
-<h2 class="section" id="maven-repos">Maven repos</h2>
+          <h2 class="section" id="settings">Settings</h2>
+          <p>
+              You can create settings that will apply to all your Kobalt builds by creating
+              a file in <code>~/.kobalt/settings.xml</code>:
+          </p>
+          <pre class="brush:plain">
+&lt;kobalt-settings&gt;
+    &lt;localRepo&gt;/Users/beust/my-kobalt-repo&lt;/localRepo&gt;
+&lt;/kobalt-settings&gt;
+          </pre>
+          <p>
+              Here is a list of the parameters you can configure:
+          </p>
+          <table style="font-size: 14px" class="table table-striped">
+              <colgroup>
+                  <col span="1" style="width: 25%;">
+                  <col span="1" style="width: 25%;">
+                  <col span="1" style="width: 50%;">
+              </colgroup>
+              <thead>
+                  <tr>
+                      <td>Name</td>
+                      <td>Default</td>
+                      <td>Description</td>
+                  </tr>
+              </thead>
+              <tr>
+                  <td><code>localRepo</code></td>
+                  <td><code>~/.kobalt/repository</code></td>
+                  <td>Where Kobalt stores all the downloaded dependencies.</td>
+              </tr>
+          </table>
+
+          <h2 class="section" id="maven-repos">Maven repos</h2>
 <h3 class="section" indent="1" id="maven-repos-unauthenticated">Unauthenticated repos</h3>
 <p>
 Kobalt already knows the location of the most popular Maven repos (Maven Central, JCenter, JBoss) but you can add repos with the <code>repos()</code> directive:
