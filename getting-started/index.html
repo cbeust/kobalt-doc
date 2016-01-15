@@ -78,13 +78,13 @@ $KOBALT_HOME/kobaltw --init
                         
                         <h2 class="section" id="edit">3. Edit kobalt/src/Build.kt</h2>
 
-                        Here is the <code>Build.kt</code> for the Wasabi HTTP framework:
+                        Here is the <code>Build.kt</code> for the <a href="https://github.com/hhariri/wasabi/blob/master/kobalt/src/Build.kt">Wasabi HTTP framework</a>:
 <pre class="brush:java">
 import com.beust.kobalt.*
 import com.beust.kobalt.plugin.packaging.assemble
 import com.beust.kobalt.plugin.kotlin.*
 
-val kotlin_version = "1.0.0-beta-4583"
+val kotlinVersion = "1.0.0-beta-4583"
 
 val p = kotlinProject {
 
@@ -97,20 +97,12 @@ val p = kotlinProject {
     val repos = repos("http://oss.sonatype.org/content/repositories/snapshots") 
 
     dependencies {
-        compile("org.jetbrains.kotlin:kotlin-stdlib:" + kotlin_version,
-            "org.jetbrains.kotlin:kotlin-reflect:" + kotlin_version,
-            "com.fasterxml.jackson.core:jackson-core:2.6.4",
-            "com.fasterxml.jackson.core:jackson-databind:2.6.4",
-            "com.fasterxml.jackson.core:jackson-annotations:2.6.4",
-            "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.6.3",
-            "com.fasterxml.woodstox:woodstox-core:5.0.1",
+        compile("org.jetbrains.kotlin:kotlin-stdlib:" + kotlinVersion,
+            "org.jetbrains.kotlin:kotlin-reflect:" + kotlinVersion,
 
             "io.netty:netty-all:4.0.31.Final",
             "commons-codec:commons-codec:1.6",
             "commons-logging:commons-logging:1.1.1",
-            "com.netflix.rxjava:rxjava-core:0.20.0-RC4",
-            "org.slf4j:slf4j-api:1.7.5",
-            "org.slf4j:slf4j-simple:1.7.5",
             "joda-time:joda-time:2.3")
     }
 
@@ -118,13 +110,16 @@ val p = kotlinProject {
     dependenciesTest {
         compile("junit:junit:4.9",
             "org.mockito:mockito-all:1.9.5",
-            "org.apache.httpcomponents:httpcore:4.3.3",
             "org.apache.httpcomponents:httpclient:4.5.1")
     }
 
-    // Tell kobalt to produce a jar
+    // Tell kobalt to produce a fat jar and also the artifacts required for Maven
     assemble {
         jar {
+            fatJar=true
+            name = "wasabi-fat-" + version + ".jar"
+        }
+        mavenJars{
         }
     }
 }
