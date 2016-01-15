@@ -48,7 +48,11 @@
 cd $KOBALT_HOME
 unzip kobalt-xxx.zip
 </pre>
-                <h2 class="section" id="initialize">2. Initialize your project for Kobalt</h2>
+                <p>
+                    <em>Note: Kobalt doesn't need any environment variable to run, the environment variable used above
+                    is only here for clarity.</em>
+                </p>
+                <h2 class="section" id="initialize">2. Initialize your project</h2>
                 <p>
                 Change to your project directory and call the <code>kobaltw</code> command with <code>--init</code>:
                 </p>
@@ -60,8 +64,8 @@ $KOBALT_HOME/kobaltw --init
                 This command will do two things:
                 </p>
                 <ol>
-                    <li>Create a default <code>kobalt/src/Build.kt</code> file based on what was found there.
-                        <li>Install the Kobalt Wrapper in your current directory (script `kobaltw`) and in the <code>kobalt/</code> directory. From now on, you can just use <code>./kobaltw</code> to build and you can ignore <code>$KOBALT_HOME</code>.
+                    <li>Create a default <code>kobalt/src/Build.kt</code> file based on what was found in your project.
+                        <li>Install the Kobalt Wrapper in your current directory (a script called <code>kobaltw</code>) and a few additional files in the <code>kobalt/wrapper</code> directory. From now on, you can just use <code>./kobaltw</code> to build and you can ignore <code>$KOBALT_HOME</code>.
                         </ol>
                         <p>
                         You can now attempt to build your project with Kobalt:
@@ -74,7 +78,7 @@ $KOBALT_HOME/kobaltw --init
                         
                         <h2 class="section" id="edit">3. Edit kobalt/src/Build.kt</h2>
 
-                        Here for example is the Build.kt for wasabi http framework
+                        Here is the <code>Build.kt</code> for the Wasabi HTTP framework:
 <pre class="brush:java">
 import com.beust.kobalt.*
 import com.beust.kobalt.plugin.packaging.assemble
@@ -89,7 +93,7 @@ val p = kotlinProject {
     artifactId = name
     version = "0.1"
 
-    //tells Kobalt to also search here for dependencies
+    // Tell Kobalt to also search here for dependencies
     val repos = repos("http://oss.sonatype.org/content/repositories/snapshots") 
 
     dependencies {
@@ -110,7 +114,7 @@ val p = kotlinProject {
             "joda-time:joda-time:2.3")
     }
 
-    //these are only downloaded when running the test task
+    // Test dependencies
     dependenciesTest {
         compile("junit:junit:4.9",
             "org.mockito:mockito-all:1.9.5",
@@ -118,7 +122,7 @@ val p = kotlinProject {
             "org.apache.httpcomponents:httpclient:4.5.1")
     }
 
-    //tells kobalt to produce a jar
+    // Tell kobalt to produce a jar
     assemble {
         jar {
         }
@@ -126,12 +130,17 @@ val p = kotlinProject {
 }
 </pre>
 
-<h2 class="section" id="idea-plugin">4. In Intellij IDEA, Sync Build File</h2>
+<h2 class="section" id="idea-plugin">4. Sync your build file</h2>
 <p>
   If you're using Intellij IDEA, make sure you've <a href="../idea-plug-in/index.html">installed the Kobalt plugin</a> and then go to <code>Kobalt -> Sync Build File</code>. This will download dependencies in a way that IDEA understand so you no loger get errors.
 </p>
 
-</div>
+<h2 class="section" id="next-steps">5. Next steps</h2>
+<p>
+    From this point, you can either <a href="../idea-plug-in/index.html">learn how to install the Kobalt IDEA plug-in</a> or read <a href="../documentation/index.html">Kobalt's documentation</a>.
+</p>
+
+            </div>
 <!-- Table of contents -->
 <div class="col-md-3" id="table-of-contents">
 </div>
