@@ -217,6 +217,8 @@ class BuildConfig {
 <pre class="brush:java">
 test {
     args("-log", "1", "src/test/resources/testng.xml")
+    val quasarDep = MavenDependency.create("co.paralleluniverse:quasar-core:0.7.3")
+    jvmArgs("-Dmy.system.prop=1", "-verbose", "-javaagent:{$quasarDep.jarFile.get()}")
 }</pre>
           <p>
               Specifying includes and excludes:
@@ -458,7 +460,14 @@ $ ./kobaltw uploadBintray
 <h2 class="section" id="dokka">Dokka</h2>
 
 <p>
-  <a href="https://github.com/Kotlin/dokka">Dokka</a> is Kotlin's documentation tool. The Kobalt Dokka plug-in allows you to launch it and configure it as follows:
+  <a href="https://github.com/Kotlin/dokka">Dokka</a> is Kotlin's documentation tool.  If you want to use it, you have to add the plugin at the top level of your Build.kt:
+</p>
+<pre class="brush:plain">
+  val r = repos("https://dl.bintray.com/cbeust/maven/")
+  val pl = plugins("com.beust:kobalt-dokka:0.6")
+</pre>
+<p>
+  Then the Kobalt Dokka plug-in allows you to launch it and configure it as follows:
 </p>
 <pre class="brush:java">
     import com.beust.kobalt.plugin.dokka.dokka
