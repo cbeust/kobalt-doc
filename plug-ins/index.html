@@ -58,8 +58,7 @@ val p = javaProject(wrapper) {
   group = "com.beust"
   artifactId = name
   version = "0.1"
-}
-</pre>
+}</pre>
 
 <p>
 Both these directives create an object of type <code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/Project.kt">Project</code></a>.
@@ -84,6 +83,24 @@ A <code>Project</code> has two mandatory attributes: <code>name</code> and <code
     <dt>dependenciesTest</dt>
     <dd>The dependencies for your tests</dd>
   </dl>
+
+<h4 class="section" id="mixed-projects" indent="2">Mixed language projects</h4>
+<p>
+  A Kobalt project can have multiple languages in it (Kotlin and Java): just specify all the source
+  directories you need. For example, for a <code>javaProject</code>, add <code>src/main/kotlin</code> as a
+  source directory:
+</p>
+<pre class="brush:java">
+val p = javaProject(wrapper) {
+    name = "kobalt"
+    // ...
+    sourceDirectories {
+        path("src/main/java", "src/main/kotlin")
+    }
+}</pre>
+<p>Note that source files must be in their respective directory (<code>.java</code> in
+  <code>src/main/java</code> and <code>.kt</code> in <code>src/main/kotlin</code>).
+</p>
 
 <h3 class="section" id="tasks" indent="1">Tasks</h3>
 <p>
