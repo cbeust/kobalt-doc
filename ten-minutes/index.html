@@ -75,13 +75,12 @@
 $ mkdir linecount
 $ cd linecount
 $ mkdir -p src/main/kotlin/com/beust/plugin/linecount
-$ touch src/main/kotlin/com/beust/plugin/linecount/Main.kt
-$ $KOBALT_HOME/kobaltw --init
+$ $KOBALT_HOME/kobaltw --init kotlin
 </pre>
 
-          <p>
-              I create an empty <code>Main.kt</code> in the example above so that calling <code>./kobaltw --init</code> will detect the project as a Kotlin one. This way, the <code>Build.kt</code> file generated is already configured for Kotlin. Since we will be publishing this project to a Maven repository, we need to make sure that its <code>group</code>, <code>artifactId</code> and <code>version</code> are correct. The only thing that the generator can't guess is the <code>group</code>, so let's go ahead and fix it:
-          </p>
+<p>
+  <code>./kobaltw --init kotlin</code> creates an empty Kotlin project. Since we will be publishing this project to a Maven repository, we need to make sure that its <code>group</code>, <code>artifactId</code> and <code>version</code> are correct. The only thing that the generator can't guess is the <code>group</code>, so let's go ahead and fix it:
+</p>
 
 <pre class="brush:java">
 val project = kotlinProject {

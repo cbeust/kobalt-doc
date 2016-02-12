@@ -454,10 +454,10 @@ New versions found:
   </tr>
   <tr>
     <td><code>--init</code></td>
-    <td>Boolean</td>
-    <td>false</td>
-    <td>Initialize a project for Kobalt.</td>
-    <td>This option will create a build file in the current directory (unless one already exists) and will install the Kobalt wrapper.</td>
+    <td>Comma-separated strings</td>
+    <td>null</td>
+    <td>Initialize a project for Kobalt with the given archetypes.</td>
+    <td>The parameter to this argument is a list of archetype names separated by commas, e.g. <code>"java,myProject"</code>. Each archetype will be invoked in order so they can generate their files.</td>
   </tr>
   <tr>
     <td><code>--log</code></td>

@@ -111,7 +111,7 @@ class JavaPlugin : ICompilerContributor, IDocContributor {</pre>
 <pre class="brush:java">
 class JavaBuildGenerator: IInitContributor {</pre>
                 <p>
-                This class is declaring that it wants to take part in the <code>--init</code> selection process, discussed below.
+                This class is declaring that it wants to take part in the <code>--init</code> process (i.e. it can generate an archetype), discussed below.
                 </p>
                 <h2 class="section" id="actor-list">List of plug-in actors</h2>
                 <p>
@@ -187,10 +187,11 @@ class JavaBuildGenerator: IInitContributor {</pre>
                     <tr>
                         <td><code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IInitContributor.kt">IInitContributor</a></code></td>
                         <td><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
-                        <td>Kobalt supports the <code>--init</code> command line parameter, which generates a default build file
-                            based on the files found in the current directory. Any plug-in that wants to be part of this process need
-                            to implement this interface. In this case, both the Java and Kotlin plug-ins define such a contributor
-                            but future plug-ins might use this contributor to generate their own build file: Android, Ceylon, Spring, etc...
+                        <td>When invoked with <code>--init</code> followed by archetype names separated by commas,
+                            Kobalt will invoke each of these contributors so they can generate their files.
+                            Archetypes are useful to create projects from scratch with a minimal number of
+                            files to get started. For example, the "java" archetype will generate a `Build.kt`
+                            file suitable for a brand new Java project.
                         </td>
                     </tr>
                     <tr>
