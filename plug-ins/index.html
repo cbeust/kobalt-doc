@@ -50,10 +50,11 @@
 <h2 class="section" id="java-kotlin">Java and Kotlin</h2>
 
 <p>
-The Java and Kotlin plug-ins are extremely similar, the only difference is that you configure a Java project with the <code>javaProject</code> directive and a Kotlin project with <code>kotlinProject</code>:
+    Java and Kotlin are supported by default by Kobalt. You use the directive <code>project{}</code>
+    to declare a new project and Kobalt will automatically detect how to compile it:
 </p>
 <pre class="brush:java">
-val p = javaProject(wrapper) {
+val p = project(wrapper) {
   name = "kobalt"
   group = "com.beust"
   artifactId = name
@@ -61,13 +62,13 @@ val p = javaProject(wrapper) {
 }</pre>
 
 <p>
-Both these directives create an object of type <code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/Project.kt">Project</code></a>.
+The <code>project{}</code> directive creates an object of type <code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/Project.kt">Project</code></a>.
 </p>
 
 <h3 class="section" id="project" indent="1">Project</h3>
 
 <p>
-A <code>Project</code> has two mandatory attributes: <code>name</code> and <code>version</code>. If you are planning to deploy your project to a Maven repository, you also have to specify its <code>group</code> (e.g. <code>com.beust</code>) and <code>artifactId</code> (e.g. <code>kobalt</code>).
+A <code>Project</code> has two mandatory attributes: <code>name</code> and <code>version</code>. If you are planning to deploy your project to a Maven repository, you also have to specify its <code>group</code> (e.g. <code>"com.beust"</code>) and <code>artifactId</code> (e.g. <code>"kobalt"</code>).
 </p>
 
 <p>
@@ -86,20 +87,19 @@ A <code>Project</code> has two mandatory attributes: <code>name</code> and <code
 
 <h4 class="section" id="mixed-projects" indent="2">Mixed language projects</h4>
 <p>
-  A Kobalt project can have multiple languages in it (Kotlin and Java): just specify all the source
-  directories you need. For example, for a <code>javaProject</code>, add <code>src/main/kotlin</code> as a
-  source directory:
+  A Kobalt project can mix Kotlin and Java in it, simply specify all the source
+  directories you need:
 </p>
 <pre class="brush:java">
-val p = javaProject(wrapper) {
+val p = project(wrapper) {
     name = "kobalt"
     // ...
     sourceDirectories {
         path("src/main/java", "src/main/kotlin")
     }
 }</pre>
-<p>Note that source files must be in their respective directory (<code>.java</code> in
-  <code>src/main/java</code> and <code>.kt</code> in <code>src/main/kotlin</code>).
+<p>
+    Kotlin and Java files can be in the same directories.
 </p>
 
 <h3 class="section" id="tasks" indent="1">Tasks</h3>

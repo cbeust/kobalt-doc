@@ -68,9 +68,8 @@ The build file is located in <code>kobalt/src/Built.kt</code> and it is a valid 
  
 <pre class="brush:java">
 import com.beust.kobalt.*
-import com.beust.kobalt.plugin.kotlin.kotlinProject
 
-val kobalt = kotlinProject {
+val kobalt = project {
     name = "kobalt"
     group = "com.beust"
     artifactId = name
@@ -84,7 +83,7 @@ Here are a few noteworthy details about this small build file:
 <ul>
 <li>You have now declared a variable called <code>kobalt</code> which you can reuse further in your build file, should you ever need to.
 <li>You can specify the directory of the project if it's not in the root, which means that one build file can be used to build multiple projects.
-<li>The functions <code>kotlinProject</code> and <code>homeDir</code> are supplied by Kobalt and are referred to as "directives"
+<li>The functions <code>project</code> and <code>homeDir</code> are supplied by Kobalt and are referred to as "directives"
 </ul>
 
           <p>
@@ -124,7 +123,7 @@ Now that we have declared a project, we can use it to configure additional steps
 <pre class="brush:java;highlight=5,6,7,8">
 import com.beust.kobalt.plugin.packaging.assemble
 
-val kobalt = kotlinProject {
+val kobalt = project {
     // ...
     assemble {
         jar {
@@ -374,8 +373,8 @@ You can specify more than one project in a build file, simply by declaring them:
 </p>
 
 <pre class="brush:java">
-val p1 = javaProject { ... }
-val p2 = kotlinProject { ... }
+val p1 = project { ... }
+val p2 = project { ... }
 </pre>
 
 <p>
@@ -383,7 +382,7 @@ If some of your projects need to be built in a certain order, you can specify de
 </p>
 
 <pre class="brush:java">
-val p2 = kotlinProject(p1) { ... }
+val p2 = project(p1) { ... }
 </pre>
 
 <p>
@@ -502,7 +501,7 @@ First of all, make sure you specified the group, artifactId and version of your 
 </p>
 
 <pre class="brush:java">
-val kobalt = kotlinProject {
+val kobalt = project {
     group = "com.beust"
     artifactId = "kobalt"
     version = "0.72"
@@ -551,7 +550,7 @@ Now, all you need to do is to upload your package:
   Then you use this variable wherever you need it in your build file:
 </p>
 <pre class="brush:java">
-  val p = javaProject {
+  val p = project {
       name = if (experimental) "project-exp" else "project"
       version = "1.3"
 </pre>
