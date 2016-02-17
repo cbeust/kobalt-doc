@@ -275,35 +275,35 @@ interface IProjectAffinity {
      */
     fun affinity(project: Project, context: KobaltContext) : Int
 }</pre>
-                    <p>
-                    For example, the JavaPlugin implements the <code><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/ICompilerContributor.kt">ICompilerContributor</a></code> interface and then overrides
-                    the <code>affinity()</code> method to make sure it gets run for Java projects but ignored for others:
-                    </p>
+<p>
+For example, the JavaPlugin implements the <code><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/ICompilerContributor.kt">ICompilerContributor</a></code> interface and then overrides
+the <code>affinity()</code> method to make sure it gets run for Java projects but ignored for others:
+</p>
 <pre class="brush:java">
 override fun affinity(project: Project, context: KobaltContext) =
 if (project.sourceSuffix == ".java") 1 else 0</pre>
-                    <h2 class="section" id="directives">Directives</h2>
-                    <p>
-                    Directives are functions that users of your plug-in can use in their build file in order to configure your plug-in. These can be any kind of Kotlin function but in the interest of preserving a clean syntax in the build file, it's recommended to use the type safe builder pattern, <a href="https://kotlinlang.org/docs/reference/type-safe-builders.html">as described here</a>.
-                    </p>
-                    <p>
-                    Imagine that you want to offer a boolean parameter <code>publish</code> to users of your plug-in, you start by creating a class to hold that parameter:
-                    </p>
+<h2 class="section" id="directives">Directives</h2>
+<p>
+Directives are functions that users of your plug-in can use in their build file in order to configure your plug-in. These can be any kind of Kotlin function but in the interest of preserving a clean syntax in the build file, it's recommended to use the type safe builder pattern, <a href="https://kotlinlang.org/docs/reference/type-safe-builders.html">as described here</a>.
+</p>
+<p>
+Imagine that you want to offer a boolean parameter <code>publish</code> to users of your plug-in, you start by creating a class to hold that parameter:
+</p>
 <pre class="brush:java">
 class Info(val publish: Boolean)
 </pre>
-                    <p>
-                    Next, you create a directive that returns such a class and which also allows to configure it via the type safe builder pattern:
-                    </p>
+<p>
+Next, you create a directive that returns such a class and which also allows to configure it via the type safe builder pattern:
+</p>
 <pre class="brush:java">
 @Directive
 public fun myConfig(init: Info.() -> Unit) = Info().apply { init() }</pre>
-                    <p>
-                    The <code>@Directive</code> annotation is not enforced but you should always use it in order to help future tools (e.g. an IDEA plug-in) identify Kobalt directives so they can be treated differently from regular Kotlin functions. The code above defines a <code>myConfig</code> function that accepts a closure as an argument. It creates an <code>Info</code>
-                    object, calls the <code>init()</code> function on it (which runs all the code inside that closure) and then return that <code>Info</code> object.
-                    </p>
-                    <p>
-                    Users can now specify the following in their build file:
+<p>
+The <code>@Directive</code> annotation is not enforced but you should always use it in order to help future tools (e.g. an IDEA plug-in) identify Kobalt directives so they can be treated differently from regular Kotlin functions. The code above defines a <code>myConfig</code> function that accepts a closure as an argument. It creates an <code>Info</code>
+object, calls the <code>init()</code> function on it (which runs all the code inside that closure) and then return that <code>Info</code> object.
+</p>
+<p>
+Users can now specify the following in their build file:
                     </p>
 <pre class="brush:java">
 // Build.kt
