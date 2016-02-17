@@ -109,9 +109,9 @@ class JavaPlugin : ICompilerContributor, IDocContributor {</pre>
                 With this declaration, we know that the <code>JavaPlugin</code> contributes a compiler and a doc generator.
                 </p>
 <pre class="brush:java">
-class JavaBuildGenerator: IInitContributor {</pre>
+class JavaBuildGenerator: ITemplateContributor {</pre>
                 <p>
-                This class is declaring that it wants to take part in the <code>--init</code> process (i.e. it can generate an archetype), discussed below.
+                This class is declaring that it wants to take part in the <code>--init</code> process (i.e. it can generate a template), discussed below.
                 </p>
                 <h2 class="section" id="actor-list">List of plug-in actors</h2>
                 <p>
@@ -185,16 +185,6 @@ class JavaBuildGenerator: IInitContributor {</pre>
                         </td>
                     </tr>
                     <tr>
-                        <td><code><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IInitContributor.kt">IInitContributor</a></code></td>
-                        <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
-                        <td>When invoked with <code>--init</code> followed by archetype names separated by commas,
-                            Kobalt will invoke each of these contributors so they can generate their files.
-                            Archetypes are useful to create projects from scratch with a minimal number of
-                            files to get started. For example, the "java" archetype will generate a `Build.kt`
-                            file suitable for a brand new Java project.
-                        </td>
-                    </tr>
-                    <tr>
                         <td><code><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IProjectContributor.kt">IProjectContributor</a></code></td>
                         <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
                         <td>Some plug-ins produce projects (Java, Kotlin) while others don't (Packaging, Application, etc...). The ones that
@@ -234,6 +224,16 @@ class JavaBuildGenerator: IInitContributor {</pre>
                             <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IInterceptor</code></a> </td>
                             <td>
                                 Plug-ins that want to add, remove or alter the source directories should implement this interface.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/ITemplateContributor.kt">ITemplateContributor</a></code></td>
+                            <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
+                            <td>When invoked with <code>--init</code> followed by template names separated by commas,
+                                Kobalt will invoke each of these contributors so they can generate their files.
+                                Templates are useful to create projects from scratch with a minimal number of
+                                files to get started. For example, the "java" template will generate a <code>Build.kt</code>
+                                file suitable for a brand new Java project.
                             </td>
                         </tr>
                         <tr>

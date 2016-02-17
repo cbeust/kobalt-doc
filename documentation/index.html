@@ -265,7 +265,76 @@ dependencies {
               </tr>
           </table>
 
-          <h2 class="section" id="maven-repos">Maven repos</h2>
+<h2 class="section" id="templates">Templates</h2>
+<p>
+  Templates are invoked with the <code>--init</code> parameter and typically used when you are creating
+    a new project and you want Kobalt to generate a few files to get you started. Plug-ins can provide multiple
+    templates and you can invoke as many as you need to get your project started. You can get a list of available
+    templates with the <code>--listTemplates</code> parameter:
+</p>
+<pre class="brush:plain">
+$ kobaltw --listTemplates
+Available templates
+  Plug-in: Kobalt
+    "java"              Generates a simple Java project
+    "kotlin"            Generates a simple Kotlin project
+    "kobalt-plugin"     Generate a sample Kobalt plug-in project</pre>
+<p>
+    You can then invoke any of these templates with <code>--init</code>:
+    <pre class="brush:plain">
+$ kobaltw --init kobalt-plugin
+Build this project with `./kobaltw assemble`</pre>
+<p>
+    Kobalt just generated a full project that will create a simple Kobalt plug-in. This plug-in adds
+    a simple task to Kobalt, so let's build it and test it:
+</p>
+    <pre class="brush:plain">
+$ ./kobaltw assemble
+----- kobalt-line-count:compile
+----- kobalt-line-count:assemble
+Created .\kobaltBuild\libs\kobalt-line-count-0.18.jar
+Created .\kobaltBuild\libs\kobalt-line-count-0.18-sources.jar
+Created .\kobaltBuild\libs\kobalt-line-count-0.18-javadoc.jar
+Wrote .\kobaltBuild\libs\kobalt-line-count-0.18.pom
+BUILD SUCCESSFUL (5 seconds)</pre>
+<p>
+    We can test this plug-in with another useful command line parameter: <code>--pluginJarFiles</code>. You give this parameter a comma-separated list of jar files, each of which is expected to be a Kobalt plug-in. Let's invoke
+    Kobalt with it and ask for a list of available tasks (some of the output was elided):
+</p>
+<pre>
+$ ./kobaltw --pluginJarFiles kobaltBuild/libs/kobalt-line-count-0.18.jar --tasks
+...
+  ===== kobalt-line-count =====
+    dynamicTask         Dynamic task
+    lineCount           Count the lines
+...
+</pre>
+          <p>
+              Kobalt loaded this plug-in and added the tasks that it provides. The parameter
+              <code>--pluginJarFiles</code> is mostly targeted at Kobalt plug-in developers so you can test
+              your plug-ins on your local file system without having to upload them to a Maven repo. More commonly,
+              you will run templates from plug-ins published in a Maven repository, and for this,
+              you use the <code>--plugins</code> parameter. For example, let's see what templates the
+              Android Kobalt plug-in offers:
+          </p>
+          <pre class="brush:plain">
+$ ./kobaltw --plugins com.beust:kobalt-android: --listTemplates
+Available templates
+  Plug-in: Kobalt
+    "java"              Generates a simple Java project
+    "kotlin"            Generates a simple Kotlin project
+    "kobalt-plugin"             Generate a sample Kobalt plug-in project
+  Plug-in: Android
+    "android-java"              Generate a simple Android Java project</pre>
+          <p>
+              We see the same plug-ins we just reviewed and a new one provided by the Android plug-in called
+              <code>"android-java"</code>. The <code>--plugins</code> parameter expects a comma-separated list of plug-in
+              id's and it acts as if you had specified these Maven id's in your <code>Build.kt</code> file.
+              The reason why this parameter is useful is that typically, when you run a template, you don't
+              have a build file yet since you are starting a project from scratch.
+          </p>
+
+<h2 class="section" id="maven-repos">Maven repos</h2>
 <h3 class="section" indent="1" id="maven-repos-unauthenticated">Unauthenticated repos</h3>
 <p>
 Kobalt already knows the location of the most popular Maven repos (Maven Central, JCenter, JBoss) but you can add repos with the <code>repos()</code> directive:
@@ -453,10 +522,17 @@ New versions found:
   </tr>
   <tr>
     <td><code>--init</code></td>
-    <td>Comma-separated strings</td>
+    <td>Comma-separated strings of template names.</td>
     <td>null</td>
-    <td>Initialize a project for Kobalt with the given archetypes.</td>
-    <td>The parameter to this argument is a list of archetype names separated by commas, e.g. <code>"java,myProject"</code>. Each archetype will be invoked in order so they can generate their files.</td>
+    <td>Initialize a project for Kobalt with the given templates.</td>
+    <td>The parameter to this argument is a list of template names separated by commas, e.g. <code>"java,myProject"</code>. Each template will be invoked in order so they can generate their files.</td>
+  </tr>
+  <tr>
+    <td><code>--listTemplates</code></td>
+    <td></td>
+    <td>N/A</td>
+    <td>List all the templates available.</td>
+    <td>Templates displayed by this command can then be passed as an argument to the <code>--init</code> parameter.</td>
   </tr>
   <tr>
     <td><code>--log</code></td>
@@ -464,6 +540,13 @@ New versions found:
     <td>1</td>
     <td>Specify the log level.</td>
     <td>The default level is 1. Level 0 will quiet everything and 2 and 3 will display increasingly verbose output.</td>
+  </tr>
+  <tr>
+    <td><code>--resolve</code></td>
+    <td>Maven id<br/>(e.g.&nbsp;<code>"com.beust:kobalt:0.228"</code>)</td>
+    <td>N/A</td>
+    <td>Display information about the given id.</td>
+    <td>Display which repo this artifact can be found in and the whole graph of its dependencies.</td>
   </tr>
   <tr>
     <td><code>--resolve</code></td>
