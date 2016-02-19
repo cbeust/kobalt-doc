@@ -278,11 +278,11 @@ Available templates
   Plug-in: Kobalt
     "java"              Generate a simple Java project
     "kotlin"            Generate a simple Kotlin project
-    "kobalt-plugin"     Generate a sample Kobalt plug-in project</pre>
+    "kobaltPlugin"      Generate a sample Kobalt plug-in project</pre>
 <p>
     You can then invoke any of these templates with <code>--init</code>:
     <pre class="brush:plain">
-$ kobaltw --init kobalt-plugin
+$ kobaltw --init kobaltPlugin
 Build this project with `./kobaltw assemble`</pre>
 <p>
     Kobalt just generated a full project that will create a simple Kobalt plug-in. This plug-in adds
@@ -323,16 +323,17 @@ Available templates
   Plug-in: Kobalt
     "java"              Generates a simple Java project
     "kotlin"            Generates a simple Kotlin project
-    "kobalt-plugin"             Generate a sample Kobalt plug-in project
+    "kobaltPlugin"             Generate a sample Kobalt plug-in project
   Plug-in: Android
-    "android-java"              Generate a simple Android Java project</pre>
-          <p>
-              We see the same plug-ins we just reviewed and a new one provided by the Android plug-in called
-              <code>"android-java"</code>. The <code>--plugins</code> parameter expects a comma-separated list of plug-in
-              id's and it acts as if you had specified these Maven id's in your <code>Build.kt</code> file.
-              The reason why this parameter is useful is that typically, when you run a template, you don't
-              have a build file yet since you are starting a project from scratch.
-          </p>
+    "androidJava"              Generate a simple Android Java project<
+    "androidKotlin"              Generate a simple Android Kotlin project</pre>
+<p>
+We see the same plug-ins we just reviewed and a new one provided by the Android plug-in called
+<code>"android-java"</code>. The <code>--plugins</code> parameter expects a comma-separated list of plug-in
+id's and it acts as if you had specified these Maven id's in your <code>Build.kt</code> file.
+The reason why this parameter is useful is that typically, when you run a template, you don't
+have a build file yet since you are starting a project from scratch.
+</p>
 
 <h2 class="section" id="maven-repos">Maven repos</h2>
 <h3 class="section" indent="1" id="maven-repos-unauthenticated">Unauthenticated repos</h3>
