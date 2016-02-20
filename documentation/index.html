@@ -288,7 +288,7 @@ Build this project with `./kobaltw assemble`</pre>
     Kobalt just generated a full project that will create a simple Kobalt plug-in. This plug-in adds
     a simple task to Kobalt, so let's build it and test it:
 </p>
-    <pre class="brush:plain">
+<pre class="brush:plain">
 $ ./kobaltw assemble
 ----- kobalt-line-count:compile
 ----- kobalt-line-count:assemble
@@ -301,7 +301,7 @@ BUILD SUCCESSFUL (5 seconds)</pre>
     We can test this plug-in with another useful command line parameter: <code>--pluginJarFiles</code>. You give this parameter a comma-separated list of jar files, each of which is expected to be a Kobalt plug-in. Let's invoke
     Kobalt with it and ask for a list of available tasks (some of the output was elided):
 </p>
-<pre>
+<pre class="brush:plain">
 $ ./kobaltw --pluginJarFiles kobaltBuild/libs/kobalt-line-count-0.18.jar --tasks
 ...
   ===== kobalt-line-count =====
@@ -613,7 +613,7 @@ test {
   configuration will create an additional task named <code>"test"</code> followed by the name of
   that configuration. For example:
 </p>
-<pre>
+<pre class="brush:java">
 test {
     args("-excludegroups", "broken", "src/test/resources/testng.xml")
 }
