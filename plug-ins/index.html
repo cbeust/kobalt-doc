@@ -116,6 +116,51 @@ Once you have at least one project configured, the plug-in lets you invoke the f
   <dd>Clean the project</dd>
 </dl>
 
+<h3 class="section" id="templates" indent="1">Templates</h3>
+<p>
+  Both the Java and Kotlin plug-ins provide templates named respectively "java" and "kotlin".
+</p>
+<pre class="brush:plain">
+$ ./kobaltw --listTemplates
+Available templates
+  Plug-in: Kobalt
+    "java"              Generate a simple Java project
+    "kotlin"            Generate a simple Kotlin project</pre>
+
+<p>
+  They are both identical templates so we'll just look over the Kotlin one.
+</p>
+<p>
+      If you invoke <code>./kobaltw --init kotlin</code>, the following will happen:
+</p>
+<ul>
+    <li>If a <code>kobalt/src/Build.kt</code> build file doesn't exist, it will be created.</li>
+    <li>If no Kotlin (or Java) file is found under <code>src</code>, the template will create a simple
+    class with a <code>main</code> method and also a test class.</li>
+</ul>
+<pre class="brush:plain">
+$ ./kobaltw --init kotlin
+Template "kotlin" installed
+Now you can run either `./kobaltw test` or `./kobaltw run`
+$ ./kobaltw test
+----- example:test
+===============================================
+Command line suite
+Total tests run: 1, Failures: 0, Skips: 0
+===============================================
+
+All tests passed
+BUILD SUCCESSFUL (5 seconds)
+$ ./kobaltw run
+----- example:run
+Hello Java world from Kobalt
+BUILD SUCCESSFUL (0 seconds)
+</pre>
+
+
+
+
+
 <h3 class="section" id="variants" indent="1">Variants</h3>
 <p>
     Variants let you configure your project to generate different artifacts compiled from different sources depending on the <em>variant</em> you selected.
