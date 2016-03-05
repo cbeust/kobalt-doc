@@ -237,33 +237,42 @@ dependencies {
               You can create settings that will apply to all your Kobalt builds by creating
               a file in <code>~/kobalt/settings.xml</code>:
           </p>
-          <pre class="brush:plain">
+<pre class="brush:plain">
 &lt;kobalt-settings&gt;
     &lt;localRepo&gt;/Users/beust/my-kobalt-repo&lt;/localRepo&gt;
-&lt;/kobalt-settings&gt;
-          </pre>
-          <p>
-              Here is a list of the parameters you can configure:
-          </p>
-          <table style="font-size: 14px" class="table table-striped">
-              <colgroup>
-                  <col span="1" style="width: 25%;">
-                  <col span="1" style="width: 25%;">
-                  <col span="1" style="width: 50%;">
-              </colgroup>
-              <thead>
-                  <tr>
-                      <td>Name</td>
-                      <td>Default</td>
-                      <td>Description</td>
-                  </tr>
-              </thead>
-              <tr>
-                  <td><code>localRepo</code></td>
-                  <td><code>~/.kobalt/repository</code></td>
-                  <td>Where Kobalt stores all the downloaded dependencies.</td>
-              </tr>
-          </table>
+    &lt;default-repos&gt;
+        &lt;repo&gt;http://jcenter.com&lt;/repo&gt;
+        &lt;repo&gt;http://example.com&lt;/repo&gt;
+    &lt;/default-repos&gt;
+&lt;/kobalt-settings&gt;</pre>
+<p>
+  Here is a list of the parameters you can configure:
+</p>
+<table style="font-size: 14px" class="table table-striped">
+    <colgroup>
+        <col span="1" style="width: 25%;">
+        <col span="1" style="width: 25%;">
+        <col span="1" style="width: 50%;">
+    </colgroup>
+    <thead>
+        <tr>
+            <td>Name</td>
+            <td>Default</td>
+            <td>Description</td>
+        </tr>
+    </thead>
+
+    <tr>
+        <td><code>localRepo</code></td>
+        <td><code>~/.kobalt/repository</code></td>
+        <td>Where Kobalt stores all the downloaded dependencies.</td>
+    </tr>
+    <tr>
+        <td><code>defaultRepos</code></td>
+        <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/Constants.kt#L10">Default repos</a></td>
+        <td>List of repos overriding the default ones that Kobalt uses.</td>
+    </tr>
+</table>
 
 <h2 class="section" id="templates">Templates</h2>
 <p>
