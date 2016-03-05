@@ -124,8 +124,23 @@ class JavaBuildGenerator: ITemplateContributor {</pre>
                         <td>Description</td>
                     </thead>
                     <tr>
+                        <td><code><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IAssemblyContributor.kt">IAssemblyContributor</a></code></td>
+                        <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
+                        <td>
+                            Plug-ins that want be invoked when the <code>assemble</code> task is called.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IBuildConfigContributor.kt">
+                            IBuildConfigContributor</a></code></td>
+                        <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
+                        <td>
+                            Plug-ins that want to generate their own <code>BuildConfig</code> file.
+                        </td>
+                    </tr>
+                    <tr>
                         <td><code><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IBuildConfigFieldContributor.kt">
-                        IBuildConfigFieldContributor</a></code></td>
+                            IBuildConfigFieldContributor</a></code></td>
                         <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IInterceptor</code></a> </td>
                         <td>
                             Plug-ins that want to add custom fields to the generated <code>BuildConfig</code> class.
@@ -159,7 +174,7 @@ class JavaBuildGenerator: ITemplateContributor {</pre>
                         <td><code><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/ICompilerContributor.kt">ICompilerContributor</a></code></td>
                         <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
                         <td>
-                            Plug-ins that know how to turn files into bytecodes should implement this interface.
+                            Plug-ins that want be invoked when the <code>compile</code> task is called.
                         </td>
                     </tr>
                     <tr>
@@ -182,6 +197,13 @@ class JavaBuildGenerator: ITemplateContributor {</pre>
                         <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
                         <td>
                             Plug-ins that know how to generate documentation out of source files should implement this interface.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IMavenIdInterceptor.kt">IMavenIdInterceptor</a></code></td>
+                        <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IMavenIdInterceptor.kt"><code>IInterceptor</code></a> </td>
+                        <td>
+                            Plug-ins that need to rewrite Maven id's should implement this interface.
                         </td>
                     </tr>
                     <tr>
@@ -218,41 +240,41 @@ class JavaBuildGenerator: ITemplateContributor {</pre>
                         </td>
                     </tr>
                     <tr>
-                        <tr>
-                            <td><code><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/ISourceDirectoryInterceptor.kt">
-                            ISourceDirectoryInterceptor</a></code></td>
-                            <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IInterceptor</code></a> </td>
-                            <td>
-                                Plug-ins that want to add, remove or alter the source directories should implement this interface.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><code><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/ITemplateContributor.kt">ITemplateContributor</a></code></td>
-                            <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
-                            <td>When invoked with <code>--init</code> followed by template names separated by commas,
-                                Kobalt will invoke each of these contributors so they can generate their files.
-                                Templates are useful to create projects from scratch with a minimal number of
-                                files to get started. For example, the "java" template will generate a <code>Build.kt</code>
-                                file suitable for a brand new Java project.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><code><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/ITestRunnerContributor.kt">
-                            ITestRunnerContributor</a></code></td>
-                            <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
-                            <td>
-                                Plug-ins that can operate when the <code>"test"</code> task gets invoked should implement that interface.
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><code><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/ITestSourceDirectoryContributor.kt">
-                            ITestSourceDirectoryContributor</a></code></td>
-                            <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a>
-                            </td>
-                            <td>
-                                Plug-ins that add test source directories.
-                            </td>
-                        </tr>
+                    <tr>
+                        <td><code><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/ISourceDirectoryInterceptor.kt">
+                        ISourceDirectoryInterceptor</a></code></td>
+                        <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IInterceptor</code></a> </td>
+                        <td>
+                            Plug-ins that want to add, remove or alter the source directories should implement this interface.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/ITemplateContributor.kt">ITemplateContributor</a></code></td>
+                        <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
+                        <td>When invoked with <code>--init</code> followed by template names separated by commas,
+                            Kobalt will invoke each of these contributors so they can generate their files.
+                            Templates are useful to create projects from scratch with a minimal number of
+                            files to get started. For example, the "java" template will generate a <code>Build.kt</code>
+                            file suitable for a brand new Java project.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/ITestRunnerContributor.kt">
+                        ITestRunnerContributor</a></code></td>
+                        <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a> </td>
+                        <td>
+                            Plug-ins that can operate when the <code>"test"</code> task gets invoked should implement that interface.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/ITestSourceDirectoryContributor.kt">
+                        ITestSourceDirectoryContributor</a></code></td>
+                        <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/api/IPluginActor.kt"><code>IContributor</code></a>
+                        </td>
+                        <td>
+                            Plug-ins that add test source directories.
+                        </td>
+                    </tr>
                     </table>
                     <h2 class="section" id="selection-process">Selection process</h2>
                     <p>
