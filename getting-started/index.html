@@ -51,11 +51,13 @@ $ which kobaltw
 </p>
 <h3 class="section" indent="1" id="manually">Manually</h3>
 <p>
-<a href="https://github.com/cbeust/kobalt/releases/latest">Download the zip file</a> and unzip it in a directory that you can add to your <code>$PATH</code> variable:
-                </p>
+<a href="https://github.com/cbeust/kobalt/releases/latest">Download the zip file</a>, unzip it and add that directory to your <code>$PATH</code> variable so that you can invoke the command <code>kobaltw</code>.
+</p>
 <pre class="brush:plain">
 cd yourLocation
 unzip kobalt-xxx.zip
+cd kobalt-xxx
+export PATH=$PWD:$PATH
 </pre>
 <h2 class="section" id="initialize">2. Initialize your project</h2>
 <p>

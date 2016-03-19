@@ -234,8 +234,8 @@ dependencies {
 
           <h2 class="section" id="settings">Settings</h2>
           <p>
-              You can create settings that will apply to all your Kobalt builds by creating
-              a file in <code>~/kobalt/settings.xml</code>:
+              You can define settings that will apply to all your Kobalt builds by creating
+              the file <code>~/.config/kobalt/settings.xml</code>:
           </p>
 <pre class="brush:plain">
 &lt;kobalt-settings&gt;
@@ -332,10 +332,10 @@ Available templates
   Plug-in: Kobalt
     "java"              Generates a simple Java project
     "kotlin"            Generates a simple Kotlin project
-    "kobaltPlugin"             Generate a sample Kobalt plug-in project
+    "kobaltPlugin"      Generate a sample Kobalt plug-in project
   Plug-in: Android
-    "androidJava"              Generate a simple Android Java project<
-    "androidKotlin"              Generate a simple Android Kotlin project</pre>
+    "androidJava"       Generate a simple Android Java project
+    "androidKotlin"     Generate a simple Android Kotlin project</pre>
 <p>
 We see the same plug-ins we just reviewed and a new one provided by the Android plug-in called
 <code>"android-java"</code>. The <code>--plugins</code> parameter expects a comma-separated list of plug-in
