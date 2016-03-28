@@ -241,20 +241,21 @@ Kobalt lets you specify Maven coordinates in one line, such as <code>"org.testng
 <p>
   The standard format for such coordinates, as explained in the link above, is:
 </p>
-<pre>
+<pre class="brush:plain">
 groupId:artifactId:packaging:classifier:version</pre>
-          <p>
-              <code>packaging</code> and <code>classifier</code> are optional and can be omitted. If <code>version</code>
-              is omitted, Kobalt will resolve the artifact to its latest version from all the specified repos.
-              Most of the time, you will only specify <code>groupId</code>, <code>artifactId</code> and <code>version</code>, but if you ever need to specify additional components such as <code>packaging</code> (sometimes referred to as "<code>extension</code>") or <code>classifier</code>,
-              please take note that these should appear before the version number.
-          </p>
-          <p>
-              For example, here is a Maven coordinate specifying a classifier:
-          </p>
-<pre>
+<p>
+  <code>packaging</code> and <code>classifier</code> are optional and can be omitted. If <code>version</code>
+  is omitted, Kobalt will resolve the artifact to its latest version from all the specified repos.
+  Most of the time, you will only specify <code>groupId</code>, <code>artifactId</code> and <code>version</code>, but if you ever need to specify additional components such as <code>packaging</code> (sometimes referred to as "<code>extension</code>") or <code>classifier</code>,
+  please take note that these should appear before the version number.
+</p>
+<p>
+  For example, here is a Maven coordinate specifying a classifier:
+</p>
+<pre class="brush:plain">
 # No version, resolves to the latest
 org.testng:testng:
+
 # Specifies an extension and a qualifier
 com.badlogicgames.gdx:gdx-platform:jar:natives-desktop:1.9.2</pre>
 
