@@ -216,27 +216,54 @@ dependencies {
 }
 </pre>
 
-          <p>
-              There are various kinds of dependencies:
-          </p>
-          <dl class="dl-horizontal">
-              <dt>compile</dt>
-              <dd>Used to compile your project.</dd>
-              <dt>runtime</dt>
-              <dd>Not used at compile time but passed to the JVM to run your application.</dd>
-              <dt>provided</dt>
-              <dd>Used at compile time but not used to run your application.</dd>
-              <dt>exclude</dt>
-              <dd>Exclude the given dependencies from the classpath. You can either
-                  specify a versioned id (e.g. <code>"groupId:artifactId:version"</code>) or a versionless one
-                  (<code>"groupId:artifactId:"</code>).</dd>
-          </dl>
+<h4 class="section" indent="2" id="dependency-types">Dependency types</h4>
 
-          <h2 class="section" id="settings">Settings</h2>
+<p>
+  There are various kinds of dependencies:
+</p>
+<dl class="dl-horizontal">
+  <dt>compile</dt>
+  <dd>Used to compile your project.</dd>
+  <dt>runtime</dt>
+  <dd>Not used at compile time but passed to the JVM to run your application.</dd>
+  <dt>provided</dt>
+  <dd>Used at compile time but not used to run your application.</dd>
+  <dt>exclude</dt>
+  <dd>Exclude the given dependencies from the classpath. You can either
+      specify a versioned id (e.g. <code>"groupId:artifactId:version"</code>) or a versionless one
+      (<code>"groupId:artifactId:"</code>).</dd>
+</dl>
+
+<h4 class="section" indent="2" id="dependency-versions">Dependency versions</h4>
+<p>
+Kobalt lets you specify Maven coordinates in one line, such as <code>"org.testng:testng:6.9.10"</code>. Note that Kobalt uses the <a href="https://maven.apache.org/pom.html#Maven_Coordinates">Maven Coordinates defined in the Maven specification</a>, which are a little bit different from the ones that Gradle uses.
+</p>
+<p>
+  The standard format for such coordinates, as explained in the link above, is:
+</p>
+<pre>
+groupId:artifactId:packaging:classifier:version</pre>
           <p>
-              You can define settings that will apply to all your Kobalt builds by creating
-              the file <code>~/.config/kobalt/settings.xml</code>:
+              <code>packaging</code> and <code>classifier</code> are optional and can be omitted. If <code>version</code>
+              is omitted, Kobalt will resolve the artifact to its latest version from all the specified repos.
+              Most of the time, you will only specify <code>groupId</code>, <code>artifactId</code> and <code>version</code>, but if you ever need to specify additional components such as <code>packaging</code> (sometimes referred to as "<code>extension</code>") or <code>classifier</code>,
+              please take note that these should appear before the version number.
           </p>
+          <p>
+              For example, here is a Maven coordinate specifying a classifier:
+          </p>
+<pre>
+# No version, resolves to the latest
+org.testng:testng:
+# Specifies an extension and a qualifier
+com.badlogicgames.gdx:gdx-platform:jar:natives-desktop:1.9.2</pre>
+
+<h2 class="section" id="settings">Settings</h2>
+<p>
+  You can define settings that will apply to all your Kobalt builds by creating
+  the file <code>~/.config/kobalt/settings.xml</code>:
+</p>
+
 <pre class="brush:plain">
 &lt;kobalt-settings&gt;
     &lt;localRepo&gt;/Users/beust/my-kobalt-repo&lt;/localRepo&gt;
