@@ -30,54 +30,54 @@
         <link rel="icon" href="/favicon.ico">
         -->
     </head>
-    <body>
-        <div class="container">
-            <!-- Static navbar -->
-            <nav id="kobalt-navbar" class="navbar navbar-default">
-            </nav>
-            <!-- Main component for a primary marketing message or call to action -->
-            <h2>How to write a Kobalt plug-in</h2>
-            <!-- Main content -->
-            <div class="col-md-9">
-                <h2 class="section" id="tutorial">Tutorial</h2>
-                <p>
-                If you are curious to get a quick feel for what a Kobalt plug-in looks like, I suggest you go read how to
-                <a href="../ten-minutes/index.html">write and publish a plug-in in ten minutes</a> and then you can come back here
-                and keep reading.
-                </p>
+<body>
+<div class="container">
+<!-- Static navbar -->
+<nav id="kobalt-navbar" class="navbar navbar-default">
+</nav>
+<!-- Main component for a primary marketing message or call to action -->
+<h2>How to write a Kobalt plug-in</h2>
+<!-- Main content -->
+<div class="col-md-9">
+<h2 class="section" id="tutorial">Tutorial</h2>
+<p>
+If you are curious to get a quick feel for what a Kobalt plug-in looks like, I suggest you go read how to
+<a href="../ten-minutes/index.html">write and publish a plug-in in ten minutes</a> and then you can come back here
+and keep reading.
+</p>
 
-                <h2 class="section" id="philosophy">Plug-in architecture</h3>
-                <p>
-                <p>
-                Plug-ins often produce files and data that other plug-ins need to use in order for a build to succeed. For example,
-                the Android plug-in needs to generate a file called <code>R.java</code> and then make this file available at
-                compile time by the Java or Kotlin (or any other language) plug-in. Since plug-ins have no idea about what other
-                plug-ins are currently enabled and running, they can't directly talk to each other so instead of calling into
-                Kobalt, Kobalt calls into them. This is done by declaring various "actors" that Kobalt will invoke whenever
-                it needs the information that your plug-in produced. This is a design pattern often referred to as the
-                <a href="https://en.wikipedia.org/wiki/Hollywood_principle">"Hollywood Principle"</a>: "Don't call us, we'll call you".
-                </p>
-                <p>
-                These "actors" are exactly what the <code>kobalt-plugin.xml</code> file describes. This file informs Kobalt about
-                the various ways in which your plug-in participates in the build system by specifying 1) plug-ins, 2) contributors
-                or 3) interceptors.
-                </p>
-                </p>
+<h2 class="section" id="philosophy">Plug-in architecture</h3>
+<p>
+<p>
+Plug-ins often produce files and data that other plug-ins need to use in order for a build to succeed. For example,
+the Android plug-in needs to generate a file called <code>R.java</code> and then make this file available at
+compile time by the Java or Kotlin (or any other language) plug-in. Since plug-ins have no idea about what other
+plug-ins are currently enabled and running, they can't directly talk to each other so instead of calling into
+Kobalt, Kobalt calls into them. This is done by declaring various "actors" that Kobalt will invoke whenever
+it needs the information that your plug-in produced. This is a design pattern often referred to as the
+<a href="https://en.wikipedia.org/wiki/Hollywood_principle">"Hollywood Principle"</a>: "Don't call us, we'll call you".
+</p>
+<p>
+These "actors" are exactly what the <code>kobalt-plugin.xml</code> file describes. This file informs Kobalt about
+the various ways in which your plug-in participates in the build system by specifying 1) plug-ins, 2) contributors
+or 3) interceptors.
+</p>
+</p>
 
-                <h3 class="section" id="introduction" indent="1">Parts</h2>
-                <p>
-                <ul>
-                    <li><a href="#plugin-xml"><b>kobalt-plugin.xml</b></a>. A file that describes all the components (called "plug-in actors") of your plug-in, such as contributors.</li>
-                    <li><a href="#directives"><b>Directives</b></a>. Kotlin functions that users of your plug-in can invoke in their build file, such as <code>project</code> or <code>dependencies</code>. These functions typically configure some data that your plug-in will later use to perform its functions.</li>
-                    <li><a href="#tasks"><b>Tasks</b></a>. These tasks are invoked from the command line and ask your plug-ins to perform certain actions.</li>
-                    <li><a href="#properties"><b>Properties</b></a>. Plug-ins can export properties and read properties from other plug-ins.</li>
-                </ul>
-                </p>
-                
-                <h3 class="section" id="kobalt-plugin-xml" indent="1">kobalt-plugin.xml</h2>
-                <p>
-                The <code>kobalt-plugin.xml</code> file (stored in <code>META-INF</code> in the jar file of your plug-in) is mandatory and describes all the actors of your plug-in. This file contains a list of class names, each of which is expected to implement at least one of <code>IPluginActor</code>'s interfaces:
-                </p>
+<h3 class="section" id="introduction" indent="1">Parts</h2>
+<p>
+<ul>
+    <li><a href="#plugin-xml"><b>kobalt-plugin.xml</b></a>. A file that describes all the components (called "plug-in actors") of your plug-in, such as contributors.</li>
+    <li><a href="#directives"><b>Directives</b></a>. Kotlin functions that users of your plug-in can invoke in their build file, such as <code>project</code> or <code>dependencies</code>. These functions typically configure some data that your plug-in will later use to perform its functions.</li>
+    <li><a href="#tasks"><b>Tasks</b></a>. These tasks are invoked from the command line and ask your plug-ins to perform certain actions.</li>
+    <li><a href="#properties"><b>Properties</b></a>. Plug-ins can export properties and read properties from other plug-ins.</li>
+</ul>
+</p>
+
+<h3 class="section" id="kobalt-plugin-xml" indent="1">kobalt-plugin.xml</h2>
+<p>
+The <code>kobalt-plugin.xml</code> file (stored in <code>META-INF</code> in the jar file of your plug-in) is mandatory and describes all the actors of your plug-in. This file contains a list of class names, each of which is expected to implement at least one of <code>IPluginActor</code>'s interfaces:
+</p>
 <pre class="brush:xml">
 &lt;plugin-actors&gt;
   &lt;class-name&gt;com.beust.kobalt.plugin.java.JavaPlugin&lt;/class-name&gt;
@@ -276,19 +276,19 @@ class JavaBuildGenerator: ITemplateContributor {</pre>
                         </td>
                     </tr>
                     </table>
-                    <h2 class="section" id="selection-process">Selection process</h2>
-                    <p>
-                    Several plug-ins might want to contribute to a specific task where only one participant should be allowed,
-                    such as running tests or generating documentation. Even the simple task of compiling should probably only
-                    ever be performed by no more than one plug-in for a given project. Therefore, when comes the time to
-                    compile a project,
-                    Kobalt needs to find which plug-in is the most suitable for that task and pick it. In order to do that,
-                    plug-ins that contribute to tasks that can only be performed by one candidate need to declare their
-                    <em>affinity</em> to that task for a given project.
-                    </p>
-                    <p>
-                    Contributors that want to participate in a selection process need to implement the following interface:
-                    </p>
+<h2 class="section" id="selection-process">Selection process</h2>
+<p>
+Several plug-ins might want to contribute to a specific task where only one participant should be allowed,
+such as running tests or generating documentation. Even the simple task of compiling should probably only
+ever be performed by no more than one plug-in for a given project. Therefore, when comes the time to
+compile a project,
+Kobalt needs to find which plug-in is the most suitable for that task and pick it. In order to do that,
+plug-ins that contribute to tasks that can only be performed by one candidate need to declare their
+<em>affinity</em> to that task for a given project.
+</p>
+<p>
+Contributors that want to participate in a selection process need to implement the following interface:
+</p>
 <pre class="brush:java">
 interface IProjectAffinity {
     /**
@@ -356,19 +356,19 @@ public fun myConfig(init: Info.() -> Unit) = Info().apply {
     (Kobalt.findPlugin("my-plug-in") as MyPlugin).info = info
     this
 }</pre>
-                    <p>
-                    Obviously, you can choose any kind of API to communicate between the directive and its plug-in. In the code
-                    above, I chose to directly override the entire <code>Info</code> field, but you could instead choose to call
-                    a function, just set one boolean instead of the whole object, etc...
-                    </p>
-                    <h2 class="section" id="tasks">Tasks</h2>
-                    <p>
-                    Tasks are provided by plug-ins and can be invoked from the command line, e.g. <code>./kobaltw assemble</code>. There are two kinds of tasks: static and dynamic.
-                    </p>
-                    <h3 class="section" indent="1">Static tasks</h3>
-                    <p>
-                    Static tasks are functions declared directly in your plug-in class and annotated with the <code>@Task</code> annotation. Here is an example:
-                    </p>
+<p>
+Obviously, you can choose any kind of API to communicate between the directive and its plug-in. In the code
+above, I chose to directly override the entire <code>Info</code> field, but you could instead choose to call
+a function, just set one boolean instead of the whole object, etc...
+</p>
+<h2 class="section" id="tasks">Tasks</h2>
+<p>
+Tasks are provided by plug-ins and can be invoked from the command line, e.g. <code>./kobaltw assemble</code>. There are two kinds of tasks: static and dynamic.
+</p>
+<h3 class="section" indent="1">Static tasks</h3>
+<p>
+Static tasks are functions declared directly in your plug-in class and annotated with the <code>@Task</code> annotation. Here is an example:
+</p>
 <pre class="brush:java">
 @Task(name = "lineCount", description = "Count the lines", runBefore = arrayOf("compile"))
 fun lineCount(project: Project): TaskResult {
@@ -376,96 +376,96 @@ fun lineCount(project: Project): TaskResult {
     return TaskResult()
 }
 </pre>
-                    <p>
-                    A Kobalt task needs to accept a <code>Project</code> in parameter and return a <code>TaskResult</code>, which indicates whether this task completed successfully.
-                    </p>
-                    <p>
-                    The <code>@Task</code> annotation accepts the following attributes:
-                    <dl class="dl-horizontal">
-                        <dt>name</dt>
-                        <dd>The name of the task, which will be used to invoke it from the command line.</dd>
-                        <dt>description</dt>
-                        <dd>The description of this command, which will be displayed if the user invokes the usage for the <code>kobaltw</code> command.</dd>
-                        <dt>runBefore</dt>
-                        <dd>A list of all the tasks that this task should run prior to.</dd>
-                        <dt>runAfter</dt>
-                        <dd>A list of all the tasks that should run before this task does.</dd>
-                        <dt>alwaysRunAfter</dt>
-                        <dd>A list of all the tasks that will always be run after this task if it's invoked.</dd>
-                    </dl>
-                    </p>
-                    <p>
-                    The difference between <code>runAfter</code> and <code>alwaysRunAfter</code> is subtle but important. <code>runAfter</code>
-                    is just a declaration of dependency. It's basically the reverse of <code>runBefore</code> but it's useful in case
-                    you are not the author of the task you want to run before (if you were, you would just use the <code>runBefore</code>
-                    annotation on it). Since you can't say <code>"a runBefore b"</code> because you don't own task "a",
-                    you say <code>"b runAfter a"</code>.
-                    </p>
-                    <p>
-                    For example, <code>compileTest</code> is declared as a <code>runAfter</code> for the task <code>compile</code>.
-                    This means that it doesn't make sense to run <code>compileTest</code> unless <code>compile</code> has run first.
-                    However, if a user invokes the task <code>compile</code>, they probably don't want to invoke <code>compileTest</code>,
-                    so a dependency is exactly what we need here: invoking <code>compileTest</code> will trigger <code>compile</code>
-                    but not the other way around.
-                    </p>
-                    <p>
-                    However, there are times where you want to define a task that will <strong>always</strong> run after a given task.
-                    For example, you could have a <code>signJarFile</code> task that should always be invoked if someone builds a jar
-                    file. You don't expect users to invoke that target explicitly, but whenever they invoke the <code>assemble</code>
-                    target, you want your <code>signJarFile</code> target to be invoked. When you want such a task to always be invoked
-                    even if the user didn't explicitly request it, you should use <code>alwaysRunAfter</code>.
-                    Note that there is no <code>alwaysRunBefore</code> annotation since <code>runBefore</code>
-                    achieves the same functionality.
-                    </p>
-                    <p>
-                    Here are a few different scenarios to illustrate how the three attributes work for the task <code>exampleTask</code>:
-                    </p>
-                    <p align="center">
-                    <strong>Result of the command <code>./kobaltw --dryRun compile</code></strong>
-                    </p>
-                    <table width="100%" class="table table-bordered table-condensed">
-                        <thead>
-                            <td align="center">Configuration for <code>exampleTask</code></td>
-                            <td align="center">Result</td>
-                        </thead>
-                        <tr>
-                            <td align="center">runBefore = "compile"</td>
-                            <td>
+<p>
+A Kobalt task needs to accept a <code>Project</code> in parameter and return a <code>TaskResult</code>, which indicates whether this task completed successfully.
+</p>
+<p>
+The <code>@Task</code> annotation accepts the following attributes:
+<dl class="dl-horizontal">
+    <dt>name</dt>
+    <dd>The name of the task, which will be used to invoke it from the command line.</dd>
+    <dt>description</dt>
+    <dd>The description of this command, which will be displayed if the user invokes the usage for the <code>kobaltw</code> command.</dd>
+    <dt>runBefore</dt>
+    <dd>A list of all the tasks that this task should run prior to.</dd>
+    <dt>runAfter</dt>
+    <dd>A list of all the tasks that should run before this task does.</dd>
+    <dt>alwaysRunAfter</dt>
+    <dd>A list of all the tasks that will always be run after this task if it's invoked.</dd>
+</dl>
+</p>
+<p>
+The difference between <code>runAfter</code> and <code>alwaysRunAfter</code> is subtle but important. <code>runAfter</code>
+is just a declaration of dependency. It's basically the reverse of <code>runBefore</code> but it's useful in case
+you are not the author of the task you want to run before (if you were, you would just use the <code>runBefore</code>
+annotation on it). Since you can't say <code>"a runBefore b"</code> because you don't own task "a",
+you say <code>"b runAfter a"</code>.
+</p>
+<p>
+For example, <code>compileTest</code> is declared as a <code>runAfter</code> for the task <code>compile</code>.
+This means that it doesn't make sense to run <code>compileTest</code> unless <code>compile</code> has run first.
+However, if a user invokes the task <code>compile</code>, they probably don't want to invoke <code>compileTest</code>,
+so a dependency is exactly what we need here: invoking <code>compileTest</code> will trigger <code>compile</code>
+but not the other way around.
+</p>
+<p>
+However, there are times where you want to define a task that will <strong>always</strong> run after a given task.
+For example, you could have a <code>signJarFile</code> task that should always be invoked if someone builds a jar
+file. You don't expect users to invoke that target explicitly, but whenever they invoke the <code>assemble</code>
+target, you want your <code>signJarFile</code> target to be invoked. When you want such a task to always be invoked
+even if the user didn't explicitly request it, you should use <code>alwaysRunAfter</code>.
+Note that there is no <code>alwaysRunBefore</code> annotation since <code>runBefore</code>
+achieves the same functionality.
+</p>
+<p>
+Here are a few different scenarios to illustrate how the three attributes work for the task <code>exampleTask</code>:
+</p>
+<p align="center">
+<strong>Result of the command <code>./kobaltw --dryRun compile</code></strong>
+</p>
+<table width="100%" class="table table-bordered table-condensed">
+    <thead>
+        <td align="center">Configuration for <code>exampleTask</code></td>
+        <td align="center">Result</td>
+    </thead>
+    <tr>
+        <td align="center">runBefore = "compile"</td>
+        <td>
 <pre class="brush:plain">kobalt-line-count:clean
 kobalt-line-count:exampleTask
 kobalt-line-count:compile</pre>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center">runAfter = "compile"</td>
-                            <td>
-            <pre class="brush:plain">kobalt-line-count:clean
+        </td>
+    </tr>
+    <tr>
+        <td align="center">runAfter = "compile"</td>
+        <td>
+<pre class="brush:plain">kobalt-line-count:clean
 kobalt-line-count:compile</pre>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center">alwaysRunAfter = "compile"</td>
-                            <td>
-            <pre class="brush:plain">kobalt-line-count:clean
+        </td>
+    </tr>
+    <tr>
+        <td align="center">alwaysRunAfter = "compile"</td>
+        <td>
+<pre class="brush:plain">kobalt-line-count:clean
 kobalt-line-count:compile
 kobalt-line-count:exampleTask</pre>
-                            </td>
-                        </tr>
-                    </table>
-                    <h3 class="section" indent="1">Dynamic tasks</h3>
-                    <p>
-                    Dynamic tasks are useful when you want your plug-in to generate one or several tasks that depend on
-                    some other runtime information (therefore, you can't declare a method and put a <code>@Task</code>
-                    annotation on it). Plug-ins declare dynamic tasks by implementing the <code>ITaskContributor</code>
-                    intrface:
-                    </p>
+        </td>
+    </tr>
+</table>
+<h3 class="section" indent="1">Dynamic tasks</h3>
+<p>
+Dynamic tasks are useful when you want your plug-in to generate one or several tasks that depend on
+some other runtime information (therefore, you can't declare a method and put a <code>@Task</code>
+annotation on it). Plug-ins declare dynamic tasks by implementing the <code>ITaskContributor</code>
+intrface:
+</p>
 <pre class="brush:java">
 interface ITaskContributor {
-    fun tasksFor(context: KobaltContext) : List&lt;DynamicTask&gt;
+fun tasksFor(context: KobaltContext) : List&lt;DynamicTask&gt;
 }</pre>
-                    <p>
-                    For example:
-                    </p>
+<p>
+For example:
+</p>
 <pre class="brush:java">
 override fun tasksFor(context: KobaltContext) = listOf(
     DynamicTask(
@@ -476,15 +476,15 @@ override fun tasksFor(context: KobaltContext) = listOf(
             println("Running dynamicTask")
             TaskResult()
 }))</pre>
-                    <p>
-                    <code>DynamicTask</code> mirrors the <code>@Task</code> attributes: <code>name</code>, <code>description</code> and
-                    dependencies. The only addition is the <code>closure</code> parameter, which specifics the code that will
-                    run if your task gets invoked. That closure needs to follow the same constraints that a <code>@Task</code> method
-                    obeys: it takes a <code>Project</code> parameter and returns a <code>TaskResult</code>.
-                    </p>
-                    <p>
-                    Once you have implemented <code>ITaskContributor</code>, you can see your dynamic task in the list of tasks and run it directly:
-                    </p>
+<p>
+<code>DynamicTask</code> mirrors the <code>@Task</code> attributes: <code>name</code>, <code>description</code> and
+dependencies. The only addition is the <code>closure</code> parameter, which specifics the code that will
+run if your task gets invoked. That closure needs to follow the same constraints that a <code>@Task</code> method
+obeys: it takes a <code>Project</code> parameter and returns a <code>TaskResult</code>.
+</p>
+<p>
+Once you have implemented <code>ITaskContributor</code>, you can see your dynamic task in the list of tasks and run it directly:
+</p>
 <pre class="brush:plain">
 $ ./kobaltw --tasks
   ===== kobalt-line-count =====
@@ -493,32 +493,32 @@ $ ./kobaltw --tasks
 $ ./kobaltw dynamicTask
 Running dynamictask
 </pre>
-                    <h2 class="section" id="properties">Properties</h2>
-                    <p>
-                    Properties are the mechanism that plug-ins can use to export values and also read values that other
-                    plug-ins have exported. There are two kinds of properties that plug-ins can manipulate:
-                    </p>
-                    <ul>
-                        <li><strong>Project properties</strong>: project-specific properties.</li>
-                        <li><strong>Plug-in properties</strong>: general properties that are applicable to no project
-                        in particular.</li>
-                    </ul>
-                    <h3 class="section" indent="1" id="project-properties">Project properties</h3>
-                    <p>
-                    <code>Project</code> instances have a property called <code>projectProperties</code> that is an
-                    instance of the <code>ProjectProperties</code> class. Plugins can put and get values on this
-                    object in order to store project specific properties.
-                    </p>
-          <pre class="brush:java">
+<h2 class="section" id="properties">Properties</h2>
+<p>
+Properties are the mechanism that plug-ins can use to export values and also read values that other
+plug-ins have exported. There are two kinds of properties that plug-ins can manipulate:
+</p>
+<ul>
+    <li><strong>Project properties</strong>: project-specific properties.</li>
+    <li><strong>Plug-in properties</strong>: general properties that are applicable to no project
+    in particular.</li>
+</ul>
+<h3 class="section" indent="1" id="project-properties">Project properties</h3>
+<p>
+<code>Project</code> instances have a property called <code>projectProperties</code> that is an
+instance of the <code>ProjectProperties</code> class. Plugins can put and get values on this
+object in order to store project specific properties.
+</p>
+<pre class="brush:java">
 fun taskAssemble(project: Project) : TaskResult {
-    project.projectProperties.put(PACKAGES, packages)
+project.projectProperties.put(PACKAGES, packages)
 </pre>
-                    <h3 class="section" indent="1" id="plugin-properties">Plug-in properties</h3>
-                    <p>
-                    The <code>PluginProperties</code> instance can be found on the <code>KobaltContext</code>
-                    object that your plug-in receives in its <code>apply()</code> method. Once you have an instance of this
-                    class, you can read or write variables into it:
-                    </p>
+<h3 class="section" indent="1" id="plugin-properties">Plug-in properties</h3>
+<p>
+The <code>PluginProperties</code> instance can be found on the <code>KobaltContext</code>
+object that your plug-in receives in its <code>apply()</code> method. Once you have an instance of this
+class, you can read or write variables into it:
+</p>
 <pre class="brush:java">
 override fun apply(project: Project, context: KobaltContext) {
     // Export a property for other plug-ins to use
@@ -527,33 +527,33 @@ override fun apply(project: Project, context: KobaltContext) {
     val sourceDir = context.pluginProperties.get("pluginName", "somePluginProperty")
 }
 </pre>
-                    <h3 class="section" indent="1" id="documenting-properties">Documenting properties</h3>
-                    <p>
-                    Plug-ins that define properties should annotate them with the <code>@ExportedPluginProperty</code> or
-                    <code>@ExportedProjectProperty</code>annotation:
-                    </p>
+            <h3 class="section" indent="1" id="documenting-properties">Documenting properties</h3>
+            <p>
+            Plug-ins that define properties should annotate them with the <code>@ExportedPluginProperty</code> or
+            <code>@ExportedProjectProperty</code>annotation:
+            </p>
 <pre class="brush:java">
-    companion object {
-        @ExportedProjectProperty
-        const val BUILD_DIR = "buildDir"
+companion object {
+@ExportedProjectProperty
+const val BUILD_DIR = "buildDir"
 </pre>
-                </div>
-                <!-- Table of contents -->
-                <div class="col-md-3" id="table-of-contents">
-                </div>
-                <!-- Bootstrap core JavaScript
-                ================================================== -->
-                <!-- Placed at the end of the document so the pages load faster -->
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-                <script src="../bootstrap/dist/js/bootstrap.min.js"></script>
-                <script src="../js/kobalt.js"></script>
-                <script>generateKobalt();</script>
-                <!--
-                <script src="../bootstrap/dist/js/docs.min.js"></script>
-                -->
-                <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-                <!--
-                <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-                -->
-            </div>
-        </body>
+        </div>
+        <!-- Table of contents -->
+        <div class="col-md-3" id="table-of-contents">
+        </div>
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="../bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="../js/kobalt.js"></script>
+        <script>generateKobalt();</script>
+        <!--
+        <script src="../bootstrap/dist/js/docs.min.js"></script>
+        -->
+        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+        <!--
+        <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+        -->
+    </div>
+</body>
