@@ -577,7 +577,13 @@ object in order to store project specific properties.
 </p>
 <pre class="brush:java">
 fun taskAssemble(project: Project) : TaskResult {
-project.projectProperties.put(PACKAGES, packages)
+    project.projectProperties.put("packages", packages)
+</pre>
+<p>
+    Another plug-in can then query this property as follows:
+</p>
+<pre class="brush:java">
+    val packages = project.projectProperties.put("packages")
 </pre>
 <h3 class="section" indent="1" id="plugin-properties">Plug-in properties</h3>
 <p>
