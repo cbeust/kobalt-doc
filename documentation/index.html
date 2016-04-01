@@ -517,8 +517,8 @@ Here are the options that you can pass to <code>./kobaltw</code>:
 
 <table style="font-size: 14px" class="table table-striped">
     <colgroup>
-     <col span="1" style="width: 25%;">
-     <col span="1" style="width: 10%;">
+     <col span="1" style="width: 30%;">
+     <col span="1" style="width: 5%;">
      <col span="1" style="width: 10%;">
      <col span="1" style="width: 20%;">
      <col span="1" style="width: 40%;">
@@ -541,9 +541,9 @@ Here are the options that you can pass to <code>./kobaltw</code>:
     <td>Use this option if you are trying to build a project whose <code>Build.kt</code> is not in <code>kobalt/src</code>.</td>
   </tr>
   <tr>
-    <td><code>--checkVersions</code></td>
+    <td><code><span style="white-space:nowrap">--checkVersions</span></code></td>
     <td>Boolean</td>
-    <td>false</td>td>
+    <td>false</td>
     <td>Display all the new versions of your dependencies.</td>
     <td>This option looks at all the dependencies found in your build file and then contacts all the Maven repositories in order to find out if any of these repos contains a newer version. If any are found, they are displayed:
 <pre class="brush:plain">
@@ -569,7 +569,7 @@ New versions found:
     <td>The parameter to this argument is a list of template names separated by commas, e.g. <code>"java,myProject"</code>. Each template will be invoked in order so they can generate their files.</td>
   </tr>
   <tr>
-    <td><code>--listTemplates</code></td>
+    <td><code><span style="white-space:nowrap">--listTemplates</span></code></td>
     <td></td>
     <td>N/A</td>
     <td>List all the templates available.</td>
@@ -583,7 +583,7 @@ New versions found:
     <td>The default level is 1. Level 0 will quiet everything and 2 and 3 will display increasingly verbose output.</td>
   </tr>
   <tr>
-    <td><code>--noIncremental</code></td>
+    <td><code><span style="white-space:nowrap">--noIncremental</span></code></td>
     <td>Boolean</td>
     <td>false</td>
     <td>Turn off incremental builds.</td>
@@ -598,7 +598,7 @@ New versions found:
     <td>This is similar to specifying these plug-in id's in a build file except that no build file is needed.</td>
   </tr>
   <tr>
-    <td><code>--pluginJarFiles</code></td>
+    <td><code><span style="white-space:nowrap">--pluginJarFiles</span></code></td>
     <td>Comma-separated list of plugin jar files</td>
     <td></td>
     <td>Specify the plug-ins to load.</td>
@@ -611,20 +611,20 @@ New versions found:
     <td>Display information about the given id.</td>
     <td>Display which repo this artifact can be found in and the whole graph of its dependencies.</td>
   </tr>
-  <tr>
-    <td><code>--tasks</code></td>
-    <td>Boolean</td>
-    <td>false</td>
-    <td>List the tasks available.</td>
-    <td>Note that the available tasks will vary depending on which projects are in your build file.</td>
-  </tr>
-  <tr>
-    <td><code>--update</code></td>
-    <td>Boolean</td>
-    <td>false</td>
-    <td>Update Kobalt to the latest version available.</td>
-    <td>Use this flag if Kobalt just notified you that a new version is available and you want to update. Another way of doing this is to edit <code>kobalt/wrapper/kobalt-wrapper.properties</code> manually.</td>
-  </tr>
+    <tr>
+        <td><code>--tasks</code></td>
+        <td>Boolean</td>
+        <td>false</td>
+        <td>List the tasks available.</td>
+        <td>Note that the available tasks will vary depending on which projects are in your build file.</td>
+    </tr>
+    <tr>
+        <td><code>--update</code></td>
+        <td>Boolean</td>
+        <td>false</td>
+        <td>Update Kobalt to the latest version available.</td>
+        <td>Use this flag if Kobalt just notified you that a new version is available and you want to update. Another way of doing this is to edit <code>kobalt/wrapper/kobalt-wrapper.properties</code> manually.</td>
+    </tr>
 </table>
 
 <h2 class="section" id="testing">Testing</h2>
