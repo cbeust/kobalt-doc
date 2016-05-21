@@ -77,27 +77,6 @@
 </p>
 <h2 class="section" id="features">Features</h2>
 
-<h2 class="section" id="buildFile" indent="1">Build file auto-completion in your IDE</h2>
-<p>
-  Since Kobalt's build files are actual Kotlin files, not only can you leverage auto-completion
-  to write your build files but the full power of your IDEA is at your fingertips to write
-  these files in any way you see fit: using expressions, conditionals, classes, extension functions,
-  constants... The sky is the limit!
-</p>
-<p>
-  Kobalt uses Kotlin's type safe builder pattern to offer a DSL that's extremely similar to Gradle
-  and minimalistic while allowing you to switch to full Kotlin code whenever necessary.
-</p>
-<p>
-  Here is an example of the auto-completion dialog:
-</p>
-<p align="center">
-<img src="../pics/auto-completion.png" class="img-rounded"/>
-</p>
-<p>
-  And see the following section to get a feel for Kobalt's build file syntax.
-</p>
-
 <h2 class="section" id="syntax" indent="1">Clean, minimal syntax for build files</h2>
 <p>
 For example, here is <a href="http://jcommander.org">JCommander's</a> entire build file:
@@ -133,7 +112,31 @@ val jcommander = project {
 <p>
   This build file also includes a directive to upload your artifacts to Bintray automatically.
 </p>
-  <h2 class="section" id="incremental" indent="1">Incremental tasks</h2>
+
+
+<h2 class="section" id="buildFile" indent="1">Build file auto-completion in your IDE</h2>
+<p>
+  Since Kobalt's build files are actual Kotlin files, not only can you leverage auto-completion
+  to write your build files but the full power of your IDEA is at your fingertips to write
+  these files in any way you see fit: using expressions, conditionals, classes, extension functions,
+  constants... The sky is the limit!
+</p>
+<p>
+  Kobalt uses Kotlin's type safe builder pattern to offer a DSL that's extremely similar to Gradle
+  and minimalistic while allowing you to switch to full Kotlin code whenever necessary.
+</p>
+<p>
+  Here is an example of the auto-completion dialog:
+</p>
+<p align="center">
+  <img src="../pics/auto-completion.png" class="img-rounded"/>
+</p>
+<p>
+  And see the following section to get a feel for Kobalt's build file syntax.
+</p>
+
+
+          <h2 class="section" id="incremental" indent="1">Incremental tasks</h2>
 <p>
   Most of Kobalt's core tasks are incremental, which means that if you run them without having changed anything, they will be skipped. The support for incremental tasks is also trivial to add for plug-in developers, which guarantees that your builds with Kobalt will always be as fast as they can be.
 </p>

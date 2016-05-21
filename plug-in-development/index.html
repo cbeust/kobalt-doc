@@ -436,7 +436,7 @@ Tasks are provided by plug-ins and can be invoked from the command line, e.g. <c
 Static tasks are functions declared directly in your plug-in class and annotated with the <code>@Task</code> annotation. Here is an example:
 </p>
 <pre class="brush:java">
-@Task(name = "lineCount", description = "Count the lines", runBefore = arrayOf("compile"))
+@Task(name = "lineCount", description = "Count the lines", dependsOn = arrayOf("compile"))
 fun lineCount(project: Project): TaskResult {
     // ...
     return TaskResult()
@@ -452,70 +452,76 @@ The <code>@Task</code> annotation accepts the following attributes:
     <dd>The name of the task, which will be used to invoke it from the command line.</dd>
     <dt>description</dt>
     <dd>The description of this command, which will be displayed if the user invokes the usage for the <code>kobaltw</code> command.</dd>
+    <dt>dependsOn</dt>
+    <dd>A list of all the tasks that this task depends on.</dd>
+    <dt>reverseDependsOn</dt>
+    <dd>Make the following tasks depend on this task.</dd>
     <dt>runBefore</dt>
     <dd>A list of all the tasks that this task should run prior to.</dd>
     <dt>runAfter</dt>
     <dd>A list of all the tasks that should run before this task does.</dd>
-    <dt>alwaysRunAfter</dt>
-    <dd>A list of all the tasks that will always be run after this task if it's invoked.</dd>
 </dl>
 </p>
 <p>
-The difference between <code>runAfter</code> and <code>alwaysRunAfter</code> is subtle but important. <code>runAfter</code>
-is just a declaration of dependency. It's basically the reverse of <code>runBefore</code> but it's useful in case
-you are not the author of the task you want to run before (if you were, you would just use the <code>runBefore</code>
-annotation on it). Since you can't say <code>"a runBefore b"</code> because you don't own task "a",
-you say <code>"b runAfter a"</code>.
+    Kobalt defines two different concepts for tasks: dependencies and orderings. And for each of this concept,
+    you can define the relation to go in one direction or the other.
 </p>
 <p>
-For example, <code>compileTest</code> is declared as a <code>runAfter</code> for the task <code>compile</code>.
-This means that it doesn't make sense to run <code>compileTest</code> unless <code>compile</code> has run first.
-However, if a user invokes the task <code>compile</code>, they probably don't want to invoke <code>compileTest</code>,
-so a dependency is exactly what we need here: invoking <code>compileTest</code> will trigger <code>compile</code>
-but not the other way around.
+    If your task cannot run until another task has run, you need to declare a dependency. Dependencies cause
+    additional tasks than those requested to be executed. For example, <code>"assemble"</code> depends on <code>"compile"</code>, which means that whenever you invoke <code>"assemble"</code>, <code>"compile"</code>
+    will be automatically run first. This is a dependency and it is controlled by <code>"dependsOn"</code> and
+    <code>"reverseDependsOn"</code>. You can see <code>"reverseDependsOn"</code> as a way to insert your task before an existing task.
 </p>
 <p>
-However, there are times where you want to define a task that will <strong>always</strong> run after a given task.
-For example, you could have a <code>signJarFile</code> task that should always be invoked if someone builds a jar
-file. You don't expect users to invoke that target explicitly, but whenever they invoke the <code>assemble</code>
-target, you want your <code>signJarFile</code> target to be invoked. When you want such a task to always be invoked
-even if the user didn't explicitly request it, you should use <code>alwaysRunAfter</code>.
-Note that there is no <code>alwaysRunBefore</code> annotation since <code>runBefore</code>
-achieves the same functionality.
+    Orderings, controlled by <code>"runBefore"</code> and <code>"runAfter"</code> merely specify an ordering
+    but do not pull new tasks in. This is how you tell Kobalt "In case task X is run, run my task before it
+    (or after)". But if task X doesn't run, your task will not be run either (unless it's explicitly requested
+    by the user).
 </p>
 <p>
-Here are a few different scenarios to illustrate how the three attributes work for the task <code>exampleTask</code>:
+Here are a few different scenarios to illustrate how the three attributes work for the task <code>example</code>:
 </p>
 <p align="center">
 <strong>Result of the command <code>./kobaltw --dryRun compile</code></strong>
 </p>
 <table width="100%" class="table table-bordered table-condensed">
     <thead>
-        <td align="center">Configuration for <code>exampleTask</code></td>
+        <td align="center">Configuration for <code>example</code></td>
         <td align="center">Result</td>
+        <td align="center">Note</td>
     </thead>
     <tr>
-        <td align="center">runBefore = "compile"</td>
+        <td align="center">dependsOn = "compile"</td>
         <td>
-<pre class="brush:plain">kobalt-line-count:clean
-kobalt-line-count:exampleTask
-kobalt-line-count:compile</pre>
+<pre class="brush:plain">clean
+compile
+example</pre>
+        </td>
+        <td>
+            Make the <code>"example"</code> task depend on <code>"compile"</code>.
+        </td>
+    </tr>
+    <tr>
+        <td align="center">reverseDependsOn = "compile"</td>
+        <td>
+<pre class="brush:plain">clean
+example
+compile</pre>
+        </td>
+        <td>
+            Insert the <code>"example"</code> task before <code>"compile"</code>.
         </td>
     </tr>
     <tr>
         <td align="center">runAfter = "compile"</td>
         <td>
-<pre class="brush:plain">kobalt-line-count:clean
-kobalt-line-count:compile</pre>
+<pre class="brush:plain">clean
+compile</pre>
         </td>
-    </tr>
-    <tr>
-        <td align="center">alwaysRunAfter = "compile"</td>
         <td>
-<pre class="brush:plain">kobalt-line-count:clean
-kobalt-line-count:compile
-kobalt-line-count:exampleTask</pre>
+            Make <code>"example"</code> run after <code>"compile"</code> but only if it's invoked explicitly.
         </td>
+
     </tr>
 </table>
 <h3 class="section" indent="1">Dynamic tasks</h3>
@@ -537,7 +543,7 @@ override fun tasksFor(context: KobaltContext) = listOf(
     DynamicTask(
         name = "dynamicTask",
         description = "Description",
-        alwaysRunAfter = listOf("compile"),
+        reverseDependsOn = listOf("compile"),
         closure = { project: Project ->
             println("Running dynamicTask")
             TaskResult()
