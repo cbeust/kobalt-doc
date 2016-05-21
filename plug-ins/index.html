@@ -180,7 +180,7 @@ BUILD SUCCESSFUL (0 seconds)
                   <li>The build type.</li>
               </ul>
           <p>
-              <strong>Product flavors</strong> usually contains different source files and different logic (e.g. a "free version" and a "pro version". <strong>Build types</strong> lead to different archives (e.g. "debug" and "release", with the "release" version being obfuscated). This effect is achieved by defining identical source files in different directories and then letting Kobalt build the correct one. Each product flavor and build type has a name which translates directory into a source directory. For example:
+              <strong>Product flavors</strong> usually contain different source files and different logic (e.g. a "free version" and a "pro version". <strong>Build types</strong> lead to different archives (e.g. "debug" and "release", with the "release" version being obfuscated). This effect is achieved by defining identical source files in different directories and then letting Kobalt build the correct one. Each product flavor and build type has a name which translates directory into a source directory. For example:
           </p>
 <pre class="brush:java">
 productFlavor("free") {
@@ -210,6 +210,17 @@ assembleFreeDebug</pre>
 <p>
   For example, if you define two flavors, "pro" and "free", and two build types, "debug" and "release", four tasks will be added that combine these: "proDebug", "proRelease", "freeDebug" and "freeRelease". If you assemble any of these, an artifact named after that combination will be created, e.g. "kobalt-0.273-free-debug.jar".
 </p>
+        <p>
+          Variants can have they own <code>dependencies{}</code> section, which will be used only if this specific
+          variant is being compiled or assembled:
+        </p>
+<pre class="brush:java">
+    productFlavor("debug") {
+        dependencies {
+            compile("joda-time:joda-time:2.9.3")
+        }
+    }
+</pre>
 
 <h3 class="section" id="build-config" indent="1">BuildConfig</h3>
 <p>
