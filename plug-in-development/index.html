@@ -474,9 +474,8 @@ The <code>@Task</code> annotation accepts the following attributes:
 </p>
 <p>
     Orderings, controlled by <code>"runBefore"</code> and <code>"runAfter"</code> merely specify an ordering
-    but do not pull new tasks in. This is how you tell Kobalt "In case task X is run, run my task before it
-    (or after)". But if task X doesn't run, your task will not be run either (unless it's explicitly requested
-    by the user).
+    but do not pull new tasks in. This is how you tell Kobalt "In case task the user asks for my task to run,
+    here is when it should be invoked", but your task will run only if it's explicitly invoked by the user.
 </p>
 <p>
 Here are a few different scenarios to illustrate how the three attributes work for the task <code>example</code>:
