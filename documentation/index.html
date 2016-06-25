@@ -191,6 +191,19 @@ fun taskCreateVersion(project: Project) : TaskResult {
   This tasks takes a template file and replaces all occurrences of the string <code>"@version@"</code> with the actual version of the project. Obviously, this task is very specific to TestNG's own build and it wasn't worth writing a plug-in ftor this. Note the attributes <code>runBefore</code> and <code>runAfter</code>, which specify when this task will run. You can find more information about tasks in the <a href="http://beust.com/kobalt/plug-in-development/index.html#tasks">plug-in development section</a>.
 </p>
 
+<h3 class="section" indent="1" id="build-file-classpath">Build file classpath</h3>
+<p>
+  If you are writing code or an inline task in your build file that requires additional libraries,
+  you can specify these dependencies with the <code>buildFileClasspath()</code> directive, which accepts a list
+  of dependencies in parameters. Each of these dependencies will then be added to the classpath when
+  your build file is compiled and run:
+</p>
+<pre class="brush:java">
+// Build.kt
+val bfc = buildFileClasspath("org.testng:testng:6.9.11")
+val t = org.testng.TestNG()  // now legal
+</pre>
+
 <h3 class="section" indent="1" id="dependencies">Dependencies</h3>
 
 <p>
