@@ -229,6 +229,31 @@ dependencies {
 }
 </pre>
 
+<h4 class="section" indent="2" id="dependency-versions">Dependency versions</h4>
+<p>
+  Kobalt lets you specify Maven coordinates in one line, such as <code>"org.testng:testng:6.9.10"</code>. Note that Kobalt uses the <a href="https://maven.apache.org/pom.html#Maven_Coordinates">Maven Coordinates defined in the Maven specification</a>, which are a little bit different from the ones that Gradle uses.
+</p>
+<p>
+  The standard format for such coordinates, as explained in the link above, is:
+</p>
+<pre class="brush:plain">
+groupId:artifactId:packaging:classifier:version</pre>
+<p>
+  <code>packaging</code> (e.g. <code>"jar"</code>) and <code>classifier</code> (usually an arbitrary name) are optional and can be omitted. If <code>version</code>
+  is omitted, Kobalt will resolve the artifact to its latest version from all the specified repos.
+  Most of the time, you will only specify <code>groupId</code>, <code>artifactId</code> and <code>version</code>, but if you ever need to specify additional components such as <code>packaging</code> (sometimes referred to as "<code>extension</code>") or <code>classifier</code>,
+  please take note that these should appear before the version number.
+</p>
+<p>
+  Here are a few examples of valid Maven coordinates:
+</p>
+<pre class="brush:plain">
+# No version, resolves to the latest
+org.testng:testng:
+
+# Specifies an extension and a qualifier
+com.badlogicgames.gdx:gdx-platform:jar:natives-desktop:1.9.2</pre>
+
 <h4 class="section" indent="2" id="dependency-types">Dependency types</h4>
 
 <p>
@@ -245,33 +270,21 @@ dependencies {
   <dd>Exclude the given dependencies from the classpath. You can either
       specify a versioned id (e.g. <code>"groupId:artifactId:version"</code>) or a versionless one
       (<code>"groupId:artifactId:"</code>).</dd>
+    <dt>native</dt>
+    <dd>Used to define native dependencies.</dd>
 </dl>
 
-<h4 class="section" indent="2" id="dependency-versions">Dependency versions</h4>
+<h5 class="section" indent="3" id="native-dependencies">Native dependencies</h5>
 <p>
-Kobalt lets you specify Maven coordinates in one line, such as <code>"org.testng:testng:6.9.10"</code>. Note that Kobalt uses the <a href="https://maven.apache.org/pom.html#Maven_Coordinates">Maven Coordinates defined in the Maven specification</a>, which are a little bit different from the ones that Gradle uses.
+  Native dependencies will only be used when you invoke the <code>run</code> task on your project:
 </p>
-<p>
-  The standard format for such coordinates, as explained in the link above, is:
-</p>
-<pre class="brush:plain">
-groupId:artifactId:packaging:classifier:version</pre>
-<p>
-  <code>packaging</code> and <code>classifier</code> are optional and can be omitted. If <code>version</code>
-  is omitted, Kobalt will resolve the artifact to its latest version from all the specified repos.
-  Most of the time, you will only specify <code>groupId</code>, <code>artifactId</code> and <code>version</code>, but if you ever need to specify additional components such as <code>packaging</code> (sometimes referred to as "<code>extension</code>") or <code>classifier</code>,
-  please take note that these should appear before the version number.
-</p>
-<p>
-  Here are a few examples of valid Maven coordinates:
-</p>
-<pre class="brush:plain">
-# No version, resolves to the latest
-org.testng:testng:
-
-# Specifies an extension and a qualifier
-com.badlogicgames.gdx:gdx-platform:jar:natives-desktop:1.9.2</pre>
-
+<pre class="brush:java">
+dependencies {
+    native("org.lwjgl.lwjgl:lwjgl-platform:jar:natives-windows:2.9.3",
+           "org.lwjgl.lwjgl:lwjgl-platform:jar:natives-linux:2.9.3",
+           "org.lwjgl.lwjgl:lwjgl-platform:jar:natives-osx:2.9.3"
+        )
+    }</pre>
 <h2 class="section" id="settings">Settings</h2>
 <p>
   You can define settings that will apply to all your Kobalt builds by creating
