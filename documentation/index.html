@@ -68,9 +68,8 @@ The build file is located in <code>kobalt/src/Built.kt</code> and it is a valid 
  
 <pre class="brush:java">
 import com.beust.kobalt.*
-import com.beust.kobalt.plugin.kotlin.kotlinProject
 
-val kobalt = kotlinProject {
+val kobalt = project {
     name = "kobalt"
     group = "com.beust"
     artifactId = name
@@ -84,7 +83,7 @@ Here are a few noteworthy details about this small build file:
 <ul>
 <li>You have now declared a variable called <code>kobalt</code> which you can reuse further in your build file, should you ever need to.
 <li>You can specify the directory of the project if it's not in the root, which means that one build file can be used to build multiple projects.
-<li>The functions <code>kotlinProject</code> and <code>homeDir</code> are supplied by Kobalt and are referred to as "directives"
+<li>The functions <code>project</code> and <code>homeDir</code> are supplied by Kobalt and are referred to as "directives"
 </ul>
 
           <p>
@@ -124,7 +123,7 @@ Now that we have declared a project, we can use it to configure additional steps
 <pre class="brush:java;highlight=5,6,7,8">
 import com.beust.kobalt.plugin.packaging.assemble
 
-val kobalt = kotlinProject {
+val kobalt = project {
     // ...
     assemble {
         jar {
@@ -192,6 +191,19 @@ fun taskCreateVersion(project: Project) : TaskResult {
   This tasks takes a template file and replaces all occurrences of the string <code>"@version@"</code> with the actual version of the project. Obviously, this task is very specific to TestNG's own build and it wasn't worth writing a plug-in ftor this. Note the attributes <code>runBefore</code> and <code>runAfter</code>, which specify when this task will run. You can find more information about tasks in the <a href="http://beust.com/kobalt/plug-in-development/index.html#tasks">plug-in development section</a>.
 </p>
 
+<h3 class="section" indent="1" id="build-file-classpath">Build file classpath</h3>
+<p>
+  If you are writing code or an inline task in your build file that requires additional libraries,
+  you can specify these dependencies with the <code>buildFileClasspath()</code> directive, which accepts a list
+  of dependencies in parameters. Each of these dependencies will then be added to the classpath when
+  your build file is compiled and run:
+</p>
+<pre class="brush:java">
+// Build.kt
+val bfc = buildFileClasspath("org.testng:testng:6.9.11")
+val t = org.testng.TestNG()  // now legal
+</pre>
+
 <h3 class="section" indent="1" id="dependencies">Dependencies</h3>
 
 <p>
@@ -217,56 +229,189 @@ dependencies {
 }
 </pre>
 
-          <p>
-              There are various kinds of dependencies:
-          </p>
-          <dl class="dl-horizontal">
-              <dt>compile</dt>
-              <dd>Used to compile your project.</dd>
-              <dt>runtime</dt>
-              <dd>Not used at compile time but passed to the JVM to run your application.</dd>
-              <dt>provided</dt>
-              <dd>Used at compile time but not used to run your application.</dd>
-              <dt>exclude</dt>
-              <dd>Exclude the given dependencies from the classpath. You can either
-                  specify a versioned id (e.g. <code>"groupId:artifactId:version"</code>) or a versionless one
-                  (<code>"groupId:artifactId:"</code>).</dd>
-          </dl>
+<h4 class="section" indent="2" id="dependency-versions">Dependency versions</h4>
+<p>
+  Kobalt lets you specify Maven coordinates in one line, such as <code>"org.testng:testng:6.9.10"</code>. Note that Kobalt uses the <a href="https://maven.apache.org/pom.html#Maven_Coordinates">Maven Coordinates defined in the Maven specification</a>, which are a little bit different from the ones that Gradle uses.
+</p>
+<p>
+  The standard format for such coordinates, as explained in the link above, is:
+</p>
+<pre class="brush:plain">
+groupId:artifactId:packaging:classifier:version</pre>
+<p>
+  <code>packaging</code> (e.g. <code>"jar"</code>) and <code>classifier</code> (usually an arbitrary name) are optional and can be omitted. If <code>version</code>
+  is omitted, Kobalt will resolve the artifact to its latest version from all the specified repos.
+  Most of the time, you will only specify <code>groupId</code>, <code>artifactId</code> and <code>version</code>, but if you ever need to specify additional components such as <code>packaging</code> (sometimes referred to as "<code>extension</code>") or <code>classifier</code>,
+  please take note that these should appear before the version number.
+</p>
+<p>
+  Here are a few examples of valid Maven coordinates:
+</p>
+<pre class="brush:plain">
+# No version, resolves to the latest
+org.testng:testng:
 
-          <h2 class="section" id="settings">Settings</h2>
+# Specifies an extension and a qualifier
+com.badlogicgames.gdx:gdx-platform:jar:natives-desktop:1.9.2</pre>
+
+<h4 class="section" indent="2" id="dependency-types">Dependency types</h4>
+
+<p>
+  There are various kinds of dependencies:
+</p>
+<dl class="dl-horizontal">
+  <dt>compile</dt>
+  <dd>Used to compile your project.</dd>
+  <dt>runtime</dt>
+  <dd>Not used at compile time but passed to the JVM to run your application.</dd>
+  <dt>provided</dt>
+  <dd>Used at compile time but not used to run your application.</dd>
+  <dt>exclude</dt>
+  <dd>Exclude the given dependencies from the classpath. You can either
+      specify a versioned id (e.g. <code>"groupId:artifactId:version"</code>) or a versionless one
+      (<code>"groupId:artifactId:"</code>).</dd>
+    <dt>native</dt>
+    <dd>Used to define native dependencies.</dd>
+</dl>
+
+<h5 class="section" indent="3" id="native-dependencies">Native dependencies</h5>
+<p>
+  Native dependencies will only be used when you invoke the <code>run</code> task on your project:
+</p>
+<pre class="brush:java">
+dependencies {
+    native("org.lwjgl.lwjgl:lwjgl-platform:jar:natives-windows:2.9.3",
+           "org.lwjgl.lwjgl:lwjgl-platform:jar:natives-linux:2.9.3",
+           "org.lwjgl.lwjgl:lwjgl-platform:jar:natives-osx:2.9.3"
+        )
+    }</pre>
+<h2 class="section" id="settings">Settings</h2>
+<p>
+  You can define settings that will apply to all your Kobalt builds by creating
+  the file <code>~/.config/kobalt/settings.xml</code>:
+</p>
+
+<pre class="brush:plain">
+&lt;kobalt-settings&gt;
+    &lt;local-repo&gt;/Users/beust/my-kobalt-repo&lt;/local-repo&gt;
+    &lt;default-repos&gt;
+        &lt;repo&gt;http://jcenter.com&lt;/repo&gt;
+        &lt;repo&gt;http://example.com&lt;/repo&gt;
+    &lt;/default-repos&gt;
+&lt;/kobalt-settings&gt;</pre>
+<p>
+  Here is a list of the parameters you can configure:
+</p>
+<table style="font-size: 14px" class="table table-striped">
+    <colgroup>
+        <col span="1" style="width: 25%;">
+        <col span="1" style="width: 25%;">
+        <col span="1" style="width: 50%;">
+    </colgroup>
+    <thead>
+        <tr>
+            <td>Name</td>
+            <td>Default</td>
+            <td>Description</td>
+        </tr>
+    </thead>
+
+    <tr>
+        <td><code>default-repos</code></td>
+        <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/Constants.kt#L10">Default repos</a></td>
+        <td>List of repos overriding the default ones that Kobalt uses.</td>
+    </tr>
+    <tr>
+        <td><code>kobalt-compiler-version</code></td>
+        <td>1.0.0</td>
+        <td>The version of the Kotlin compiler that Kobalt uses.</td>
+    </tr>
+    <tr>
+        <td><code>kobalt-compiler-repo</code></td>
+        <td>None</td>
+        <td>The Maven repository where to find the compiler. By default, the compiler is looked up in the default repos (JCenter, Maven, ...).</td>
+    </tr>
+    <tr>
+        <td><code>local-repo</code></td>
+        <td><code>~/.kobalt/repository</code></td>
+        <td>Where Kobalt stores all the downloaded dependencies.</td>
+    </tr>
+</table>
+
+<h2 class="section" id="templates">Templates</h2>
+<p>
+  Templates are invoked with the <code>--init</code> parameter and typically used when you are creating
+    a new project and you want Kobalt to generate a few files to get you started. Plug-ins can provide multiple
+    templates and you can invoke as many as you need to get your project started. You can get a list of available
+    templates with the <code>--listTemplates</code> parameter:
+</p>
+<pre class="brush:plain">
+$ kobaltw --listTemplates
+Available templates
+  Plug-in: Kobalt
+    "java"              Generate a simple Java project
+    "kotlin"            Generate a simple Kotlin project
+    "kobaltPlugin"      Generate a sample Kobalt plug-in project</pre>
+<p>
+    You can then invoke any of these templates with <code>--init</code>:
+    <pre class="brush:plain">
+$ kobaltw --init kobaltPlugin
+Build this project with `./kobaltw assemble`</pre>
+<p>
+    Kobalt just generated a full project that will create a simple Kobalt plug-in. This plug-in adds
+    a simple task to Kobalt, so let's build it and test it:
+</p>
+<pre class="brush:plain">
+$ ./kobaltw assemble
+----- kobalt-line-count:compile
+----- kobalt-line-count:assemble
+Created .\kobaltBuild\libs\kobalt-line-count-0.18.jar
+Created .\kobaltBuild\libs\kobalt-line-count-0.18-sources.jar
+Created .\kobaltBuild\libs\kobalt-line-count-0.18-javadoc.jar
+Wrote .\kobaltBuild\libs\kobalt-line-count-0.18.pom
+BUILD SUCCESSFUL (5 seconds)</pre>
+<p>
+    We can test this plug-in with another useful command line parameter: <code>--pluginJarFiles</code>. You give this parameter a comma-separated list of jar files, each of which is expected to be a Kobalt plug-in. Let's invoke
+    Kobalt with it and ask for a list of available tasks (some of the output was elided):
+</p>
+<pre class="brush:plain">
+$ ./kobaltw --pluginJarFiles kobaltBuild/libs/kobalt-line-count-0.18.jar --tasks
+...
+  ===== kobalt-line-count =====
+    dynamicTask         Dynamic task
+    lineCount           Count the lines
+...
+</pre>
           <p>
-              You can create settings that will apply to all your Kobalt builds by creating
-              a file in <code>~/kobalt/settings.xml</code>:
+              Kobalt loaded this plug-in and added the tasks that it provides. The parameter
+              <code>--pluginJarFiles</code> is mostly targeted at Kobalt plug-in developers so you can test
+              your plug-ins on your local file system without having to upload them to a Maven repo. More commonly,
+              you will run templates from plug-ins published in a Maven repository, and for this,
+              you use the <code>--plugins</code> parameter. For example, let's see what templates the
+              Android Kobalt plug-in offers:
           </p>
           <pre class="brush:plain">
-&lt;kobalt-settings&gt;
-    &lt;localRepo&gt;/Users/beust/my-kobalt-repo&lt;/localRepo&gt;
-&lt;/kobalt-settings&gt;
-          </pre>
-          <p>
-              Here is a list of the parameters you can configure:
-          </p>
-          <table style="font-size: 14px" class="table table-striped">
-              <colgroup>
-                  <col span="1" style="width: 25%;">
-                  <col span="1" style="width: 25%;">
-                  <col span="1" style="width: 50%;">
-              </colgroup>
-              <thead>
-                  <tr>
-                      <td>Name</td>
-                      <td>Default</td>
-                      <td>Description</td>
-                  </tr>
-              </thead>
-              <tr>
-                  <td><code>localRepo</code></td>
-                  <td><code>~/.kobalt/repository</code></td>
-                  <td>Where Kobalt stores all the downloaded dependencies.</td>
-              </tr>
-          </table>
+$ ./kobaltw --plugins com.beust:kobalt-android: --listTemplates
+Available templates
+  Plug-in: Kobalt
+    "java"              Generates a simple Java project
+    "kotlin"            Generates a simple Kotlin project
+    "kobaltPlugin"      Generate a sample Kobalt plug-in project
+  Plug-in: Android
+    "androidJava"       Generate a simple Android Java project
+    "androidKotlin"     Generate a simple Android Kotlin project</pre>
+<p>
+We see the same plug-ins we just reviewed and a new one provided by the Android plug-in called
+<code>"androidJava"</code>. The <code>--plugins</code> parameter expects a comma-separated list of plug-in
+id's and it acts as if you had specified these Maven id's in your <code>Build.kt</code> file.
+The reason why this parameter is useful is that typically, when you run a template, you don't
+have a build file yet since you are starting a project from scratch.
+</p>
+<p>
+For a more in-depth description of templates, please refer to <a href="http://beust.com/weblog/2016/02/18/the-kobalt-diaries-templates/">this article</a>.
+</p>
 
-          <h2 class="section" id="maven-repos">Maven repos</h2>
+<h2 class="section" id="maven-repos">Maven repos</h2>
 <h3 class="section" indent="1" id="maven-repos-unauthenticated">Unauthenticated repos</h3>
 <p>
 Kobalt already knows the location of the most popular Maven repos (Maven Central, JCenter, JBoss) but you can add repos with the <code>repos()</code> directive:
@@ -374,8 +519,8 @@ You can specify more than one project in a build file, simply by declaring them:
 </p>
 
 <pre class="brush:java">
-val p1 = javaProject { ... }
-val p2 = kotlinProject { ... }
+val p1 = project { ... }
+val p2 = project { ... }
 </pre>
 
 <p>
@@ -383,7 +528,7 @@ If some of your projects need to be built in a certain order, you can specify de
 </p>
 
 <pre class="brush:java">
-val p2 = kotlinProject(p1) { ... }
+val p2 = project(p1) { ... }
 </pre>
 
 <p>
@@ -408,8 +553,8 @@ Here are the options that you can pass to <code>./kobaltw</code>:
 
 <table style="font-size: 14px" class="table table-striped">
     <colgroup>
-     <col span="1" style="width: 25%;">
-     <col span="1" style="width: 10%;">
+     <col span="1" style="width: 30%;">
+     <col span="1" style="width: 5%;">
      <col span="1" style="width: 10%;">
      <col span="1" style="width: 20%;">
      <col span="1" style="width: 40%;">
@@ -432,9 +577,9 @@ Here are the options that you can pass to <code>./kobaltw</code>:
     <td>Use this option if you are trying to build a project whose <code>Build.kt</code> is not in <code>kobalt/src</code>.</td>
   </tr>
   <tr>
-    <td><code>--checkVersions</code></td>
+    <td><code><span style="white-space:nowrap">--checkVersions</span></code></td>
     <td>Boolean</td>
-    <td>false</td>td>
+    <td>false</td>
     <td>Display all the new versions of your dependencies.</td>
     <td>This option looks at all the dependencies found in your build file and then contacts all the Maven repositories in order to find out if any of these repos contains a newer version. If any are found, they are displayed:
 <pre class="brush:plain">
@@ -454,10 +599,17 @@ New versions found:
   </tr>
   <tr>
     <td><code>--init</code></td>
-    <td>Boolean</td>
-    <td>false</td>
-    <td>Initialize a project for Kobalt.</td>
-    <td>This option will create a build file in the current directory (unless one already exists) and will install the Kobalt wrapper.</td>
+    <td>Comma-separated strings of template names.</td>
+    <td>null</td>
+    <td>Initialize a project for Kobalt with the given templates.</td>
+    <td>The parameter to this argument is a list of template names separated by commas, e.g. <code>"java,myProject"</code>. Each template will be invoked in order so they can generate their files.</td>
+  </tr>
+  <tr>
+    <td><code><span style="white-space:nowrap">--listTemplates</span></code></td>
+    <td></td>
+    <td>N/A</td>
+    <td>List all the templates available.</td>
+    <td>Templates displayed by this command can then be passed as an argument to the <code>--init</code> parameter.</td>
   </tr>
   <tr>
     <td><code>--log</code></td>
@@ -467,29 +619,87 @@ New versions found:
     <td>The default level is 1. Level 0 will quiet everything and 2 and 3 will display increasingly verbose output.</td>
   </tr>
   <tr>
+    <td><code><span style="white-space:nowrap">--noIncremental</span></code></td>
+    <td>Boolean</td>
+    <td>false</td>
+    <td>Turn off incremental builds.</td>
+    <td>If this flag is specified, Kobalt will run all the tasks, even those that are incremental and would have
+        been skipped.</td>
+  </tr>
+  <tr>
+    <td><code>--plugins</code></td>
+    <td>Comma-separated list of plugin id's</td>
+    <td></td>
+    <td>Specify the plug-ins to load.</td>
+    <td>This is similar to specifying these plug-in id's in a build file except that no build file is needed.</td>
+  </tr>
+  <tr>
+    <td><code><span style="white-space:nowrap">--pluginJarFiles</span></code></td>
+    <td>Comma-separated list of plugin jar files</td>
+    <td></td>
+    <td>Specify the plug-ins to load.</td>
+    <td>This is similar to specifying these plug-in id's in a build file except that no build file is needed.</td>
+  </tr>
+  <tr>
     <td><code>--resolve</code></td>
     <td>Maven id<br/>(e.g.&nbsp;<code>"com.beust:kobalt:0.228"</code>)</td>
     <td>N/A</td>
     <td>Display information about the given id.</td>
     <td>Display which repo this artifact can be found in and the whole graph of its dependencies.</td>
   </tr>
-  <tr>
-    <td><code>--tasks</code></td>
-    <td>Boolean</td>
-    <td>false</td>
-    <td>List the tasks available.</td>
-    <td>Note that the available tasks will vary depending on which projects are in your build file.</td>
-  </tr>
-  <tr>
-    <td><code>--update</code></td>
-    <td>Boolean</td>
-    <td>false</td>
-    <td>Update Kobalt to the latest version available.</td>
-    <td>Use this flag if Kobalt just notified you that a new version is available and you want to update. Another way of doing this is to edit <code>kobalt/wrapper/kobalt-wrapper.properties</code> manually.</td>
-  </tr>
+    <tr>
+        <td><code>--tasks</code></td>
+        <td>Boolean</td>
+        <td>false</td>
+        <td>List the tasks available.</td>
+        <td>Note that the available tasks will vary depending on which projects are in your build file.</td>
+    </tr>
+    <tr>
+        <td><code>--update</code></td>
+        <td>Boolean</td>
+        <td>false</td>
+        <td>Update Kobalt to the latest version available.</td>
+        <td>Use this flag if Kobalt just notified you that a new version is available and you want to update. Another way of doing this is to edit <code>kobalt/wrapper/kobalt-wrapper.properties</code> manually.</td>
+    </tr>
 </table>
 
+<h2 class="section" id="testing">Testing</h2>
+<p>
+  Kobalt automatically detects how to run your tests based on the test dependencies that you declared:
+</p>
+<pre class="brush:java">
+dependenciesTest {
+    compile("org.testng:testng:6.9.9")
+}</pre>
+<p>
+  By default, Kobalt supports TestNG, JUnit and Spek. You can also configure how your tests run
+  with the <code>test{}</code> directive:
+</p>
+<pre class="brush:java">
+test {
+    args("-excludegroups", "broken", "src/test/resources/testng.xml")
+}</pre>
+<p>
+    The full list of configuration parameters can be found in the <a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/TestDirective.kt#L6">TestConfig</a> class.
+</p>
+<p>
+  Additionally, you can define multiple test configurations, each with a different name. Each
+  configuration will create an additional task named <code>"test"</code> followed by the name of
+  that configuration. For example:
+</p>
+<pre class="brush:java">
+test {
+    args("-excludegroups", "broken", "src/test/resources/testng.xml")
+}
 
+test {
+    name = "All"
+    args("src/test/resources/testng.xml")
+}</pre>
+<p>
+  The first configuration has no name, so it will be launched with the task <code>"test"</code>,
+  while the second one can be run with the task <code>"testAll"</code>.
+</p>
 <h2 class="section" id="publishing">Publishing</h2>
 
 <p>
@@ -502,7 +712,7 @@ First of all, make sure you specified the group, artifactId and version of your 
 </p>
 
 <pre class="brush:java">
-val kobalt = kotlinProject {
+val kobalt = project {
     group = "com.beust"
     artifactId = "kobalt"
     version = "0.72"
@@ -532,7 +742,7 @@ Now, all you need to do is to upload your package:
 </p>
 
 <pre class="brush:plain">
-./kobaltw uploadJcenter
+./kobaltw uploadBintray
 </pre>
 
 <h2 class="section" id="profiles">Profiles</h2>
@@ -551,7 +761,7 @@ Now, all you need to do is to upload your package:
   Then you use this variable wherever you need it in your build file:
 </p>
 <pre class="brush:java">
-  val p = javaProject {
+  val p = project {
       name = if (experimental) "project-exp" else "project"
       version = "1.3"
 </pre>

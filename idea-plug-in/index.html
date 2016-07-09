@@ -64,7 +64,7 @@
       <div class="col-md-9">
 <h2>How to install and use the Kobalt IDEA plug-in</h2>
 
-<h2 class="section" id="installation">Installation</h2>
+<h3 class="section" id="installation">Installation</h3>
 <p>
     Open the "Plugins" section of the IDEA preferences and find the "Kobalt" plug-in.
 </p>
@@ -72,13 +72,26 @@
     <img src="../pics/install-plugin.png" class="img-rounded kb-wide"/>
 </p>
 <p>
- Install it and restart IDEA. If the plug-in was correctly installed, you should see a new menu called "Kobalt" juste before the "Help" menu:
+ Install it and restart IDEA. Next time you open a project with a <code>Build.kt</code> build file in it, IDEA
+    will offer to import it as a Kobalt project.
 </p>
-<p align="center">
-    <img src="../pics/kobalt-menu.png" class="img-rounded"/>
+          <p align="center">
+              <img src="../pics/kobalt-import-1.png" class="img-rounded"/>
+          </p>
+          <p align="center">
+              <img src="../pics/kobalt-import-2.png" class="img-rounded"/>
+          </p>
+
+          <p>
+Once you accept, a new window will be available on the right
+side of your main IDEA window. Clicking it will reveal the whole Kobalt window.
+You can then click on the Sync icon in the upper left corner to update your dependencies:
 </p>
 
-<h2 class="section" id="features">Features</h2>
+<p align="center">
+  <img src="../pics/kobalt-main-window.png" class="img-rounded"/>
+</p>
+<h3 class="section" id="features">Features</h3>
 <p>
     The Kobalt IDEA plug-in offers the following features:
     <ul>
@@ -86,7 +99,7 @@
         <li>Automatic completion of <code>Build.kt</code></li>
     </ul>
 </p>
-<h3 class="section" indent="1" id="sync-build-file">Synchronization of build files</h3>
+<h4 class="section" indent="1" id="sync-build-file">Synchronization of build files</h4>
 <p>
     The plug-in will locate your <code>kobalt/src/Build.kt</code> file and automatically update your project's libraries and
     dependencies to reflect it. For example, suppose you have the following dependencies:
@@ -140,7 +153,7 @@ dependencies {
               <img src="../pics/structure-4.png" class="img-rounded"/>
           </p>
 
-<h3 class="section" indent="1" id="autocompletion">Auto completion of Build.kt</h3>
+<h4 class="section" indent="1" id="autocompletion">Auto completion of Build.kt</h4>
           <p>
               The plug-in will automatically turn on auto-completion of your <code>kobalt/src/Build.kt</code>
               file. Once this is
@@ -165,7 +178,7 @@ val lc = lineCount {
               </li>
           </ul>
 
-  <h2 class="section">Source code and bug reports</h2>
+  <h3 class="section">Source code and bug reports</h3>
   <p>
       The source code <a href="http://github.com/cbeust/kobalt-intellij-plugin">can be found on github</a>.
       If you need to report a bug, please make sure you include the log file, which you can find under

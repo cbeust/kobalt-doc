@@ -50,25 +50,25 @@
 <h2 class="section" id="java-kotlin">Java and Kotlin</h2>
 
 <p>
-The Java and Kotlin plug-ins are extremely similar, the only difference is that you configure a Java project with the <code>javaProject</code> directive and a Kotlin project with <code>kotlinProject</code>:
+    Java and Kotlin are supported by default by Kobalt. You use the directive <code>project{}</code>
+    to declare a new project and Kobalt will automatically detect how to compile it:
 </p>
 <pre class="brush:java">
-val p = javaProject(wrapper) {
+val p = project(wrapper) {
   name = "kobalt"
   group = "com.beust"
   artifactId = name
   version = "0.1"
-}
-</pre>
+}</pre>
 
 <p>
-Both these directives create an object of type <code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/Project.kt">Project</code></a>.
+The <code>project{}</code> directive creates an object of type <code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/Project.kt">Project</code></a>.
 </p>
 
 <h3 class="section" id="project" indent="1">Project</h3>
 
 <p>
-A <code>Project</code> has two mandatory attributes: <code>name</code> and <code>version</code>. If you are planning to deploy your project to a Maven repository, you also have to specify its <code>group</code> (e.g. <code>com.beust</code>) and <code>artifactId</code> (e.g. <code>kobalt</code>).
+A <code>Project</code> has two mandatory attributes: <code>name</code> and <code>version</code>. If you are planning to deploy your project to a Maven repository, you also have to specify its <code>group</code> (e.g. <code>"com.beust"</code>) and <code>artifactId</code> (e.g. <code>"kobalt"</code>).
 </p>
 
 <p>
@@ -85,6 +85,23 @@ A <code>Project</code> has two mandatory attributes: <code>name</code> and <code
     <dd>The dependencies for your tests</dd>
   </dl>
 
+<h4 class="section" id="mixed-projects" indent="2">Mixed language projects</h4>
+<p>
+  A Kobalt project can mix Kotlin and Java in it, simply specify all the source
+  directories you need:
+</p>
+<pre class="brush:java">
+val p = project(wrapper) {
+    name = "kobalt"
+    // ...
+    sourceDirectories {
+        path("src/main/java", "src/main/kotlin")
+    }
+}</pre>
+<p>
+    Kotlin and Java files can be in the same directories.
+</p>
+
 <h3 class="section" id="tasks" indent="1">Tasks</h3>
 <p>
 Once you have at least one project configured, the plug-in lets you invoke the following tasks:
@@ -98,6 +115,53 @@ Once you have at least one project configured, the plug-in lets you invoke the f
   <dt>clean</dt>
   <dd>Clean the project</dd>
 </dl>
+
+<h3 class="section" id="templates" indent="1">Templates</h3>
+<p>
+  Both the Java and Kotlin plug-ins provide templates named respectively "java" and "kotlin".
+</p>
+<pre class="brush:plain">
+$ ./kobaltw --listTemplates
+Available templates
+  Plug-in: Kobalt
+    "java"              Generate a simple Java project
+    "kotlin"            Generate a simple Kotlin project</pre>
+
+<p>
+  They are both identical templates so we'll just look over the Kotlin one.
+</p>
+<p>
+      If you invoke <code>./kobaltw --init kotlin</code>, the following will happen:
+</p>
+<ul>
+    <li>If a <code>kobalt/src/Build.kt</code> build file doesn't exist, it will be created.</li>
+    <li>If no Kotlin (or Java) file is found under <code>src</code>, the template will create a simple
+    class with a <code>main</code> method and also a test class.</li>
+</ul>
+<pre class="brush:plain">
+$ ./kobaltw --init kotlin
+Template "kotlin" installed
+Now you can run either `./kobaltw test` or `./kobaltw run`
+
+$ ./kobaltw test
+----- example:test
+===============================================
+Command line suite
+Total tests run: 1, Failures: 0, Skips: 0
+===============================================
+
+All tests passed
+BUILD SUCCESSFUL (5 seconds)
+
+$ ./kobaltw run
+----- example:run
+Hello Kotlin world from Kobalt
+BUILD SUCCESSFUL (0 seconds)
+</pre>
+
+
+
+
 
 <h3 class="section" id="variants" indent="1">Variants</h3>
 <p>
@@ -116,7 +180,7 @@ Once you have at least one project configured, the plug-in lets you invoke the f
                   <li>The build type.</li>
               </ul>
           <p>
-              <strong>Product flavors</strong> usually contains different source files and different logic (e.g. a "free version" and a "pro version". <strong>Build types</strong> lead to different archives (e.g. "debug" and "release", with the "release" version being obfuscated). This effect is achieved by defining identical source files in different directories and then letting Kobalt build the correct one. Each product flavor and build type has a name which translates directory into a source directory. For example:
+              <strong>Product flavors</strong> usually contain different source files and different logic (e.g. a "free version" and a "pro version". <strong>Build types</strong> lead to different archives (e.g. "debug" and "release", with the "release" version being obfuscated). This effect is achieved by defining identical source files in different directories and then letting Kobalt build the correct one. Each product flavor and build type has a name which translates directory into a source directory. For example:
           </p>
 <pre class="brush:java">
 productFlavor("free") {
@@ -146,10 +210,21 @@ assembleFreeDebug</pre>
 <p>
   For example, if you define two flavors, "pro" and "free", and two build types, "debug" and "release", four tasks will be added that combine these: "proDebug", "proRelease", "freeDebug" and "freeRelease". If you assemble any of these, an artifact named after that combination will be created, e.g. "kobalt-0.273-free-debug.jar".
 </p>
+        <p>
+          Variants can have they own <code>dependencies{}</code> section, which will be used only if this specific
+          variant is being compiled or assembled:
+        </p>
+<pre class="brush:java">
+    productFlavor("debug") {
+        dependencies {
+            compile("joda-time:joda-time:2.9.3")
+        }
+    }
+</pre>
 
 <h3 class="section" id="build-config" indent="1">BuildConfig</h3>
 <p>
-  If you defined at least one variant defined, a special file called <code>BuildConfig.java</code> (or
+  If you have at least one variant defined in your build file, a special file called <code>BuildConfig.java</code> (or
   <code>BuildConfig.kt</code>) will be automatically generated.
 </p>
 <div class="bs-callout bs-callout-warning">
@@ -377,7 +452,7 @@ assemble {
 
 <h2 class="section"  id="install" indent="1">install</h2>
 <p>
-  The <code>install</code> section lets you specify how the artifacts get installed. If you don't specify any <code>install</code> directive, then the <code>install</code> task will do nothing on your project when invoked.
+  The <code>install</code> section lets you specify how the artifacts get installed. If you don't specify any <code>install</code> directive, then the <code>install</code> task will install your artifacts in the <code>lib</code> directory by default.
 </p>
 <pre class="brush:java">
     install {
