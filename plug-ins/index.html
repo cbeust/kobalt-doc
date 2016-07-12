@@ -530,6 +530,41 @@ $ ./kobaltw uploadBintray
   All artifacts successfully uploaded
 </pre>
 
+<h3 class="section" indent="1" id="configuring-pom">Configuring your POM file</h3>
+<p>
+  When you upload your package to Bintray or JCenter in Maven form, Kobalt will create a default
+  POM file for you. You can configure it with the <code>pom{}</code> directive in your project.
+  Here is an example:
+</p>
+
+<pre class="brush:java">
+import org.apache.maven.model.*
+
+val myProject = project {
+    pom = Model().apply {
+        name = project.name
+        licenses = listOf(License().apply {
+            name = "Apache 2.0"
+            url = "http://www.apache .org/licenses/LICENSE-2.0"
+        })
+        scm = Scm().apply {
+            url = "http://github.com/cbeust/kobalt"
+            connection = "https://github.com/cbeust/kobalt.git"
+            developerConnection = "git@github.com:cbeust/kobalt.git"
+        }
+        developers = listOf(Developer().apply {
+            name = "Cedric Beust"
+            email = "cedric@beust.com"
+        })
+    }
+
+</pre>
+
+<p>
+  Note that the classes used in this snippet (<code>Model</code>, <code>License</code>, etc...) are
+  the actual Apache Maven class, so you have access to the full POM model.
+</p>
+
 <h2 class="section" id="dokka">Dokka</h2>
 
 <p>
