@@ -217,7 +217,7 @@ dependencies {
 }
 
 dependenciesTest {
-    compile("org.testng:testng:6.9.5")
+    compile("org.testng:testng:")
 }
 </pre>
 <p>
@@ -292,13 +292,13 @@ dependencies {
 </p>
 
 <pre class="brush:plain">
-&lt;kobalt-settings&gt;
-    &lt;local-repo&gt;/Users/beust/my-kobalt-repo&lt;/local-repo&gt;
-    &lt;default-repos&gt;
+&lt;kobaltSettings&gt;
+    &lt;localCache&gt;/Users/beust/my-kobalt-repo&lt;/localCache&gt;
+    &lt;defaultRepos&gt;
         &lt;repo&gt;http://jcenter.com&lt;/repo&gt;
         &lt;repo&gt;http://example.com&lt;/repo&gt;
-    &lt;/default-repos&gt;
-&lt;/kobalt-settings&gt;</pre>
+    &lt;/defaultRepos&gt;
+&lt;/kobaltSettings&gt;</pre>
 <p>
   Here is a list of the parameters you can configure:
 </p>
@@ -317,24 +317,29 @@ dependencies {
     </thead>
 
     <tr>
-        <td><code>default-repos</code></td>
+        <td><code>defaultRepos</code></td>
         <td><a href="https://github.com/cbeust/kobalt/blob/master/modules/kobalt-plugin-api/src/main/kotlin/com/beust/kobalt/Constants.kt#L10">Default repos</a></td>
         <td>List of repos overriding the default ones that Kobalt uses.</td>
     </tr>
     <tr>
-        <td><code>kobalt-compiler-version</code></td>
-        <td>1.0.0</td>
+        <td><code>kobaltCompilerVersion</code></td>
+        <td>1.0.3</td>
         <td>The version of the Kotlin compiler that Kobalt uses.</td>
     </tr>
     <tr>
-        <td><code>kobalt-compiler-repo</code></td>
+        <td><code>kobaltCompilerRepo</code></td>
         <td>None</td>
         <td>The Maven repository where to find the compiler. By default, the compiler is looked up in the default repos (JCenter, Maven, ...).</td>
     </tr>
     <tr>
-        <td><code>local-repo</code></td>
-        <td><code>~/.kobalt/repository</code></td>
+        <td><code>localCache</code></td>
+        <td><code>~/.kobalt/cache</code></td>
         <td>Where Kobalt stores all the downloaded dependencies.</td>
+    </tr>
+    <tr>
+        <td><code>localMavenRepo</code></td>
+        <td><code>~/.kobalt/localMavenRepo</code></td>
+        <td>Where Kobalt publishes artifacts when the task <code>publishToLocalMaven</code> is invoked.</td>
     </tr>
 </table>
 
@@ -394,8 +399,8 @@ $ ./kobaltw --pluginJarFiles kobaltBuild/libs/kobalt-line-count-0.18.jar --tasks
 $ ./kobaltw --plugins com.beust:kobalt-android: --listTemplates
 Available templates
   Plug-in: Kobalt
-    "java"              Generates a simple Java project
-    "kotlin"            Generates a simple Kotlin project
+    "java"              Generate a simple Java project
+    "kotlin"            Generate a simple Kotlin project
     "kobaltPlugin"      Generate a sample Kobalt plug-in project
   Plug-in: Android
     "androidJava"       Generate a simple Android Java project
@@ -605,7 +610,7 @@ Here are the options that you can pass to <code>./kobaltw</code>:
 $ ./kobaltw --checkVersions
 New versions found:
        com.beust:klaxon:0.14
-       org.testng:testng:6.9.5
+       org.testng:testng:6.9.12
 </pre>
     </td>
   </tr>
@@ -660,26 +665,33 @@ New versions found:
     <td>This is similar to specifying these plug-in id's in a build file except that no build file is needed.</td>
   </tr>
   <tr>
+    <td><code>--profiling</code></td>
+    <td></td>
+    <td></td>
+    <td>Display timings for the build tasks.</td>
+    <td></td>
+  </tr>
+  <tr>
     <td><code>--resolve</code></td>
     <td>Maven id<br/>(e.g.&nbsp;<code>"com.beust:kobalt:0.228"</code>)</td>
     <td>N/A</td>
     <td>Display information about the given id.</td>
     <td>Display which repo this artifact can be found in and the whole graph of its dependencies.</td>
   </tr>
-    <tr>
-        <td><code>--tasks</code></td>
-        <td>Boolean</td>
-        <td>false</td>
-        <td>List the tasks available.</td>
-        <td>Note that the available tasks will vary depending on which projects are in your build file.</td>
-    </tr>
-    <tr>
-        <td><code>--update</code></td>
-        <td>Boolean</td>
-        <td>false</td>
-        <td>Update Kobalt to the latest version available.</td>
-        <td>Use this flag if Kobalt just notified you that a new version is available and you want to update. Another way of doing this is to edit <code>kobalt/wrapper/kobalt-wrapper.properties</code> manually.</td>
-    </tr>
+  <tr>
+    <td><code>--tasks</code></td>
+    <td>Boolean</td>
+    <td>false</td>
+    <td>List the tasks available.</td>
+    <td>Note that the available tasks will vary depending on which projects are in your build file.</td>
+  </tr>
+  <tr>
+    <td><code>--update</code></td>
+    <td>Boolean</td>
+    <td>false</td>
+    <td>Update Kobalt to the latest version available.</td>
+    <td>Use this flag if Kobalt just notified you that a new version is available and you want to update. Another way of doing this is to edit <code>kobalt/wrapper/kobalt-wrapper.properties</code> manually.</td>
+  </tr>
 </table>
 
 <h2 class="section" id="testing">Testing</h2>
