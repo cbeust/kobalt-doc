@@ -468,7 +468,7 @@ assemble {
 
 <h3 class="section" indent="1" id="bintray">Bintray / JCenter</h3>
 <p>
-  Before you can upload, you need to create a file <code>local.properties</code> in the root directory of your project with the following keys:
+  You upload files to Bintray with the <code>uploadBintray</code> task. Before you can upload, you need to create a file <code>local.properties</code> in the root directory of your project with the following keys:
 </p>
 
 <pre class="brush:plain">
@@ -489,25 +489,37 @@ you are ready to do your first upload.
 </p>
 
 <p>
-  You define what to upload with the <code>bintray</code> directive:
+  The simplest way to define what files will be uploaded is to use <code>mavenJars{}</code>, which will upload all the artifacts necessary for your project to be usable by Maven compatible build tools:
 </p>
+<pre class="brush:java">
+  assemble {
+      mavenJars {}
+  }
 
-<pre class="brush:java">
-bintray {
-  publish = true
-  file("${kobalt.buildDirectory}/libs/${kobalt.name}-${kobalt.version}.zip",
-       "${kobalt.name}/${kobalt.version}/${kobalt.name}-${kobalt.version}.zip")
-}
-</pre>
-<p>
-  If all you want is upload your project in Maven form, just add the following to the <code>assemble</code> section of your build file:
-</p>
-<pre class="brush:java">
-  mavenJars {}
+  bintray {}
 </pre>
 <p>
   This directive <a href="#mavenJars">is described here</a> and is a shortcut to upload all the files that are required in a Maven repo (jar file, javadocs, source files and POM file). You can take a look at <a href="https://github.com/cbeust/jcommander/blob/master/kobalt/src/Build.kt">this build file</a> for a full example of how to package and publish a project to Bintray / JCenter.
 </p>
+<p>
+  You can also specify the files to upload individually with the <code>file</code> directive. The following
+  build file uploads a zip file to a bintray directory defined by the version number of your project:
+</p>
+
+<pre class="brush:java">
+bintray {
+  file("${kobalt.buildDirectory}/libs/${kobalt.name}-${kobalt.version}.zip",
+       "${kobalt.name}/${kobalt.version}/${kobalt.name}-${kobalt.version}.zip")
+}
+</pre>
+
+<pre class="brush:plain">
+$ ./kobaltw uploadBintray
+...
+========== kobalt-line-count:uploadBintray
+  kobalt-line-count: Found 2 artifacts to upload
+  All artifacts successfully uploaded
+</pre>
 
 <p>
   The <code>bintray</code> directive accepts the following parameters:
@@ -521,14 +533,6 @@ bintray {
   <dt>file</dt>
   <dd>The first parameter is the file you want to upload and the second one is the path where it will be uploaded to.</dd>
 </dl>
-
-<pre class="brush:plain">
-$ ./kobaltw uploadBintray
-...
-========== kobalt-line-count:uploadBintray
-  kobalt-line-count: Found 2 artifacts to upload
-  All artifacts successfully uploaded
-</pre>
 
 <h2 class="section" id="dokka">Dokka</h2>
 
