@@ -455,8 +455,27 @@ authUrl.dl.bintray.com.password=xxx
   If only one of <code>username</code> or <code>password</code> is specified,
   the build will abort with an error.
 </p>
-<h2 class="section" id="using-plug-ins">Using plug-ins</h2>
+<h3 class="section" indent="1" id="local-maven-repo">Local Maven repo</h3>
+<p>
+  You can deploy your artifacts to your local maven repo while developing in testing with the task
+  <code>deployToMavenLocal</code>. This task will copy all the artifacts that would normally be uploaded
+  to a remote depo to a local directory on your file system:
+</p>
+<pre class="brush:plain">
+$ kobaltw deployToMavenLocal
+  ───── klaxon:deployToMavenLocal
+Deploying 8 files to local maven /Users/cbeust/.kobalt/localMavenRepo
+BUILD SUCCESSFUL (0 seconds)
+</pre>
+<p>
+  You can then add this repository to the list of repositories that Kobalt should use when looking up
+  by calling the <code>localMaven()</code> directive:
+</p>
+<pre class="brush:scala">
+// Build.kt
+val r = repos(localMaven())</pre>
 
+<h2 class="section" id="using-plug-ins">Using plug-ins</h2>
 <p>
 Kobalt comes with a few preconfigured plug-ins but you will want to include external ones as well, which can be downloaded either from a Maven repository (Sonatype, JCenter, ...) or from a local file.
 </p>
