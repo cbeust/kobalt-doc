@@ -546,18 +546,20 @@ intrface:
 </p>
 <pre class="brush:java">
 interface ITaskContributor {
-fun tasksFor(context: KobaltContext) : List&lt;DynamicTask&gt;
+    fun tasksFor(project: Project, context: KobaltContext) : List&lt;DynamicTask&gt;
 }</pre>
 <p>
 For example:
 </p>
 <pre class="brush:java">
-override fun tasksFor(context: KobaltContext) = listOf(
-    DynamicTask(
+override fun tasksFor(project: Project, context: KobaltContext) = listOf(
+    DynamicTask(this
         name = "dynamicTask",
         description = "Description",
+        group = "other",
+        project = project,
         reverseDependsOn = listOf("compile"),
-        closure = { project: Project ->
+        closure = { project ->
             println("Running dynamicTask")
             TaskResult()
 }))</pre>
