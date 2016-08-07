@@ -473,8 +473,9 @@ Deploying 8 files to local maven /Users/cbeust/.kobalt/localMavenRepo
 BUILD SUCCESSFUL (0 seconds)
 </pre>
 <p>
-  You can then add this repository to the list of repositories that Kobalt should use when looking up
-  by calling the <code>localMaven()</code> directive:
+  If you want your projects to use that local repository on top of the regular ones (JCenter, etc...),
+  you can use the <code>localMaven()</code> directive in your <code>repos()</code> specification in your
+  build file:
 </p>
 <pre class="brush:java">
 // Build.kt
