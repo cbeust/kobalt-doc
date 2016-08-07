@@ -91,23 +91,11 @@ val project = project {
     ...
 </pre>
           <p>
-              We also need to add Kobalt as a dependency, so let's find out what the latest version of the
-              jar file:
-          </p>
-          <pre class="brush:plain">
-$ ./kobaltw --resolve com.beust:kobalt:
-+======================================================================+
-|                           com.beust:kobalt:                          |
-|  https://jcenter.bintray.com/com/beust/kobalt/0.335/kobalt-0.335.jar |
-+======================================================================+</pre>
-          <p>
-          <p>
-              Note that the Maven id above doesn't specify a version (it ends with a colon), which means
-              Kobalt will resolve it to the latest version it can find.Let's add this version in our dependencies:
+              We also need to add Kobalt Plug-in API as a dependency:
           </p>
           <pre class="brush:java">
     dependencies {
-        compile("com.beust:kobalt:0.335")
+        compile("com.beust:kobalt-plugin-api:")
     }</pre>
 
 <p>
@@ -303,7 +291,7 @@ public class Main : BasePlugin() {
 
 <pre class="brush:java">
 val p = plugins(
-    file(homeDir("kotlin/kobalt-line-count/kobaltBuild/libs/kobalt-line-count-0.8.jar"))
+    file(homeDir("kotlin/kobalt-line-count/kobaltBuild/libs/kobalt-line-count-0.2.jar"))
 )
 </pre>
 
