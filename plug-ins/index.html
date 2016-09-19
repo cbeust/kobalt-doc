@@ -65,6 +65,20 @@ val p = project(wrapper) {
 The <code>project{}</code> directive creates an object of type <code><a href="https://github.com/cbeust/kobalt/blob/master/src/main/kotlin/com/beust/kobalt/api/Project.kt">Project</code></a>.
 </p>
 
+<h3 class="section" id="arguments" indent="1">Arguments</h3>
+<p>
+  You can specify arguments to be passed to the Java and Kotlin compilers as follows:
+</p>
+<pre class="brush:java">
+val p = project {
+    javaCompiler {
+        args("-source", "1.7", "-target", "1.7")
+    }
+    kotlinCompiler {
+        args("-no-stdlib")
+    }
+}</pre>
+
 <h3 class="section" id="project" indent="1">Project</h3>
 
 <p>
