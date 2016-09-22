@@ -260,16 +260,18 @@ com.badlogicgames.gdx:gdx-platform:jar:natives-desktop:1.9.2</pre>
   There are various kinds of dependencies:
 </p>
 <dl class="dl-horizontal">
-  <dt>compile</dt>
-  <dd>Used to compile your project.</dd>
-  <dt>runtime</dt>
-  <dd>Not used at compile time but passed to the JVM to run your application.</dd>
-  <dt>provided</dt>
-  <dd>Used at compile time but not used to run your application.</dd>
-  <dt>exclude</dt>
-  <dd>Exclude the given dependencies from the classpath. You can either
-      specify a versioned id (e.g. <code>"groupId:artifactId:version"</code>) or a versionless one
-      (<code>"groupId:artifactId:"</code>).</dd>
+    <dt>compile</dt>
+    <dd>Compilation dependency.</dd>
+    <dt>compileOptional</dt>
+    <dd>Optional compilation dependency.</dd>
+    <dt>exclude</dt>
+    <dd>Exclude the given dependencies from the classpath. You can either
+        specify a versioned id (e.g. <code>"groupId:artifactId:version"</code>) or a versionless one
+        (<code>"groupId:artifactId:"</code>).</dd>
+    <dt>provided</dt>
+    <dd>Used at compile time but not used to run your application.</dd>
+    <dt>runtime</dt>
+    <dd>Not used at compile time but passed to the JVM to run your application.</dd>
     <dt>native</dt>
     <dd>Used to define native dependencies.</dd>
 </dl>
