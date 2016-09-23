@@ -779,6 +779,28 @@ Now, all you need to do is to upload your package:
 ./kobaltw uploadBintray
 </pre>
 
+<p>
+  You can configure the <code>bintray</code> upload with the <code>bintray</code> directive inside
+  your <code>Project</code>:
+</p>
+<pre class="brush:java">
+    bintray {
+        publish = true
+        sign = true
+        autoGitTag = true
+    }</pre>
+<p>The following configuration parameters are supported:</p>
+<dl class="dl-horizontal">
+  <dt>autoGitTag</dt>
+  <dd>When the <code>uploadBintray</code> task is invoked, a git tag named as the version of the
+  project is automatically created and pushed to the <code>origin</code></dd>.
+  <dt>publish</dt>
+  <dd>Files uploaded to Bintray in your personal space are automatically published.</dd>
+  <dt>sign</dt>
+  <dd>Sign all the uploaded files. This is a requirement if you are going to synchronize these
+  files to Maven Central once they're uploaded.</dd>
+</dl>
+
 <h2 class="section" id="profiles">Profiles</h2>
 <p>
     Profiles allow you to run altered versions of your build file by using command
