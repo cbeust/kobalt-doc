@@ -300,6 +300,12 @@ dependencies {
         &lt;repo&gt;http://jcenter.com&lt;/repo&gt;
         &lt;repo&gt;http://example.com&lt;/repo&gt;
     &lt;/defaultRepos&gt;
+    &lt;proxies&gt;
+        &lt;proxy&gt;
+            &lt;host&gt;proxy-host.com&lt;/host&gt;
+            &lt;port&gt;1234&lt;/port&gt;
+        &lt;/proxy&gt;
+    &lt;/proxies&gt;
 &lt;/kobaltSettings&gt;</pre>
 <p>
   Here is a list of the parameters you can configure:
@@ -343,8 +349,12 @@ dependencies {
         <td><code>~/.kobalt/localMavenRepo</code></td>
         <td>Where Kobalt publishes artifacts when the task <code>publishToLocalMaven</code> is invoked.</td>
     </tr>
+    <tr>
+        <td><code>proxies</code></td>
+        <td><code>None</code></td>
+        <td>One or more proxies that Kobalt will use to download Maven dependencies.</td>
+    </tr>
 </table>
-
 <h2 class="section" id="templates">Templates</h2>
 <p>
   Templates are invoked with the <code>--init</code> parameter and typically used when you are creating
@@ -696,8 +706,15 @@ New versions found:
     <td>Use this flag if Kobalt just notified you that a new version is available and you want to update. Another way of doing this is to edit <code>kobalt/wrapper/kobalt-wrapper.properties</code> manually.</td>
   </tr>
 </table>
+          <p>
+              <em>Note:</em> If the <code>--update</code> parameter can't download Kobalt because your machine is
+              behind a proxy, you can specify that proxy as a system environment variable when launching the JVM
+              to run Kobalt:
+              <pre>java -DhttpProxy=host:port -jar kobalt/wrapper/kobalt-wrapper.jar --update</pre>
+          </p>
 
-<h2 class="section" id="testing">Testing</h2>
+
+          <h2 class="section" id="testing">Testing</h2>
 <p>
   Kobalt automatically detects how to run your tests based on the test dependencies that you declared:
 </p>
