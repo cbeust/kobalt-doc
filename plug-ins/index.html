@@ -99,6 +99,11 @@ A <code>Project</code> has two mandatory attributes: <code>name</code> and <code
     <dd>The dependencies for your tests</dd>
   </dl>
 
+<p>
+  The source directories point to standard locations by default, so if you're using a standard layout
+  for your project (<code>src/main/java</code>, <code>src/main/kotlin</code>, <code>src/test/java</code>,
+  etc...), you do not need to specify any of these directories.
+</p>
 <h4 class="section" id="mixed-projects" indent="2">Mixed language projects</h4>
 <p>
   A Kobalt project can mix Kotlin and Java in it, simply specify all the source
@@ -109,7 +114,7 @@ val p = project(wrapper) {
     name = "kobalt"
     // ...
     sourceDirectories {
-        path("src/main/java", "src/main/kotlin")
+        path("src/nonstandard/java", "src/nonstandard/kotlin")
     }
 }</pre>
 <p>
