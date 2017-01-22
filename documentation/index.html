@@ -133,7 +133,7 @@ val kobalt = project {
 </pre>
 
 <p>
-This is the simplest jar declaration you can have. You can trigger the creation of this jar file by invoking the task <code>"assemble"</code> from the command line. Note the presence of the corresponding <code>import</code>: without it, your build file will not compile. Another interesting details is that the <code>assemble</code> function we just imported is an extension function on the <code>Project</code> class, which is how the import makes it legal to call <code>assemble</code> in the middle of our project. If you remove the import, that line will no longer compile.
+This is the simplest jar declaration you can have. You can trigger the creation of this jar file by invoking the task <code>"assemble"</code> from the command line. Note the presence of the corresponding <code>import</code>: without it, your build file will not compile. Another interesting detail is that the <code>assemble</code> function we just imported is an extension function on the <code>Project</code> class, which is how the import makes it legal to call <code>assemble</code> in the middle of our project. If you remove the import, that line will no longer compile.
 </p>
 <p>
     The <code>jar</code> directive accepts various settings, so let's be a bit more specific. And let's add a zip file too:
@@ -167,7 +167,35 @@ Our jar file is now declared to be a "fat jar" (which means it will include all 
 The zip directive follows a similar structure, although here we are specifying which file we want to include. For more details on the <code>packaging</code> plug-in, please see its documentation.
 </p>
 
-<h3 class="section" indent="1" id="inline-tasks">Inline tasks</h3>
+<h3 class="section" indent="1" id="buildScript">The <code>buildScript</code> directive</h3>
+<p>
+  <code>buildScript</code> is a special directive that lets you control how the rest of the build file
+  will be compiled, such as defining which plug-ins and which repos to use:
+</p>
+<pre class="brush:java">
+val bs = buildScript {
+    repos("bintray.com/kotlin/kotlin-eap-1.1")
+    plugins("com.beust.kobalt:kobalt-line-count:0.18", "com.example:kobalt-optimize:0.3")
+}</pre>
+<p>The following directives are available inside <code>buildScript:</code></p>
+
+<dl class="dl-horizontal">
+  <dt>plugins</dt>
+  <dd>The list of plug-ins to download and use for this build file.</dd>
+  <dt>repos</dt>
+  <dd>The list of additional Maven repositories to download plug-ins from.</dd>
+  <dt>buildFileClasspath</dt>
+  <dd>Additions to the classpath necessary to compile the build file. You can find more information about this
+  directive in its <a href="#build-file-classpath">dedicated section</a>.</dd>
+</dl>
+<p>
+    As always, you can use your IDE's auto-completion to find out which directives are available inside <code>buildScript:</code>
+</p>
+<p align="center">
+  <img class="img-rounded" src="../pics/build-script.png"/>
+</p>
+
+          <h3 class="section" indent="1" id="inline-tasks">Inline tasks</h3>
 <p>
   Since <code>Build.kt</code> is a valid Kotlin file, you can write arbitrary Kotlin code in it,
   including defining tasks. If you ever need to perform an operation that is not supported by an
@@ -200,9 +228,10 @@ fun taskCreateVersion(project: Project) : TaskResult {
 </p>
 <pre class="brush:java">
 // Build.kt
-val bfc = buildFileClasspath("org.testng:testng:6.9.11")
-val t = org.testng.TestNG()  // now legal
-</pre>
+val bs = buildScript {
+    buildFileClasspath("org.testng:testng:6.9.11")
+}
+val t = org.testng.TestNG()  // now legal</pre>
 
 <h3 class="section" indent="1" id="dependencies">Dependencies</h3>
 
@@ -432,24 +461,27 @@ For a more in-depth description of templates, please refer to <a href="http://be
 <h2 class="section" id="maven-repos">Maven repos</h2>
 <h3 class="section" indent="1" id="maven-repos-unauthenticated">Unauthenticated repos</h3>
 <p>
-Kobalt already knows the location of the most popular Maven repos (Maven Central, JCenter, JBoss) but you can add repos with the <code>repos()</code> directive:
+Kobalt already knows the location of the most popular Maven repos (Maven Central, JCenter, JBoss) but you can add repos with the <code>repos()</code> directive
+    inside <code>buildScript{}</code>:
 </p>
 
 <pre class="brush:plain">
-val repos = repos("https://dl.bintray.com/cbeust/maven/")</pre>
+val bs = buildScript {
+    repos("https://dl.bintray.com/cbeust/maven/")
+}</pre>
 <p>
   By default, this directive takes URL's as strings, but you can also use local
   files with the <code>file</code> directive:
 </p>
 
 <pre class="brush:plain">
-val repos = repos(file("/some/local/directory"))</pre>
+    repos(file("/some/local/directory"))</pre>
 <p>
   The <code>homeDir()</code> directive can also come in handy when you want
   to specify a directory starting at your home directory:
 </p>
 <pre class="brush:plain">
-val repos = repos(file(homeDir("some/directory/in/your/home")))</pre>
+    repos(file(homeDir("some/directory/in/your/home")))</pre>
 
 <h3 class="section" indent="1" id="maven-repos-authenticated">Authenticated repos</h3>
 <p>
@@ -492,7 +524,7 @@ BUILD SUCCESSFUL (0 seconds)
 </p>
 <pre class="brush:java">
 // Build.kt
-val r = repos(localMaven())</pre>
+    repos(localMaven())</pre>
 
 <h2 class="section" id="using-plug-ins">Using plug-ins</h2>
 <p>
@@ -520,12 +552,14 @@ $ ./kobaltw --tasks
 </pre>
 
 <p>
-Let's modify our build to include a plug-in. We do this by adding a call to the <code>plugins</code> directive on top of the build file:
+Let's modify our build to include a plug-in. We do this by adding a call to the <code>buildScript</code> directive on top of the build file:
 </p>
 
 <pre class="brush:java">
-val repos = repos("https://dl.bintray.com/cbeust/maven/")
-val p = plugins("com.beust:kobalt-example-plugin:0.42")
+val bs = buildScript {
+    repos("https://dl.bintray.com/cbeust/maven/")
+    plugins("com.beust:kobalt-example-plugin:0.42")
+}
 </pre>
 
 <p>

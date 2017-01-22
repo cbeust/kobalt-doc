@@ -166,7 +166,9 @@ dependencies {
           <ul>
               <li>Add a plug-in to your build file:
 <pre class="brush:java">
-val plugins = plugins("com.beust.kobalt:kobalt-line-count:0.17")</pre>
+val bs = buildScript {
+    plugins("com.beust.kobalt:kobalt-line-count:0.17")
+}</pre>
               </li>
               <li>Sync your build file, as explained in the previous section.</li>
               <li>You can now import the new symbols and use the new configuration:

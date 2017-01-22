@@ -216,8 +216,10 @@ BUILD SUCCESSFUL (15 seconds)
 </p>
 
 <pre class="brush:java">
-val repos = repos("https://dl.bintray.com/cbeust/maven/")
-val plugins = plugins("com.beust:kobalt-line-count:0.2")
+val bs = buildScript {
+    repos("https://dl.bintray.com/cbeust/maven/")
+    plugins("com.beust:kobalt-line-count:0.2")
+}
 </pre>
 
           <p>
@@ -290,10 +292,10 @@ public class Main : BasePlugin() {
 </p>
 
 <pre class="brush:java">
-val p = plugins(
-    file(homeDir("kotlin/kobalt-line-count/kobaltBuild/libs/kobalt-line-count-0.2.jar"))
-)
-</pre>
+val bs = buildScript {
+    plugins(
+        file(homeDir("kotlin/kobalt-line-count/kobaltBuild/libs/kobalt-line-count-0.2.jar")))
+}</pre>
 
           <p>
               You can now set a breakpoint in your plug-in and launch the configuration you created above.
