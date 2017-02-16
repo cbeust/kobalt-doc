@@ -388,9 +388,25 @@ dependencies {
 <h2 class="section" id="templates">Templates</h2>
 <p>
   Templates are invoked with the <code>--init</code> parameter and typically used when you are creating
-    a new project and you want Kobalt to generate a few files to get you started. Plug-ins can provide multiple
-    templates and you can invoke as many as you need to get your project started. You can get a list of available
-    templates with the <code>--listTemplates</code> parameter:
+    a new project and you want Kobalt to generate a few files to get you started. The name that follows
+    the <code>--init</code> parameter can be of three different types.
+
+<h3 class="section" id="templates-1">A jar/zip file</h3>
+      <p>
+      If the file is found and is a zip/jar file, it will be extracted in the current directory.
+<pre class="brush:plain">
+$ ./kobaltw --init ~/templates/file.jar
+</pre>
+      </p>
+<h3 class="section" id="templates-2">A URL pointing to a jar/zip file</h3>
+      <p>
+      If the URL is valid and points to a zip/jar file, that file will be extracted in the current directory.
+      </p>
+<pre class="brush:plain">
+$ ./kobaltw --init http://example.com/file.jar
+</pre>
+<h3 class="section" id="templates-3">A template name</h3>
+Plug-ins can provide multiple templates and you can invoke as many as you need to get your project started. You can get a list of available templates with the <code>--listTemplates</code> parameter:
 </p>
 <pre class="brush:plain">
 $ kobaltw --listTemplates
