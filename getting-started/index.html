@@ -40,18 +40,11 @@
             <nav id="kobalt-navbar" class="navbar navbar-default">
             </nav>
             <div class="col-md-9">
-                <h2 class="section" id="installing">1. Install Kobalt</h2>
-                <h3 class="section" indent="1" id="homebrew">With HomeBrew</h3>
-                <p>
-                    If you are on MacOS and have <code>brew</code> installed:
-<pre class="brush:plain">
-$ brew install kobalt
-$ which kobaltw
-/usr/local/bin/kobaltw</pre>
-</p>
+<h2 class="section" id="installing">1. Install Kobalt</h2>
+
 <h3 class="section" indent="1" id="manually">Manually</h3>
 <p>
-<a href="https://github.com/cbeust/kobalt/releases/latest">Download the zip file</a>, unzip it and add the <code>bin</code> directory to your <code>$PATH</code> variable so that you can invoke the command <code>kobaltw</code>:
+    <a href="https://github.com/cbeust/kobalt/releases/latest">Download the zip file</a>, unzip it and add the <code>bin</code> directory to your <code>$PATH</code> variable so that you can invoke the command <code>kobaltw</code>:
 </p>
 <pre class="brush:plain">
 cd yourLocation
@@ -59,6 +52,19 @@ unzip kobalt-xxx.zip
 cd kobalt-xxx
 export PATH=$PWD/bin:$PATH
 </pre>
+
+<h3 class="section" indent="1" id="homebrew">With HomeBrew</h3>
+<p>
+    If you are on MacOS and have <code>brew</code> installed:
+<pre class="brush:plain">
+$ brew install kobalt
+$ which kobaltw
+/usr/local/bin/kobaltw</pre>
+</p>
+<p>
+    Note that the Kobalt version on Homebrew might be a bit behind, but once installed, you can easily upgrade to the latest version with <code>kobaltw --update</code>.
+</p>
+
 <h2 class="section" id="initialize">2. Initialize your project</h2>
 <p>
 Change to your project directory and call the <code>kobaltw</code> command with <code>--init</code>:
