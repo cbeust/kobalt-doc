@@ -569,12 +569,12 @@ authUrl.dl.bintray.com.password=xxx
 <h3 class="section" indent="1" id="local-maven-repo">Local Maven repo</h3>
 <p>
   You can deploy your artifacts to your local maven repo while developing with the task
-  <code>deployToMavenLocal</code>. This task will copy all the artifacts that would normally be uploaded
+  <code>publishToMavenLocal</code>. This task will copy all the artifacts that would normally be uploaded
   to a remote repo to a local directory on your file system:
 </p>
 <pre class="brush:plain">
-$ kobaltw deployToMavenLocal
-  ----- klaxon:deployToMavenLocal
+$ kobaltw publishToMavenLocal
+  ----- klaxon:publishToMavenLocal
 Deploying 8 files to local maven /Users/cbeust/.kobalt/localMavenRepo
 BUILD SUCCESSFUL (0 seconds)
 </pre>
