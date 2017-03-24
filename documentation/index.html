@@ -316,7 +316,52 @@ dependencies {
            "org.lwjgl.lwjgl:lwjgl-platform:jar:natives-osx:2.9.3"
         )
     }</pre>
-<h2 class="section" id="settings">Settings</h2>
+
+  <h4 class="section" indent="2" id="excludes">Exclusions</h4>
+  <p>
+      It's sometimes necessary to exclude specific dependencies from your build and Kobalt lets you do this in
+      two ways: globally and locally.
+  </p>
+  <h5 class="section" indent="3">Global exclusion</h5>
+  <p>
+      A global exclusion applies to your entire project and means that any time the given dependency will
+      be encountered, it will be completely excluded along with all its child dependencies.
+  </p>
+<pre class="scala">
+    dependencies {
+        compile("com.beust:jcommander:1.64")
+        exclude("org.testng:testng:6.10")
+    }</pre>
+  <h5 class="section" indent="3">Local exclusion</h5>
+  <p>
+      A local exclusion applies to a specific dependency and allows you to exclude that dependency and its children
+      when this dependency is resolved. If the locally excluded dependency is found as a child of another one,
+      it will be included normally. Local exclusions are therefore defined after a dependency specification
+      and you can define them either broadly or specifically (per <code>groupId</code>, <code>artifactId</code>, or
+      <code>version</code>):
+  </p>
+<pre class="scala">
+    dependencies {
+        compile("org.testng:testng:6.10") {
+            exclude(groupId = "org.apache")
+        }
+    }</pre>
+  <p>
+      In the example above, whenever Kobalt needs to calculate the dependencies of the <code>org.testng:testng</code>
+      artifact, it will exclude any dependency that is in the group <code>org.apache</code> and all its children.
+  </p>
+<pre class="scala">
+    dependencies {
+    compile("org.testng:testng:6.10") {
+        exclude(artifactId = "jcommander", version = "1.48")
+    }
+}</pre>
+  <p>
+      In this sample, only <code>jcommander</code> version <code>1.48</code> and its children will be excluded
+      when resolving <code>org.testng:testng:6.10</code>.
+  </p>
+
+          <h2 class="section" id="settings">Settings</h2>
 <p>
   You can define settings that will apply to all your Kobalt builds by creating
   the file <code>~/.config/kobalt/settings.xml</code>:
