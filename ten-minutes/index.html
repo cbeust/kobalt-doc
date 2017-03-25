@@ -121,11 +121,12 @@ val project = project {
 </p>
 
 <pre class="brush:java">
+// LineCountPlugin.kt
 package com.beust.kobalt.plugin.linecount
 
 import com.beust.kobalt.api.*
 
-public class Main : BasePlugin() {
+class LineCountPlugin : BasePlugin() {
     override val name = "kobalt-line-count"
 
     override fun apply(project: Project, context: KobaltContext) {
@@ -162,22 +163,25 @@ bintray {
           </p>
 
 <pre class="brush:java">
-// Main.kt
+// LineCountPlugin.kt
 @Task(name = "lineCount", description = "Count the lines", runBefore = arrayOf("compile"))
 fun lineCount(project: Project): TaskResult {
   var fileCount = 0
   var lineCount : Long = 0
   val matcher = FileSystems.getDefault().getPathMatcher("glob:**.kt")
   project.sourceDirectories.forEach {
-    Files.walkFileTree(Paths.get(it), object: SimpleFileVisitor&lt;Path&gt;() {
-      override public fun visitFile(path: Path, attrs: BasicFileAttributes): FileVisitResult {
-        if (matcher.matches(path)) {
-          fileCount++
-          lineCount += Files.lines(path).count()
+    val path = Paths.get(it)
+    if (Files.isDirectory(path)) {
+      Files.walkFileTree(path, object : SimpleFileVisitor&lt;Path&gt;() {
+        override fun visitFile(path: Path, attrs: BasicFileAttributes): FileVisitResult {
+          if (matcher.matches(path)) {
+            fileCount++
+            lineCount += Files.lines(path).count()
+          }
+          return FileVisitResult.CONTINUE
         }
-        return FileVisitResult.CONTINUE
-      }
-    })
+      })
+    }
   }
   log(1, "Found $lineCount lines in $fileCount files")
   return TaskResult()
@@ -189,7 +193,7 @@ fun lineCount(project: Project): TaskResult {
           </p>
 
 <pre class="brush:java">
-public class Main : BasePlugin() {
+class LineCountPlugin : BasePlugin() {
 </pre>
 
           <p>
@@ -276,7 +280,7 @@ fun main(argv: Array&lt;String&gt;) {
     com.beust.kobalt.internal.main(argv)
 }
 
-public class Main : BasePlugin() {
+class LineCountPlugin : BasePlugin() {
 // ...
 </pre>
 
