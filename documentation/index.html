@@ -941,14 +941,14 @@ Now, all you need to do is to upload your package:
     line parameters.
 </p>
 <p>
-    You start by defining boolean values initialized to <code>false</code> in your build file:
+    You start by defining the profiles in your build file as follows:
 </p>
 <pre class="brush:java">
-  val experimental = false
-  val premium = false
+  val experimental by profile()
+  val premium by profile()
 </pre>
 <p>
-  Then you use this variable wherever you need it in your build file:
+  These variables are of type <code>Boolean</code> and you can use them anywhere in your build file:
 </p>
 <pre class="brush:java">
   val p = project {
