@@ -59,35 +59,20 @@ fun main(argv: Array&lt;String&gt;) {
     <p>
         In order for this code to compile, you will have to switch the dependency of your plug-in from
         <code>kobalt-plugin-api</code> to just <code>kobalt</code>, which is the actual application (and which
-        therefore contains the <code>main()</code> entry point).
+        therefore contains the <code>main()</code> entry point). You can leverage Kobalt profiles to easily
+        switch from development to production settings:
     </p>
 <pre class="brush:java">
-        // Normal dependency
-        compile("com.beust:kobalt-plugin-api:$KOBALT_VERSION")
-
-        // Development dependency
-        compile("com.beust:kobalt:$KOBALT_VERSION")
-</pre>
-    <p>
-        You might find it convenient to leverage Kobalt's ability to use regular Kotlin variables to make things easier:
-    </p>
-<pre class="brush:java">
-val dev = false
+val dev = false // or true for development
 val kobaltDependency = if (dev) "kobalt" else "kobalt-plugin-api"
 
 val p = project {
-    // ...
-
-    compile("com.beust:$kobaltDependency:$KOBALT_VERSION")
-}
+    dependencies {
+        compile("com.beust:$kobaltDependency:")
+    }
 </pre>
 <p>
-    Then you can simply set the <code>dev</code> to <code>true</code> during development and back to <code>false
-</code> when you are ready to publish your plug-in.
-</code>
-</p>
-<p>
-    Then resync your build file in IDEA and your <code>main()</code> function should now build and be launchable.
+    Open the Kobalt side bar and sync your build file in IDEA. Your <code>main()</code> function should now build and be launchable.
     You can right click on that class file and select "Debug &lt;your class name&gt;", which will launch Kobalt
     with your plug-in. You can set a breakpoint in one of your tasks or anywhere that gets invoked. Don't forget
     to invoke this launch configuration with the regular parameters passed to Kobalt (e.g. <code>"assemble"</code>).
