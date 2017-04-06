@@ -474,29 +474,48 @@ assemble {
 
 <h2 class="section"  id="install" indent="1">install</h2>
 <p>
-  The <code>install</code> section lets you specify how the artifacts get installed. If you don't specify any <code>install</code> directive, then the <code>install</code> task will install your artifacts in the <code>lib</code> directory by default.
+  The <code>install</code> section lets you specify how the artifacts get installed. There are two mutually exclusive
+    ways to use <code>install</code>.
 </p>
-<p>
-  The simplest configuration is to copy all the artifacts created to a directory:
+
+          <h3 class="section"  id="install-target" indent="1">Bulk install</h3>
+
+          <p>
+  The simplest way to install is either not specify anything in the <code>install</code> directive or an optional
+              <code>target</code> string, which specifies the target directory (<code>"libs"</code> by default):
 </p>
 <pre class="brush:java">
     install {
-        libDir = "libs"
+        target = "libs"
     }
 </pre>
+          <p>
+              With this approach, everything that was generated in <code>kobaltBuild/libs</code> gets copied to this
+              target directory.
+          </p>
 
-<p>
+          <h3 class="section" id="install-include" indent="1">Fine grained install</h3>
+
+          <p>
   You can also be more selective in what you install with either the <code>copy</code> directive to copy
   individual files or with <code>include</code>, which lets you specify more sophisticated ways of moving
   files to a destination:
 </p>
 <pre class="brush:java">
     install {
-        copy("README", to("deploy"))
+        copy(from("README"), to("deploy"))
         include(from("kobaltBuild/libs"), to("deploy"), glob("**/*"))
     }
 </pre>
-<p>
+
+          <div class="bs-callout bs-callout-warning">
+              <h4>Note</h4>
+              These two approaches are mutually exclusive: if you choose the fine grained approach, you will have to
+              perform the installation of all the artifacts yourself and the <code>target</code> approach will
+              be ignored.
+          </div>
+
+          <p>
   You might find the directive <code>collect()</code> useful when installing: this function is invoked on a
   list of dependencies and returns a list of jar files that represent the transitive closure of the dependencies:
 </p>
