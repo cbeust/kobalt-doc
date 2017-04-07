@@ -522,7 +522,7 @@ The simplest way to install is either not specify anything in the <code>install<
 <pre class="brush:java">
     install {
         collect(compileDependencies).forEach {
-            copy(it.absolutePath, to("deploy"))
+            copy(it.file.absolutePath, to("deploy"))
         }
     }
 </pre>
