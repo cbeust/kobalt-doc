@@ -60,11 +60,11 @@
                 <h3 class="section" id="version" indent="1">Edit kobalt.version</h3>
                 <p>
                     First of all, edit the file <code>src/main/resources/kobalt.properties</code> and set it
-                    to a nonexistent version. For example, if the current version is <code>0.399</code>,
-                    set it to <code>0.400</code>.
+                    to a nonexistent version. For example, if the current version is <code>1.0.50</code>,
+                    set it to <code>1.0.51</code>.
                 </p>
                 <pre class="brush:plain">
-                    kobalt.version=0.400
+                    kobalt.version=1.0.51
                 </pre>
                 <p>
                     When you launch Kobalt from IDEA with a nonexistent version, Kobalt will show a message saying
@@ -73,11 +73,21 @@
                     Kobalt will display a message looking like:
                 </p>
                 <pre class="brush:plain">
-Couldn't find .../kobalt-0.400.jar, using ...
+Couldn't find .../kobalt-1.0.51.jar, using ...
                 </pre>
                 <p>
                     Note that at the moment, Kobalt expects to be located in <code>$HOME/kotlin/kobalt</code>.
                 </p>
+
+                <h3 class="section" id="kobalt-dependency" indent="1">Add the Kobalt dependency</h3>
+                <p>
+                    Next, add Kobalt as a dependency to your build file:
+                </p>
+                <pre class="brush:java">
+    dependencies {
+        compile("com.beust:kobalt:")
+    }</pre>
+
                 <h3 class="section" id="launch_configuration" indent="1">Launch configuration</h3>
                 <p>Next, create a launch configuration in IDEA.</p>
                 <p>
