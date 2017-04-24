@@ -348,6 +348,8 @@ application {
 </pre>
 <p>The <code>application</code> directive supports the following parameters:</p>
 <dl class="dl-horizontal">
+    <dt>taskName</dt>
+    <dd>The name of the task that will launch the main class (default: "run")</dd>
   <dt>args</dt>
   <dd>Arguments to pass to the program.</dd>
   <dt>jvmArgs</dt>
@@ -355,8 +357,22 @@ application {
   <dt>mainClass</dt>
   <dd>The class in your code that contains the <code>main</code> function.</dd>
 </dl>
+<p>
+  Note that you can have multiple <code>application{}</code> directives, each launching a different
+  main class with a different task name:
+</p>
+<pre class="brush:java">
+application {
+    mainClass = "com.example.Main1"
+    taskName = "runMain1"
+}
 
-<h2 class="section" id="apt">apt</h2>
+application {
+    mainClass = "com.example.Main2"
+    taskName = "runMain2"
+}</pre>
+
+          <h2 class="section" id="apt">apt</h2>
   <p>
       The <code>apt</code> plug-in adds support for <a href="https://docs.oracle.com/javase/7/docs/technotes/guides/apt/GettingStarted.html">annotation processing</a>. It's made of two parts.
   </p>
