@@ -541,13 +541,6 @@ The simplest way to install is either not specify anything in the <code>install<
     }
 </pre>
 
-<div class="bs-callout bs-callout-warning">
-  <h4>Note</h4>
-  These two approaches are mutually exclusive: if you choose the fine grained approach, you will have to
-  perform the installation of all the artifacts yourself and the <code>target</code> approach will
-  be ignored.
-</div>
-
 <p>
   You might find the directive <code>collect()</code> useful when installing: this function is invoked on a
   list of dependencies and returns a list of jar files that represent the transitive closure of the dependencies:
