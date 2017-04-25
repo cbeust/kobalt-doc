@@ -490,11 +490,10 @@ assemble {
 
 <h2 class="section"  id="install" indent="1">install</h2>
 <p>
-  The <code>install</code> section lets you specify how the artifacts get installed. There are two mutually exclusive
-    ways to use <code>install</code>.
+  The <code>install</code> section lets you specify how the artifacts get installed. There are two ways to use <code>install</code>.
 </p>
 
-<h3 class="section" indent="2" id="install-target" indent="1">Bulk install</h3>
+<h3 class="section" indent="2" id="install-target">Bulk install</h3>
 
 <p>
 The simplest way to install is either not specify anything in the <code>install</code> directive or an optional
@@ -511,7 +510,7 @@ The simplest way to install is either not specify anything in the <code>install<
   target directory.
 </p>
 
-<h3 class="section" indent="2" id="install-include" indent="1">Fine grained install</h3>
+<h3 class="section" indent="2" id="install-include">Fine grained install</h3>
           <p>
   You can also be more selective in what you install with either the <code>copy</code> directive to copy
   individual files or with <code>include</code>, which lets you specify more sophisticated ways of moving
@@ -519,6 +518,24 @@ The simplest way to install is either not specify anything in the <code>install<
 </p>
 <pre class="brush:java">
     install {
+        copy(from("README"), to("deploy"))
+        include(from("kobaltBuild/libs"), to("deploy"), glob("**/*"))
+    }
+</pre>
+<h3 class="section" indent="2" id="install-multiple">Multiple install targets</h3>
+
+<p>
+  You can specify multiple <code>install</code> directives by specifying different task names for
+  each of them:
+</p>
+<pre class="brush:java">
+    install {
+        taskName = "installSingle"
+        target = "libs"
+    }
+
+    install {
+        taskName = "installMulti"
         copy(from("README"), to("deploy"))
         include(from("kobaltBuild/libs"), to("deploy"), glob("**/*"))
     }
