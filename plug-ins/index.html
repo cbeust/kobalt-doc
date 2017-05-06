@@ -621,14 +621,26 @@ $ ./kobaltw uploadBintray
   <dd>If true, the uploaded file will be published in your personal space (e.g. <code>https://dl.bintray.com/cbeust/maven</code>). Once the file is uploaded there, it can be automatically synchronized to JCenter by linking your project to JCenter on the Bintray web site. By default, files are <strong>not</strong> published.
   </dd>
     <dt>sign (<code>false</code>)</dt>
-    <dd>If true, sign the files with GPG. This is only required if you plan to later synchronize these files from JCenter to Maven Central. Keep this to <code>false</code>if you are only interested in uploading to JCenter.</dd>
+    <dd>If true, sign the files with GnuPG (gpg). This is only required if you plan to later synchronize these files from JCenter to Maven Central. Keep this to <code>false</code>if you are only interested in uploading to JCenter.</dd>
   <dt>file</dt>
   <dd>The first parameter is the file you want to upload and the second one is the path where it will be uploaded to.</dd>
+  <dt>name</dt>
+  <dd>The package name on Bintray, if different than the project name.</dd>
   <dt>description</dt>
   <dd>The description of the current version.</dd>
+  <dt>issueTrackerUrl</dt>
+  <dd>The URL to an issue-tracking system where fellow developers can follow and help you solve bugs and defects.</dd>
   <dt>vcsTag</dt>
   <dd>The VCS tag for the current version.</dd>
 </dl>
+<p>
+    If there is a need to specify some of the OpenPGP key information when signing, it can be stored in the <code>local.properties</code> file as follows:
+</p>
+<pre class="brush:plain">
+gpg.keyId=24875D73
+gpg.password=secret
+gpg.secretKeyRingFile=/Users/me/.gnupg/secring.gpg
+</pre>
 
 <h3 class="section" indent="1" id="configuring-pom">Configuring your POM file</h3>
 <p>
