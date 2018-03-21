@@ -282,6 +282,13 @@ org.testng:testng:
 
 # Specifies an extension and a qualifier
 com.badlogicgames.gdx:gdx-platform:jar:natives-desktop:1.9.2</pre>
+          
+<p>
+  Some dependecies you specified want to get the latest versions of their dependencies. This situation can cause a bad behaviour for you.
+  Kobalt will try to get the latest version of those dependencies with every <code>assemble</code> task execution. If you don't want it, 
+  add <code>--offline</code> argument to the end of your command. For example, <code>./kobaltw assemble --offline</code>.
+    
+</p>
 
 <h4 class="section" indent="2" id="dependency-types">Dependency types</h4>
 
@@ -778,6 +785,15 @@ New versions found:
         <td>Turn off incremental builds.</td>
         <td>If this flag is specified, Kobalt will run all the tasks, even those that are incremental and would have
             been skipped.
+        </td>
+    </tr>
+    <tr>
+        <td><code><span style="white-space:nowrap">--offline</span></code></td>
+        <td>Boolean</td>
+        <td>false</td>
+        <td>Disable internet usage while resolving dependencies</td>
+        <td>If Kobalt couldn't find dependency in cache or if dependency have version range Kobalt will try to download it from internet.
+            You can specify this flag to avoid it.
         </td>
     </tr>
     <tr>
